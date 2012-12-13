@@ -17,7 +17,7 @@
 npm install -g grunt bower coffee-script
 npm install
 grunt --config grunt.coffee
-open http://localhost:6001
+open http://localhost:3000
 ```
 
 ## Installing components
@@ -27,7 +27,9 @@ cd public
 bower install jquery
 bower ls --map
 ```
-
 Use the output to update `require.config` in `main.coffee` accordingly.
+
+## Version control
+This was pulled out from [https://github.com/sirkkalap/perfgraph](https://github.com/sirkkalap/perfgraph)
 
 Happy Hacking! :]
