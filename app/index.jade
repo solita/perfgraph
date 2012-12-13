@@ -1,0 +1,79 @@
+doctype html5
+
+html(lang="en")
+  head
+    title KIOS Performance Dashboard
+    link(rel="stylesheet", href="components/normalize-css/normalize.css")
+    link(rel="stylesheet", href="css/main.css")
+    link(rel="stylesheet", href="css/style.css")
+  body
+
+    table.dashboard
+      thead
+        th
+        th.response-time Vasteaika
+        th.error-percentage Virheprosentti
+      tbody
+        tr.lh
+          td LH
+          td
+            svg.graph.lh.response-time
+          td
+            svg.graph.lh.error-percentage
+        tr.rt
+          td RT
+          td
+            svg.graph.rt.response-time
+          td
+            svg.graph.rt.error-percentage
+        tr.vo
+          td VO
+          td
+            svg.graph.vo.response-time
+          td
+            svg.graph.vo.error-percentage
+
+    .report.hidden
+      h3.title
+        a(href="/") dashboard
+        | /
+        a.testrun(href="#") lainhuutotodistukset #1234
+      table.trends
+        thead
+          th.response-time Vasteaika
+          th.error-percentage Virheprosentti
+        tbody
+          tr
+            td
+              svg.graph.response-time
+            td
+              svg.graph.error-percentage
+
+      table.tops
+        thead
+          th.response-time Hitaimmat kohteet
+          th.error-percentage Virheen palauttavat kohteet
+        tbody
+          tr
+            td
+              a.kohdetunnus(href="#") 21345324t6431
+              span.response-time 213.5s
+            td
+              a.kohdetunnus(href="#") 21345324t6431
+              span.status-code 501
+          tr
+            td
+              a.kohdetunnus(href="#") 21345324t6431
+              span.response-time 213.5s
+            td
+              a.kohdetunnus(href="#") 21345324t6431
+              span.status-code 501
+          tr
+            td
+              a.kohdetunnus(href="#") 21345324t6431
+              span.response-time 213.5s
+            td
+              a.kohdetunnus(href="#") 21345324t6431
+              span.status-code 501
+
+    script(async=true, data-main="main", src="components/requirejs/require.js")

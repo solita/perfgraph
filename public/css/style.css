@@ -1,0 +1,23 @@
+body{padding:20px;font-family:arial}
+th{font-weight:normal}
+.dashboard{position:absolute;top:0;bottom:0;width:90%}
+.tops{width:90%}
+.response-time,.error-percentage{width:45%}
+.graph{border:1px dotted #808080;padding:30px}
+path{fill:none}
+.boxplot{shape-rendering:crispEdges;stroke:#4682b4}
+.boxplot.percentiles{stroke-width:5px}
+.boxplot.percentiles:hover{cursor:hand;stroke-width:7px;stroke:#add8e6}
+.boxplot.median{stroke-width:2px;stroke:#fff}
+.error-percentage path{stroke:#800000}
+.axis path,.axis line{fill:none;stroke:#808080;shape-rendering:crispEdges}
+.current-build{stroke-width:3px;stroke:#4682b4;shape-rendering:crispEdges}
+.axis text{font-size:11px}
+.x.axis text{display:none}
+.tops{margin-top:50px}
+.tops th{padding-bottom:20px;text-align:left;font-size:large}
+.report th{font-weight:bold}
+.report .tops tbody tr:nth-child(odd) span{background-color:#efefef}
+.report .tops tbody tr:nth-child(odd) a{background-color:#efefef}
+.report .testrun{padding-left:.5em}
+span.response-time,span.status-code{padding-left:10%;text-align:right}
