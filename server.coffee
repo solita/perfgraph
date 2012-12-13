@@ -5,11 +5,12 @@ app = express()
 
 app.configure ->
   app.set "port", process.env.PORT or 3000
+  app.set "host", process.env.IP or "0.0.0.0"
   app.use express.favicon()
   app.use express.logger("dev")
   app.use express.bodyParser() # Parsii post-requestista bodyn
   app.use express.methodOverride() # http://stackoverflow.com/questions/8378338/what-does-connect-js-methodoverride-do
-  app.use app.router 
+  app.use app.router
   app.use express.static(path.join(__dirname, "public"))
 
 app.configure "development", ->
@@ -18,5 +19,5 @@ app.configure "development", ->
 app.get "/hello", (req, res) ->
   res.end "Hello world!"
 
-http.createServer(app).listen app.get("port"), ->
+http.createServer(app).listen app.get("port"), app.get("host"), ->
   console.log "Express server listening on port " + app.get("port")
