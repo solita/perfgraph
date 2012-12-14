@@ -3,6 +3,7 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
+      "coffee-script": ">= 1.4.0",
       "express": ">= 3.0.4",
       "mongoskin": ">= 0.4.4"
   }
