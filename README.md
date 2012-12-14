@@ -1,15 +1,19 @@
-# Template for client-side web apps
+## What it is
 
-## Out of the box setup
+Perfgraph is the visualizer for performance regression data of Jenkins JMeter tests.
+Data is gathered by perfdata project. The data is stored in mongodb and visualized with d3.
 
-* Grunt tasks for
-  * Jade
-  * Stylus
-  * CoffeeScript
-  * LiveReload
-* jQuery
-* Require.js
-* Normalize.css
+Currently it is used in KIOS and the dataflow goes like this
+
+Jenkins (JMeter) -> perfdata -> mongodb -> perfgraph -> browser (d3)
+
+This project is specialiced to current toolchain and has some hardcoded
+parameters in it.
+
+## Status
+
+Early development, uses random data in visualization. No database access and data 
+aggregation done yet.
 
 ## Setting up the development environment
 
@@ -21,7 +25,7 @@ open http://localhost:3000
 ```
 
 ## Installing components
-
+(OUTDATED SECTION)
 ```
 cd public
 bower install jquery
@@ -29,7 +33,6 @@ bower ls --map
 ```
 Use the output to update `require.config` in `main.coffee` accordingly.
 
-## Version control
-This was pulled out from [https://github.com/sirkkalap/perfgraph](https://github.com/sirkkalap/perfgraph)
+## Who
 
-Happy Hacking! :]
+sirkkalap - Petri Sirkkala, KIOS, Solita
