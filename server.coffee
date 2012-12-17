@@ -28,11 +28,11 @@ responseTimeTrend = (testCase) ->
         responseTimes = _.map build, (d) -> d.responseTime
 
         build: build[0].build
-        median: d3.median responseTimes
-        min: d3.min responseTimes
-        max: d3.max responseTimes
-        lowerPercentile: d3.quantile responseTimes, 0.25
-        upperPercentile: d3.quantile responseTimes, 0.75)
+        median: d3.median(responseTimes) / 1000
+        min: d3.min(responseTimes) / 1000
+        max: d3.max(responseTimes) / 1000
+        lowerPercentile: d3.quantile(responseTimes, 0.25) / 1000
+        upperPercentile: d3.quantile(responseTimes, 0.75) / 1000)
     .fail(console.log)
 
 app.configure ->

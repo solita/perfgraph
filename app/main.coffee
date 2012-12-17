@@ -3,6 +3,7 @@ require.config
     "jquery": "components/jquery/jquery"
     "d3": "components/d3/d3.v2"
     "page": "components/page/index"
+    "q": "components/q/q"
   shim:
     d3: exports: "d3"
     page: exports: "page"
