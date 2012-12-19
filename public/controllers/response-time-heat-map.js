@@ -16,7 +16,7 @@
               return d.build;
             }), d3.max(data, function(d) {
               return d.build;
-            })
+            }) + 1
           ]).range([0, width]);
           y = d3.scale.linear().domain([0, 150]).range([height, 0]);
           z = d3.scale.linear().domain([

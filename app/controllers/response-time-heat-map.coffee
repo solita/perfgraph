@@ -7,7 +7,7 @@ define ["jquery", "d3", "q"], ($, d3, q) ->
       data = q.when $.getJSON url
       data.then (data) ->
         x = d3.scale.linear()
-          .domain([d3.min(data, (d) -> d.build), d3.max(data, (d) -> d.build)])
+          .domain([d3.min(data, (d) -> d.build), d3.max(data, (d) -> d.build) + 1])
           .range([0, width])
 
         y = d3.scale.linear()
