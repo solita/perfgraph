@@ -1,6 +1,7 @@
 define ["jquery",
         "controllers/error-graph",
-        "controllers/response-time-graph"], ($, ErrorGraph, ResponseTimeGraph) ->
+        "controllers/response-time-graph",
+        "controllers/response-time-heat-map"], ($, ErrorGraph, ResponseTimeGraph, ResponseTimeHeatMap) ->
 
   class DashboardController
     constructor: (@elem) ->
@@ -12,9 +13,9 @@ define ["jquery",
 
       $(".graph").width(width).height(height)
 
-      @lhResponseTime = new ResponseTimeGraph @elem.find(".lh.response-time"), "/response-time/lh"
-      @rtResponseTime = new ResponseTimeGraph @elem.find(".rt.response-time"), "/response-time/rt"
-      @voResponseTime = new ResponseTimeGraph @elem.find(".vo.response-time"), "/response-time/vo"
+      @lhResponseTime = new ResponseTimeHeatMap @elem.find(".lh.response-time"), "/response-time-raw/lh"
+      @rtResponseTime = new ResponseTimeHeatMap @elem.find(".rt.response-time"), "/response-time-raw/rt"
+      @voResponseTime = new ResponseTimeHeatMap @elem.find(".vo.response-time"), "/response-time-raw/vo"
 
       @lhErrors = new ErrorGraph @elem.find(".lh.error-percentage")
       @rtErrors = new ErrorGraph @elem.find(".rt.error-percentage")

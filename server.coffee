@@ -35,6 +35,31 @@ responseTimeTrend = (testCase) ->
         upperPercentile: d3.quantile(responseTimes, 0.75) / 1000)
     .fail(console.log)
 
+responseTimeRaw = (testCase) ->
+  builds = samples
+    .then((samples) -> q.ninvoke samples, "distinct", "build")
+    .then((builds) -> builds.sort().reverse()[..29])
+
+  q.all([samples, builds])
+    .spread((samples, builds) ->
+      cursor = samples
+        .find({testCase: testCase, build: {$in: builds}}, {responseTime: 1, build: 1, _id: 0})
+        .sort({build: 1, responseTime: 1})
+      q.ninvoke cursor, "toArray")
+    .then((results) ->
+      responseTimesByBuild = _.groupBy(results, "build")
+      responseTimesByBuild5sBuckets = _.map responseTimesByBuild, (samples, build) ->
+        buckets = _.groupBy samples, (sample) -> 5 * Math.ceil sample.responseTime / 5000
+        _.map buckets, (val, key) ->
+          bucket: parseInt key
+          count:  val.length
+          build:  parseInt build
+
+      _.flatten responseTimesByBuild5sBuckets)
+    .fail(console.log)
+
+responseTimeRaw(/Rasitustodistus/).done()
+
 app.configure ->
   app.set "port", process.env.PORT or 3000
   app.set "host", process.env.IP or "0.0.0.0"
@@ -55,6 +80,15 @@ app.get "/response-time/:testCase", (req, res) ->
     vo: /Vuokraoikeus/
 
   responseTimeTrend(testCases[req.params.testCase])
+    .then (trend) -> res.end JSON.stringify trend
+
+app.get "/response-time-raw/:testCase", (req, res) ->
+  testCases =
+    lh: /Lainhuutotodistus/
+    rt: /Rasitustodistus/
+    vo: /Vuokraoikeus/
+
+  responseTimeRaw(testCases[req.params.testCase])
     .then (trend) -> res.end JSON.stringify trend
 
 http.createServer(app).listen app.get("port"), app.get("host"), ->
