@@ -12,9 +12,9 @@
         height = $(window).height() * 0.7 / (rowCount - 1);
         width = $(window).width() * 0.7 / (columnCount - 1);
         $(".graph").width(width).height(height);
-        this.lhResponseTime = new ResponseTimeGraph(this.elem.find(".lh.response-time"));
-        this.rtResponseTime = new ResponseTimeGraph(this.elem.find(".rt.response-time"));
-        this.voResponseTime = new ResponseTimeGraph(this.elem.find(".vo.response-time"));
+        this.lhResponseTime = new ResponseTimeGraph(this.elem.find(".lh.response-time"), "/response-time/lh");
+        this.rtResponseTime = new ResponseTimeGraph(this.elem.find(".rt.response-time"), "/response-time/rt");
+        this.voResponseTime = new ResponseTimeGraph(this.elem.find(".vo.response-time"), "/response-time/vo");
         this.lhErrors = new ErrorGraph(this.elem.find(".lh.error-percentage"));
         this.rtErrors = new ErrorGraph(this.elem.find(".rt.error-percentage"));
         this.voErrors = new ErrorGraph(this.elem.find(".vo.error-percentage"));

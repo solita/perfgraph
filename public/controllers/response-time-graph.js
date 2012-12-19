@@ -4,16 +4,16 @@
     var ResponseTimeGraph;
     return ResponseTimeGraph = (function() {
 
-      function ResponseTimeGraph(canvas, currentBuild) {
+      function ResponseTimeGraph(canvas, url, currentBuild) {
         var data, height, width;
         currentBuild || (currentBuild = []);
         height = canvas.height();
         width = canvas.width();
-        data = q.when($.getJSON("/response-time/lh"));
+        data = q.when($.getJSON(url));
         data.then(function(data) {
           var graph, line, x, xAxis, y, yAxis;
           x = d3.scale.linear().domain([0, data.length + 1]).range([0, width]);
-          y = d3.scale.sqrt().domain([0, 30]).range([height, 0]);
+          y = d3.scale.linear().domain([0, 60]).range([height, 0]);
           xAxis = d3.svg.axis().scale(x).ticks(0).tickSize(0);
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(3).tickSize(3);
           graph = d3.select(canvas[0]);
@@ -26,7 +26,6 @@
             return line([[currentBuild, 0], [currentBuild, -1.5]]);
           }).attr("class", "current-build");
           graph.selectAll(".boxplot.min-max").data(data).enter().append("path").attr("d", function(d, i) {
-            console.log(i);
             return line([[i, d.min], [i, d.max]]);
           }).attr("class", "boxplot min-max");
           graph.selectAll(".boxplot.percentiles").data(data).enter().append("path").attr("d", function(d, i) {

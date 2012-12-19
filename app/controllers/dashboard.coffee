@@ -12,9 +12,9 @@ define ["jquery",
 
       $(".graph").width(width).height(height)
 
-      @lhResponseTime = new ResponseTimeGraph @elem.find(".lh.response-time")
-      @rtResponseTime = new ResponseTimeGraph @elem.find(".rt.response-time")
-      @voResponseTime = new ResponseTimeGraph @elem.find(".vo.response-time")
+      @lhResponseTime = new ResponseTimeGraph @elem.find(".lh.response-time"), "/response-time/lh"
+      @rtResponseTime = new ResponseTimeGraph @elem.find(".rt.response-time"), "/response-time/rt"
+      @voResponseTime = new ResponseTimeGraph @elem.find(".vo.response-time"), "/response-time/vo"
 
       @lhErrors = new ErrorGraph @elem.find(".lh.error-percentage")
       @rtErrors = new ErrorGraph @elem.find(".rt.error-percentage")

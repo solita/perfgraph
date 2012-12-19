@@ -1,18 +1,18 @@
 define ["jquery", "d3", "q"], ($, d3, q) ->
 
   class ResponseTimeGraph
-    constructor: (canvas, currentBuild) ->
+    constructor: (canvas, url, currentBuild) ->
       currentBuild ||= []
       height         = canvas.height()
       width          = canvas.width()
-      data = q.when $.getJSON "/response-time/lh"
+      data = q.when $.getJSON url
       data.then (data) ->
         x = d3.scale.linear()
           .domain([0, data.length + 1])
           .range([0, width])
 
-        y = d3.scale.sqrt()
-          .domain([0, 30])
+        y = d3.scale.linear()
+          .domain([0, 60])
           .range([height, 0])
 
         xAxis = d3.svg.axis()
@@ -43,7 +43,7 @@ define ["jquery", "d3", "q"], ($, d3, q) ->
           .data(data)
           .enter()
           .append("path")
-          .attr("d", (d, i) -> console.log i; line([[i, d.min], [i, d.max]]))
+          .attr("d", (d, i) -> line([[i, d.min], [i, d.max]]))
           .attr("class", "boxplot min-max")
 
         graph.selectAll(".boxplot.percentiles")

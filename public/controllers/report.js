@@ -6,7 +6,7 @@
 
       function ReportController(elem) {
         this.elem = elem;
-        this.lhResponseTime = new ResponseTimeGraph(this.elem.find(".graph.response-time"), [23]);
+        this.lhResponseTime = new ResponseTimeGraph(this.elem.find(".graph.response-time"), "/response-time/lh", [23]);
         this.lhErrors = new ErrorGraph(this.elem.find(".graph.error-percentage"), [13]);
       }
 

@@ -19,7 +19,7 @@ responseTimeTrend = (testCase) ->
   q.all([samples, builds])
     .spread((samples, builds) ->
       cursor = samples
-        .find({testCase: /Lainhuutotodistus/, build: {$in: builds}}, {responseTime: 1, build: 1})
+        .find({testCase: testCase, build: {$in: builds}}, {responseTime: 1, build: 1})
         .sort({build: 1, responseTime: 1})
       q.ninvoke cursor, "toArray")
     .then((results) ->
