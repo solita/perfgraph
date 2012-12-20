@@ -5,6 +5,7 @@ th{font-weight:normal}
 .response-time,.error-percentage{width:45%}
 .graph{border:1px dotted #808080;padding:30px}
 path{fill:none}
+.tile{cursor:hand}
 .boxplot{shape-rendering:crispEdges;stroke:#4682b4}
 .boxplot.percentiles{stroke-width:5px}
 .boxplot.percentiles:hover{cursor:hand;stroke-width:7px;stroke:#add8e6}

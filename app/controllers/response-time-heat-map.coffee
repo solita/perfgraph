@@ -41,7 +41,7 @@ define ["jquery", "d3", "q"], ($, d3, q) ->
           .attr("width", (d, i) -> 10)
           .attr("height", (d, i) -> y(d.bucket) - y(d.bucket + 5))
           .style("fill", (d) -> z(d.count))
-          .on("click", (d) -> page "/reports/#{d.build}")
+          .on("click", (d) -> page "/reports/#{d.testCase}/#{d.build}")
 
         graph.append("g")
           .attr("class", "axis")

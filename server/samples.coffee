@@ -6,7 +6,13 @@ d3      = require "d3"
 db      = q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
 samples = db.then (db) -> q.ninvoke db, "collection", "samples"
 
+testCases =
+  lh: /Lainhuutotodistus/
+  rt: /Rasitustodistus/
+  vo: /Vuokraoikeus/
+
 exports.responseTimeTrend = (testCase) ->
+  testCase = testCases[testCase]
   builds = samples
     .then((samples) -> q.ninvoke samples, "distinct", "build")
     .then((builds) -> builds.sort().reverse()[..29])
@@ -30,7 +36,8 @@ exports.responseTimeTrend = (testCase) ->
         upperPercentile: d3.quantile(responseTimes, 0.75) / 1000)
     .fail(console.log)
 
-exports.responseTimeRaw = (testCase) ->
+exports.responseTimeRaw = (testCaseUrl) ->
+  testCase = testCases[testCaseUrl]
   builds = samples
     .then((samples) -> q.ninvoke samples, "distinct", "build")
     .then((builds) -> builds.sort().reverse()[..29])
@@ -49,6 +56,7 @@ exports.responseTimeRaw = (testCase) ->
           bucket: parseInt key
           count:  val.length
           build:  parseInt build
+          testCase: testCaseUrl
 
       _.flatten responseTimesByBuild5sBuckets)
     .fail(console.log)

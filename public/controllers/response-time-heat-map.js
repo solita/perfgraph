@@ -38,7 +38,7 @@
           }).style("fill", function(d) {
             return z(d.count);
           }).on("click", function(d) {
-            return page("/reports/" + d.build);
+            return page("/reports/" + d.testCase + "/" + d.build);
           });
           graph.append("g").attr("class", "axis").call(yAxis);
           return graph.append("g").attr("class", "axis").attr("transform", "translate(0, " + height + ")").call(xAxis);

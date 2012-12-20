@@ -33,12 +33,7 @@ app.get "/response-time/:testCase", (req, res) ->
     .then (trend) -> res.end JSON.stringify trend
 
 app.get "/response-time-raw/:testCase", (req, res) ->
-  testCases =
-    lh: /Lainhuutotodistus/
-    rt: /Rasitustodistus/
-    vo: /Vuokraoikeus/
-
-  samples.responseTimeRaw(testCases[req.params.testCase])
+  samples.responseTimeRaw(req.params.testCase)
     .then (trend) -> res.end JSON.stringify trend
 
 http.createServer(app).listen app.get("port"), app.get("host"), ->
