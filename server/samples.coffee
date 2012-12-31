@@ -60,3 +60,15 @@ exports.responseTimeRaw = (testCaseUrl) ->
 
       _.flatten responseTimesByBuild5sBuckets)
     .fail(console.log)
+
+exports.report = (testCase, build) ->
+  testCase = testCases[testCase]
+  samples
+    .then((samples) ->
+      cursor = samples.find(
+        {build: parseInt(build), testCase: testCase},
+        {responseTime: 1, build: 1, elapsedTimeMs: 1, timestamp: 1, responseCode: 1, _id: 0})
+
+      q.ninvoke cursor, "toArray")
+    .fail(console.log)
+

@@ -1,12 +1,16 @@
-define ["jquery",
-        "d3",
-        "q"], ($, d3, q) ->
+define ["jquery", "d3"], ($, d3) ->
 
   class ReportController
     constructor: (@elem) ->
-      # @lhResponseTime = new ResponseTimeGraph @elem.find(".graph.response-time"), "/response-time/lh", [23]
-      # @lhErrors = new ErrorGraph @elem.find(".graph.error-percentage"), [13]
+      height = $(window).height() * 0.5
+      width  = $(window).width() * 0.9
+      @elem.find(".graph")
+        .width(width)
+        .height(height)
 
     hide: () -> @elem.addClass "hidden"
     show: (testCase, build) ->
       @elem.removeClass "hidden"
+      $.getJSON "/reports/#{testCase}/#{build}.json", (data) ->
+        #console.log data
+

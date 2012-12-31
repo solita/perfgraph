@@ -11,7 +11,7 @@ define ["jquery",
       height      = $(window).height() * 0.7 / (rowCount - 1)
       width       = $(window).width() * 0.7 / (columnCount - 1)
 
-      $(".graph").width(width).height(height)
+      @elem.find(".graph").width(width).height(height)
 
       @lhResponseTime = new ResponseTimeHeatMap @elem.find(".lh.response-time"), "/response-time-raw/lh"
       @rtResponseTime = new ResponseTimeHeatMap @elem.find(".rt.response-time"), "/response-time-raw/rt"

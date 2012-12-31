@@ -1,15 +1,14 @@
 (function() {
 
-  define(["jquery", "d3", "q"], function($, d3, q) {
+  define(["jquery", "d3"], function($, d3) {
     var ResponseTimeHeatMap;
     return ResponseTimeHeatMap = (function() {
 
       function ResponseTimeHeatMap(canvas, url) {
-        var data, height, width;
+        var height, width;
         height = canvas.height();
         width = canvas.width();
-        data = q.when($.getJSON(url));
-        data.then(function(data) {
+        $.getJSON(url, function(data) {
           var graph, x, xAxis, y, yAxis, z;
           x = d3.scale.linear().domain([
             d3.min(data, function(d) {

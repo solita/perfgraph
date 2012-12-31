@@ -1,11 +1,15 @@
 (function() {
 
-  define(["jquery", "d3", "q"], function($, d3, q) {
+  define(["jquery", "d3"], function($, d3) {
     var ReportController;
     return ReportController = (function() {
 
       function ReportController(elem) {
+        var height, width;
         this.elem = elem;
+        height = $(window).height() * 0.5;
+        width = $(window).width() * 0.9;
+        this.elem.find(".graph").width(width).height(height);
       }
 
       ReportController.prototype.hide = function() {
@@ -13,7 +17,8 @@
       };
 
       ReportController.prototype.show = function(testCase, build) {
-        return this.elem.removeClass("hidden");
+        this.elem.removeClass("hidden");
+        return $.getJSON("/reports/" + testCase + "/" + build + ".json", function(data) {});
       };
 
       return ReportController;

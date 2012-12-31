@@ -11,7 +11,7 @@
         rowCount = this.elem.find("tr").length;
         height = $(window).height() * 0.7 / (rowCount - 1);
         width = $(window).width() * 0.7 / (columnCount - 1);
-        $(".graph").width(width).height(height);
+        this.elem.find(".graph").width(width).height(height);
         this.lhResponseTime = new ResponseTimeHeatMap(this.elem.find(".lh.response-time"), "/response-time-raw/lh");
         this.rtResponseTime = new ResponseTimeHeatMap(this.elem.find(".rt.response-time"), "/response-time-raw/rt");
         this.voResponseTime = new ResponseTimeHeatMap(this.elem.find(".vo.response-time"), "/response-time-raw/vo");

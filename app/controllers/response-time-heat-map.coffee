@@ -1,11 +1,10 @@
-define ["jquery", "d3", "q"], ($, d3, q) ->
+define ["jquery", "d3"], ($, d3) ->
 
   class ResponseTimeHeatMap
     constructor: (canvas, url) ->
       height         = canvas.height()
       width          = canvas.width()
-      data = q.when $.getJSON url
-      data.then (data) ->
+      $.getJSON url, (data) ->
         x = d3.scale.linear()
           .domain([d3.min(data, (d) -> d.build), d3.max(data, (d) -> d.build) + 1])
           .range([0, width])
