@@ -3,9 +3,9 @@ doctype html5
 html(lang="en")
   head
     title KIOS Performance Dashboard
-    link(rel="stylesheet", href="components/normalize-css/normalize.css")
-    link(rel="stylesheet", href="css/main.css")
-    link(rel="stylesheet", href="css/style.css")
+    link(rel="stylesheet", href="/components/normalize-css/normalize.css")
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/style.css")
   body
 
     table.dashboard
@@ -38,16 +38,8 @@ html(lang="en")
         a(href="/") dashboard
         | /
         a.testrun(href="#") lainhuutotodistukset #1234
-      table.trends
-        thead
-          th.response-time Vasteaika
-          th.error-percentage Virheprosentti
-        tbody
-          tr
-            td
-              svg.graph.response-time
-            td
-              svg.graph.error-percentage
+
+      svg.graph.response-time.scatter-plot
 
       table.tops
         thead
@@ -76,4 +68,4 @@ html(lang="en")
               a.kohdetunnus(href="#") 21345324t6431
               span.status-code 501
 
-    script(async=true, data-main="main", src="components/requirejs/require.js")
+    script(async=true, data-main="/main", src="/components/requirejs/require.js")

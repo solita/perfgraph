@@ -18,7 +18,6 @@ require ['jquery', 'd3', 'page', 'controllers/dashboard', 'controllers/report'],
       report.hide()
     page "/reports/:testCase/:build", (ctx) ->
       dashboard.hide()
-      console.log "/reports/#{ctx.params.testCase}/#{ctx.params.build}"
       report.show ctx.params.testCase, ctx.params.build
 
     page()

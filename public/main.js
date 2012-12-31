@@ -28,7 +28,6 @@
       });
       page("/reports/:testCase/:build", function(ctx) {
         dashboard.hide();
-        console.log("/reports/" + ctx.params.testCase + "/" + ctx.params.build);
         return report.show(ctx.params.testCase, ctx.params.build);
       });
       return page();

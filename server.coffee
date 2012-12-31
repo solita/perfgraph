@@ -36,5 +36,8 @@ app.get "/response-time-raw/:testCase", (req, res) ->
   samples.responseTimeRaw(req.params.testCase)
     .then (trend) -> res.end JSON.stringify trend
 
+app.get "*", (req, res) ->
+  res.sendfile path.join(__dirname, "public/index.html")
+
 http.createServer(app).listen app.get("port"), app.get("host"), ->
   console.log "Express server listening on port " + app.get("port")
