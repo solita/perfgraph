@@ -70,5 +70,10 @@ exports.report = (testCase, build) ->
         {responseTime: 1, build: 1, elapsedTimeMs: 1, timestamp: 1, responseCode: 1, _id: 0})
 
       q.ninvoke cursor, "toArray")
+    .then((results) ->
+      _.map results, (d) ->
+        d.responseTime = Math.round d.responseTime / 1000
+        d.timestamp    = Math.round d.timestamp / 1000
+        d)
     .fail(console.log)
 

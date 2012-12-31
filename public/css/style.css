@@ -18,6 +18,7 @@ path{fill:none}
 .tops{margin-top:50px}
 .tops th{padding-bottom:20px;text-align:left;font-size:large}
 .report th{font-weight:bold}
+.report .mark{stroke:#800000;stroke-width:.75;fill:none}
 .report .tops tbody tr:nth-child(odd) span{background-color:#efefef}
 .report .tops tbody tr:nth-child(odd) a{background-color:#efefef}
 .report .testrun{padding-left:.5em}
