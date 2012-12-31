@@ -1,6 +1,6 @@
 define ["jquery",
-        "controllers/error-graph",
-        "controllers/response-time-graph"], ($, ErrorGraph, ResponseTimeGraph) ->
+        "d3",
+        "q"], ($, d3, q) ->
 
   class ReportController
     constructor: (@elem) ->
@@ -8,4 +8,5 @@ define ["jquery",
       # @lhErrors = new ErrorGraph @elem.find(".graph.error-percentage"), [13]
 
     hide: () -> @elem.addClass "hidden"
-    show: () -> @elem.removeClass "hidden"
+    show: (testCase, build) ->
+      @elem.removeClass "hidden"

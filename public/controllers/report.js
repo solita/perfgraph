@@ -1,6 +1,6 @@
 (function() {
 
-  define(["jquery", "controllers/error-graph", "controllers/response-time-graph"], function($, ErrorGraph, ResponseTimeGraph) {
+  define(["jquery", "d3", "q"], function($, d3, q) {
     var ReportController;
     return ReportController = (function() {
 
@@ -12,7 +12,7 @@
         return this.elem.addClass("hidden");
       };
 
-      ReportController.prototype.show = function() {
+      ReportController.prototype.show = function(testCase, build) {
         return this.elem.removeClass("hidden");
       };
 
