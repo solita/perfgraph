@@ -2,11 +2,16 @@ define ["jquery", "d3"], ($, d3) ->
 
   class ResponseTimeScatterPlot
     constructor: (canvas, url) ->
-      sample = $('.report .sample')
-
       height         = canvas.height()
       width          = canvas.width()
       $.getJSON url, (data) ->
+        console.log data
+        sampleFormatter = (d) ->
+          d.elapsedTime = d.elapsedTime.toFixed 3
+          d
+
+        $(".tops .response-time").render data.map(sampleFormatter), { label: href: -> @label }
+
         x = d3.scale.linear()
           .domain([d3.min(data, (d) -> d.timeStamp), d3.max(data, (d) -> d.timeStamp) + 5])
           .range([0, width])
@@ -15,6 +20,8 @@ define ["jquery", "d3"], ($, d3) ->
           .domain([0, d3.max(data, (d) -> d.elapsedTime)])
           .range([height, 0])
           .nice()
+
+        sample = $('.report .sample')
 
         showSample = (d) ->
           sample.find('.elapsedTime').text "#{d.elapsedTime} s"

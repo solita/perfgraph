@@ -4,11 +4,20 @@ require.config
     "d3": "components/d3/d3.v2"
     "page": "components/page/index"
     "q": "components/q/q"
+    "transparency": "components/transparency/lib/transparency"
   shim:
     d3: exports: "d3"
     page: exports: "page"
 
-require ['jquery', 'd3', 'page', 'controllers/dashboard', 'controllers/report'], ($, d3, page, DashboardController, ReportController) ->
+require ['jquery',
+         'd3',
+         'page',
+         'transparency',
+         'controllers/dashboard',
+         'controllers/report', ], ($, d3, page, transparency, DashboardController, ReportController) ->
+
+  transparency.register $
+
   $ ->
     dashboard = new DashboardController $(".dashboard")
     report    = new ReportController $(".report")

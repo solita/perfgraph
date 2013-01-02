@@ -14,7 +14,7 @@ th
 .tops
   width 90%
 
-.response-time, .error-percentage
+ .dashboard .response-time, .dashboard .error-percentage
   width 45%
 
 .graph
@@ -62,27 +62,10 @@ path
 .x.axis text
   display none
 
-.tops
-  margin-top 50px
-
-.tops th
-  padding-bottom 20px
-  text-align left
-  font-size large
-
-.report th
-  font-weight bold
-
 .report .mark
   stroke maroon
   stroke-width 0.75
   fill none
-
-.report .tops tbody tr:nth-child(odd) span
-  background-color #efefef
-
-.report .tops tbody tr:nth-child(odd) a
-  background-color #efefef
 
 .report .testrun
   padding-left 1em
@@ -90,4 +73,14 @@ path
 .report .sample span
   padding-left 0.5em
   color maroon
+
+.tops .response-time
+  color maroon
+
+.tops .response-time .elapsedTime, .tops .response-time .responseCode
+  text-align right
+
+.tops .response-time a
+  margin-left 20
+
 

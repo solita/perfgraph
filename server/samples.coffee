@@ -65,17 +65,18 @@ exports.report = (testCase, build) ->
   testCase = testCases[testCase]
   samples
     .then((samples) ->
-      cursor = samples.find(
-        {build: parseInt(build), testCase: testCase},
-        {elapsedTime: 1, build: 1, bytes: 1, label: 1, timeStamp: 1, responseCode: 1, _id: 0})
+      cursor = samples
+        .find({build: parseInt(build), testCase: testCase},
+              {elapsedTime: 1, build: 1, bytes: 1, label: 1, timeStamp: 1, responseCode: 1, _id: 0})
+        .sort({elapsedTime: -1})
 
       q.ninvoke cursor, "toArray")
+
     .then((results) ->
       beginTime = d3.min results, (d) -> d.timeStamp
 
       _.map results, (d) ->
         d.elapsedTime = d.elapsedTime / 1000
-        d.timeStamp    = (d.timeStamp - beginTime) / 1000
+        d.timeStamp   = (d.timeStamp - beginTime) / 1000
         d)
     .fail(console.log)
-

@@ -45,7 +45,7 @@ html(lang="en")
         tr
           td Response Status:
           td
-            span.responseCode
+            td.responseCode
         tr
           td Response Time:
           td
@@ -60,31 +60,18 @@ html(lang="en")
             span
               a(href="#").label
 
-      table.tops
-        thead
-          th.response-time Hitaimmat kohteet
-          th.error-percentage Virheen palauttavat kohteet
-        tbody
-          tr
-            td
-              a.kohdetunnus(href="#") 21345324t6431
-              span.response-time 213.5s
-            td
-              a.kohdetunnus(href="#") 21345324t6431
-              span.status-code 501
-          tr
-            td
-              a.kohdetunnus(href="#") 21345324t6431
-              span.response-time 213.5s
-            td
-              a.kohdetunnus(href="#") 21345324t6431
-              span.status-code 501
-          tr
-            td
-              a.kohdetunnus(href="#") 21345324t6431
-              span.response-time 213.5s
-            td
-              a.kohdetunnus(href="#") 21345324t6431
-              span.status-code 501
+      div.tops
+        h3 Hitaimmat kohteet
+        table
+          thead
+            th Response time [s]
+            th Status
+            th URL
+          tbody.response-time
+            tr
+              td.elapsedTime
+              td.responseCode
+              td
+                a.label(href="#")
 
     script(async=true, data-main="/main", src="/components/requirejs/require.js")

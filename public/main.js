@@ -5,7 +5,8 @@
       "jquery": "components/jquery/jquery",
       "d3": "components/d3/d3.v2",
       "page": "components/page/index",
-      "q": "components/q/q"
+      "q": "components/q/q",
+      "transparency": "components/transparency/lib/transparency"
     },
     shim: {
       d3: {
@@ -17,7 +18,8 @@
     }
   });
 
-  require(['jquery', 'd3', 'page', 'controllers/dashboard', 'controllers/report'], function($, d3, page, DashboardController, ReportController) {
+  require(['jquery', 'd3', 'page', 'transparency', 'controllers/dashboard', 'controllers/report'], function($, d3, page, transparency, DashboardController, ReportController) {
+    transparency.register($);
     return $(function() {
       var dashboard, report;
       dashboard = new DashboardController($(".dashboard"));

@@ -5,12 +5,23 @@
     return ResponseTimeScatterPlot = (function() {
 
       function ResponseTimeScatterPlot(canvas, url) {
-        var height, sample, width;
-        sample = $('.report .sample');
+        var height, width;
         height = canvas.height();
         width = canvas.width();
         $.getJSON(url, function(data) {
-          var graph, showSample, x, xAxis, y, yAxis;
+          var graph, sample, sampleFormatter, showSample, x, xAxis, y, yAxis;
+          console.log(data);
+          sampleFormatter = function(d) {
+            d.elapsedTime = d.elapsedTime.toFixed(3);
+            return d;
+          };
+          $(".tops .response-time").render(data.map(sampleFormatter), {
+            label: {
+              href: function() {
+                return this.label;
+              }
+            }
+          });
           x = d3.scale.linear().domain([
             d3.min(data, function(d) {
               return d.timeStamp;
@@ -23,6 +34,7 @@
               return d.elapsedTime;
             })
           ]).range([height, 0]).nice();
+          sample = $('.report .sample');
           showSample = function(d) {
             sample.find('.elapsedTime').text("" + d.elapsedTime + " s");
             sample.find('.responseCode').text(d.responseCode);
