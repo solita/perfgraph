@@ -7,9 +7,8 @@ define ["jquery", "d3"], ($, d3) ->
       $.getJSON url, (data) ->
         console.log data
         x = d3.scale.linear()
-          .domain([d3.min(data, (d) -> d.timestamp), d3.max(data, (d) -> d.timestamp)])
+          .domain([d3.min(data, (d) -> d.timestamp) - 5, d3.max(data, (d) -> d.timestamp) + 5])
           .range([0, width])
-          .nice()
 
         y = d3.scale.linear()
           .domain([0, d3.max(data, (d) -> d.responseTime)])

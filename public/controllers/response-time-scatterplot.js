@@ -14,10 +14,10 @@
           x = d3.scale.linear().domain([
             d3.min(data, function(d) {
               return d.timestamp;
-            }), d3.max(data, function(d) {
+            }) - 5, d3.max(data, function(d) {
               return d.timestamp;
-            })
-          ]).range([0, width]).nice();
+            }) + 5
+          ]).range([0, width]);
           y = d3.scale.linear().domain([
             0, d3.max(data, function(d) {
               return d.responseTime;

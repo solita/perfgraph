@@ -71,9 +71,11 @@ exports.report = (testCase, build) ->
 
       q.ninvoke cursor, "toArray")
     .then((results) ->
+      beginTime = d3.min results, (d) -> d.timestamp
+
       _.map results, (d) ->
-        d.responseTime = Math.round d.responseTime / 1000
-        d.timestamp    = Math.round d.timestamp / 1000
+        d.responseTime = d.responseTime / 1000
+        d.timestamp    = (d.timestamp - beginTime) / 1000
         d)
     .fail(console.log)
 
