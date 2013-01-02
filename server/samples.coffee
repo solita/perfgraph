@@ -67,7 +67,7 @@ exports.report = (testCase, build) ->
     .then((samples) ->
       cursor = samples.find(
         {build: parseInt(build), testCase: testCase},
-        {elapsedTime: 1, build: 1, label: 1, timeStamp: 1, responseCode: 1, _id: 0})
+        {elapsedTime: 1, build: 1, bytes: 1, label: 1, timeStamp: 1, responseCode: 1, _id: 0})
 
       q.ninvoke cursor, "toArray")
     .then((results) ->

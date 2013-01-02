@@ -2,12 +2,13 @@ define ["jquery", "d3"], ($, d3) ->
 
   class ResponseTimeScatterPlot
     constructor: (canvas, url) ->
+      sample = $('.report .sample')
+
       height         = canvas.height()
       width          = canvas.width()
       $.getJSON url, (data) ->
-        console.log data
         x = d3.scale.linear()
-          .domain([d3.min(data, (d) -> d.timeStamp) - 5, d3.max(data, (d) -> d.timeStamp) + 5])
+          .domain([d3.min(data, (d) -> d.timeStamp), d3.max(data, (d) -> d.timeStamp) + 5])
           .range([0, width])
 
         y = d3.scale.linear()
@@ -15,9 +16,13 @@ define ["jquery", "d3"], ($, d3) ->
           .range([height, 0])
           .nice()
 
-        # z = d3.scale.linear()
-        #   .domain([0, d3.max data, (d) -> d.count])
-        #   .range(["lightblue", "black"])
+        showSample = (d) ->
+          sample.find('.elapsedTime').text "#{d.elapsedTime} s"
+          sample.find('.responseCode').text d.responseCode
+          sample.find('.bytes').text "#{d.bytes} B"
+          sample.find('.label')
+            .text(d.label)
+            .attr("href", d.label)
 
         xAxis = d3.svg.axis()
           .scale(x)
@@ -36,7 +41,8 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("class", "mark")
           .attr("cx", (d, i) -> x(d.timeStamp))
           .attr("cy", (d, i) -> y(d.elapsedTime))
-          .attr("r", (d, i) -> 2.5)
+          .attr("r", 2.5)
+          .on("mouseover", showSample)
 
         graph.append("g")
           .attr("class", "axis")

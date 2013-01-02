@@ -41,15 +41,24 @@ html(lang="en")
 
       svg.graph.response-time.scatter-plot
 
-      .label
-        div Response Status:
-          span.status
-        div Response Time:
-          span.elapsed-time
-        div URL:
-          span.label
-        div Response Size:
-          span.bytes
+      table.sample
+        tr
+          td Response Status:
+          td
+            span.responseCode
+        tr
+          td Response Time:
+          td
+            span.elapsedTime
+        tr
+          td Response Size:
+          td
+            span.bytes
+        tr
+          td URL:
+          td
+            span
+              a(href="#").label
 
       table.tops
         thead

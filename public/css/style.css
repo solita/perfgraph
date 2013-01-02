@@ -21,5 +21,5 @@ path{fill:none}
 .report .mark{stroke:#800000;stroke-width:.75;fill:none}
 .report .tops tbody tr:nth-child(odd) span{background-color:#efefef}
 .report .tops tbody tr:nth-child(odd) a{background-color:#efefef}
-.report .testrun{padding-left:.5em}
-span.response-time,span.status-code{padding-left:10%;text-align:right}
+.report .testrun{padding-left:1em}
+.report .sample span{padding-left:.5em;color:#800000}
