@@ -13,23 +13,23 @@
           console.log(data);
           x = d3.scale.linear().domain([
             d3.min(data, function(d) {
-              return d.timestamp;
+              return d.timeStamp;
             }) - 5, d3.max(data, function(d) {
-              return d.timestamp;
+              return d.timeStamp;
             }) + 5
           ]).range([0, width]);
           y = d3.scale.linear().domain([
             0, d3.max(data, function(d) {
-              return d.responseTime;
+              return d.elapsedTime;
             })
           ]).range([height, 0]).nice();
           xAxis = d3.svg.axis().scale(x);
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(6);
           graph = d3.select(canvas[0]);
           graph.selectAll(".mark").data(data).enter().append("circle").attr("class", "mark").attr("cx", function(d, i) {
-            return x(d.timestamp);
+            return x(d.timeStamp);
           }).attr("cy", function(d, i) {
-            return y(d.responseTime);
+            return y(d.elapsedTime);
           }).attr("r", function(d, i) {
             return 2.5;
           });

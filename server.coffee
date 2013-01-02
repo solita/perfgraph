@@ -36,12 +36,12 @@ app.get "/response-time/:testCase", (req, res) ->
     .then (trend) -> res.send trend
 
 app.get "/response-time-raw/:testCase", (req, res) ->
-  samples.responseTimeRaw(req.params.testCase)
+  samples.elapsedTimeRaw(req.params.testCase)
     .then (trend) -> res.send trend
 
 app.get "/reports/:testCase/:build.json", (req, res) ->
   samples.report(req.params.testCase, req.params.build)
-    .then (report) -> console.log report; res.send report
+    .then (report) -> res.send report
 
 http.createServer(app).listen app.get("port"), app.get("host"), ->
   console.log "Express server listening on port " + app.get("port")

@@ -7,11 +7,11 @@ define ["jquery", "d3"], ($, d3) ->
       $.getJSON url, (data) ->
         console.log data
         x = d3.scale.linear()
-          .domain([d3.min(data, (d) -> d.timestamp) - 5, d3.max(data, (d) -> d.timestamp) + 5])
+          .domain([d3.min(data, (d) -> d.timeStamp) - 5, d3.max(data, (d) -> d.timeStamp) + 5])
           .range([0, width])
 
         y = d3.scale.linear()
-          .domain([0, d3.max(data, (d) -> d.responseTime)])
+          .domain([0, d3.max(data, (d) -> d.elapsedTime)])
           .range([height, 0])
           .nice()
 
@@ -34,8 +34,8 @@ define ["jquery", "d3"], ($, d3) ->
         .enter()
           .append("circle")
           .attr("class", "mark")
-          .attr("cx", (d, i) -> x(d.timestamp))
-          .attr("cy", (d, i) -> y(d.responseTime))
+          .attr("cx", (d, i) -> x(d.timeStamp))
+          .attr("cy", (d, i) -> y(d.elapsedTime))
           .attr("r", (d, i) -> 2.5)
 
         graph.append("g")
