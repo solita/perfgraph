@@ -17,7 +17,11 @@
               return d.build;
             }) + 1
           ]).range([0, width]);
-          y = d3.scale.linear().domain([0, 150]).range([height, 0]);
+          y = d3.scale.linear().domain([
+            0, d3.max(data, function(d) {
+              return d.bucket + 5;
+            })
+          ]).range([height, 0]);
           z = d3.scale.linear().domain([
             0, d3.max(data, function(d) {
               return d.count;

@@ -10,7 +10,7 @@ define ["jquery", "d3"], ($, d3) ->
           .range([0, width])
 
         y = d3.scale.linear()
-          .domain([0, 150])
+          .domain([0, d3.max(data, (d) -> d.bucket + 5)])
           .range([height, 0])
 
         z = d3.scale.linear()
