@@ -40,7 +40,6 @@ app.get "/response-time-raw/:testCase", (req, res) ->
     .then (trend) -> res.send trend
 
 app.get "/reports/:testCase/:build.json", (req, res) ->
-  console.log "FDSAFDSA"
   samples.report(req.params.testCase, req.params.build)
     .then (report) -> res.send report
 
