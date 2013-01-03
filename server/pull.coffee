@@ -10,7 +10,8 @@ projectName = "KIOS%20Perf%20Test%20TP%20tulosteet%20tomcat-kios%20at%20ceto"
 
 get = (url) ->
   deferred = Q.defer()
-  request url, (err, res, body) ->
+  req = request {url: url, timeout: 5000}, (err, res, body) ->
+    console.log err, res.statusCode, body.length
     if err or res.statusCode != 200
       deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode}"
     else
@@ -33,12 +34,18 @@ getTestFile = (d) ->
   console.log "Processing build ##{d.build}, test case #{d.testCase}"
   jtlPath = "/job/#{projectName}/#{d.build}/artifact/kios-tp-performance/target/jmeter/report/#{d.testCase}"
   get("http://#{hostname}:#{port}/#{jtlPath}").then (samples) ->
+    fileSize = (samples.charCodeAt(i) for s, i in samples).length
+    console.log "build ##{d.build}, test case #{d.testCase} downloaded. File size: #{fileSize}"
     d.samples = samples
     d
 
 parseResults = (tr) ->
+  unless tr.samples.match /<\/testResults>/
+    throw new Error("Invalid JML file")
+
   parser = new xml2js.Parser()
   Q.ninvoke(parser, "parseString", tr.samples).then (bodyJson) ->
+    console.log "build ##{d.build}, test case #{d.testCase} downloaded"
     for sample in bodyJson?.testResults?.httpSample || []
       testCase:       tr.testCase
       assertions:     sample.assertionResult
