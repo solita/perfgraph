@@ -5,7 +5,7 @@ Data is gathered by perfdata project. The data is stored in mongodb and visualiz
 
 Currently it is used in KIOS and the dataflow goes like this
 
-Jenkins (JMeter) -> perfdata -> mongodb -> perfgraph -> browser (d3)
+Jenkins (JMeter) -> server/pull.coffee -> mongodb -> server.coffee -> browser (d3)
 
 This project is specialiced to current toolchain and has some hardcoded
 parameters in it.
@@ -23,6 +23,10 @@ npm install
 grunt --config grunt.coffee
 open http://localhost:3000
 ```
+
+## Mongodb
+
+Uses localhost as mongodb host. Uses database "kios-perf".
 
 ## Installing components
 (OUTDATED SECTION)
