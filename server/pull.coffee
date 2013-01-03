@@ -15,7 +15,7 @@ testCases =
 
 get = (url) ->
   deferred = Q.defer()
-  req = request {url: url, timeout: 30000}, (err, res, body) ->
+  req = request {url: url, timeout: 60000}, (err, res, body) ->
     if err or res.statusCode != 200
       deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode}"
     else
@@ -62,9 +62,9 @@ parseResults = (tr) ->
       testCase:       tr.testCase
       responseStatus: parseInt sample.$.rc
       build:          parseInt tr.build
-      elapsedTime:    parseInt sample.$.t / 1000
-      latencyTime:    parseInt sample.$.lt / 1000
-      timeStamp:      parseInt sample.$.ts / 1000
+      elapsedTime:    parseInt(sample.$.t) / 1000
+      latencyTime:    parseInt(sample.$.lt) / 1000
+      timeStamp:      parseInt(sample.$.ts) / 1000
       responseCode:   parseInt sample.$.rc
       label:          sample.$.lb
       bytes:          parseInt sample.$.by
