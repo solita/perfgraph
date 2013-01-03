@@ -40,6 +40,8 @@ getTestFile = (d) ->
     d
 
 parseResults = (tr) ->
+  # xml2js uses sax-js, which often fails for invalid xml files
+  # Use ugly regexp to "validate" JML by checking the existence of the end tag
   unless tr.samples.match /<\/testResults>/
     throw new Error("Invalid JML file")
 
