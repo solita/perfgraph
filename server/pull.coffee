@@ -17,7 +17,7 @@ get = (url) ->
   deferred = Q.defer()
   req = request {url: url, timeout: 60000}, (err, res, body) ->
     if err or res.statusCode != 200
-      deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode}"
+      deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode} url: #{url}"
     else
       deferred.resolve body
   deferred.promise
@@ -41,19 +41,24 @@ getTestFile = (d) ->
   console.log "Processing build ##{d.build}, test case #{d.testCase}"
 
   jtlPath = "/job/#{projectName}/#{d.build}/artifact/kios-tp-performance/target/jmeter/report/#{d.testCase}"
-  get("http://#{hostname}:#{port}/#{jtlPath}").then (samples) ->
+  url = "http://#{hostname}:#{port}/#{jtlPath}"
+  get(url).then (samples) ->
     fileSize = (samples.charCodeAt(i) for s, i in samples).length
     console.log "build ##{d.build}, test case #{d.testCase} downloaded. File size: #{fileSize}"
     d.samples = samples
-    d
+    testData = 
+      d: d 
+      url: url
 
-parseResults = (tr) ->
+parseResults = (testData) ->
+  tr = testData.d
+  url = testData.url
   console.log "build ##{tr.build}, test case #{tr.testCase} JTL file downloaded"
 
   # xml2js uses sax-js, which often fails for invalid xml files
   # Use ugly regexp to "validate" JML by checking the existence of the end tag
   unless tr.samples.match /<\/testResults>/
-    throw new Error("Invalid JML file: ")
+    throw new Error("Invalid JML file. Url: #{url}")
 
   parser = new xml2js.Parser()
   Q.ninvoke(parser, "parseString", tr.samples).then (bodyJson) ->
