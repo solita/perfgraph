@@ -12,7 +12,7 @@
           var graph, sample, sampleFormatter, showSample, x, xAxis, y, yAxis;
           console.log(data);
           sampleFormatter = function(d) {
-            d.elapsedTime = d.elapsedTime.toFixed(3);
+            d.elapsedTimeStr = d.elapsedTime.toFixed(3);
             return d;
           };
           $(".tops .response-time").render(data.map(sampleFormatter), {
@@ -36,7 +36,7 @@
           ]).range([height, 0]).nice();
           sample = $('.report .sample');
           showSample = function(d) {
-            sample.find('.elapsedTime').text("" + d.elapsedTime + " s");
+            sample.find('.elapsedTime').text("" + d.elapsedTimeStr + " s");
             sample.find('.responseCode').text(d.responseCode);
             sample.find('.bytes').text("" + d.bytes + " B");
             return sample.find('.label').text(d.label).attr("href", d.label);

@@ -19,5 +19,5 @@ path{fill:none}
 .report .testrun{padding-left:1em}
 .report .sample span{padding-left:.5em;color:#800000}
 .tops .response-time{color:#800000}
-.tops .response-time .elapsedTime,.tops .response-time .responseCode{text-align:right}
+.tops .response-time .elapsedTimeStr,.tops .response-time .responseCode{text-align:right}
 .tops .response-time a{margin-left:20}

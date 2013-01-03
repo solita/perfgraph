@@ -7,7 +7,7 @@ define ["jquery", "d3"], ($, d3) ->
       $.getJSON url, (data) ->
         console.log data
         sampleFormatter = (d) ->
-          d.elapsedTime = d.elapsedTime.toFixed 3
+          d.elapsedTimeStr = d.elapsedTime.toFixed 3
           d
 
         $(".tops .response-time").render data.map(sampleFormatter), { label: href: -> @label }
@@ -24,7 +24,7 @@ define ["jquery", "d3"], ($, d3) ->
         sample = $('.report .sample')
 
         showSample = (d) ->
-          sample.find('.elapsedTime').text "#{d.elapsedTime} s"
+          sample.find('.elapsedTime').text "#{d.elapsedTimeStr} s"
           sample.find('.responseCode').text d.responseCode
           sample.find('.bytes').text "#{d.bytes} B"
           sample.find('.label')
