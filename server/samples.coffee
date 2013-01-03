@@ -29,11 +29,11 @@ exports.elapsedTimeTrend = (testCase) ->
         elapsedTimes = _.map build, (d) -> d.elapsedTime
 
         build: build[0].build
-        median: d3.median(elapsedTimes) / 1000
-        min: d3.min(elapsedTimes) / 1000
-        max: d3.max(elapsedTimes) / 1000
-        lowerPercentile: d3.quantile(elapsedTimes, 0.25) / 1000
-        upperPercentile: d3.quantile(elapsedTimes, 0.75) / 1000)
+        median: d3.median elapsedTimes
+        min: d3.min elapsedTimes
+        max: d3.max elapsedTimes
+        lowerPercentile: d3.quantile elapsedTimes, 0.25
+        upperPercentile: d3.quantile elapsedTimes, 0.75)
     .fail(console.log)
 
 exports.elapsedTimeRaw = (testCaseUrl) ->
@@ -51,7 +51,7 @@ exports.elapsedTimeRaw = (testCaseUrl) ->
     .then((results) ->
       elapsedTimesByBuild = _.groupBy(results, "build")
       elapsedTimesByBuild5sBuckets = _.map elapsedTimesByBuild, (samples, build) ->
-        buckets = _.groupBy samples, (sample) -> 5 * Math.ceil sample.elapsedTime / 5000
+        buckets = _.groupBy samples, (sample) -> 5 * Math.ceil sample.elapsedTime / 5
         _.map buckets, (val, key) ->
           bucket: parseInt key
           count:  val.length
@@ -76,7 +76,6 @@ exports.report = (testCase, build) ->
       beginTime = d3.min results, (d) -> d.timeStamp
 
       _.map results, (d) ->
-        d.elapsedTime = d.elapsedTime / 1000
-        d.timeStamp   = (d.timeStamp - beginTime) / 1000
+        d.timeStamp   = d.timeStamp - beginTime
         d)
     .fail(console.log)
