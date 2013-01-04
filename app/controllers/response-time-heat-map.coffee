@@ -9,11 +9,11 @@ define ["jquery", "d3"], ($, d3) ->
           .domain([d3.min(data, (d) -> d.build), d3.max(data, (d) -> d.build) + 1])
           .range([0, width])
 
-        y = d3.scale.linear()
+        y = d3.scale.sqrt()
           .domain([0, d3.max(data, (d) -> d.bucket + 5)])
           .range([height, 0])
 
-        z = d3.scale.linear()
+        z = d3.scale.sqrt()
           .domain([0, d3.max data, (d) -> d.count])
           .range(["lightblue", "black"])
 
