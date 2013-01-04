@@ -53,7 +53,7 @@ getTestFile = (d) ->
 parseResults = (testData) ->
   tr = testData.d
   url = testData.url
-  console.log "build ##{tr.build}, test case #{tr.testCase} JTL file downloaded"
+  console.log "build ##{tr.build}, test case #{tr.testCase} JTL file parse"
 
   # xml2js uses sax-js, which often fails for invalid xml files
   # Use ugly regexp to "validate" JML by checking the existence of the end tag
