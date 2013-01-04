@@ -16,7 +16,7 @@ define ["jquery", "d3"], ($, d3) ->
           .domain([d3.min(data, (d) -> d.timeStamp), d3.max(data, (d) -> d.timeStamp) + 5])
           .range([0, width])
 
-        y = d3.scale.linear()
+        y = d3.scale.sqrt()
           .domain([0, d3.max(data, (d) -> d.elapsedTime)])
           .range([height, 0])
           .nice()

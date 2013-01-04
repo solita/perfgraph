@@ -29,7 +29,7 @@
               return d.timeStamp;
             }) + 5
           ]).range([0, width]);
-          y = d3.scale.linear().domain([
+          y = d3.scale.sqrt().domain([
             0, d3.max(data, function(d) {
               return d.elapsedTime;
             })
