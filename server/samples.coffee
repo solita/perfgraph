@@ -76,6 +76,6 @@ exports.report = (testCase, build) ->
       beginTime = d3.min results, (d) -> d.timeStamp
 
       _.map results, (d) ->
-        d.timeStamp   = d.timeStamp - beginTime
+        d.timeSinceStart = d.timeStamp - beginTime
         d)
     .fail(console.log)

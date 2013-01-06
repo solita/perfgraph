@@ -24,9 +24,9 @@
           });
           x = d3.scale.linear().domain([
             d3.min(data, function(d) {
-              return d.timeStamp;
+              return d.timeSinceStart;
             }), d3.max(data, function(d) {
-              return d.timeStamp;
+              return d.timeSinceStart;
             }) + 5
           ]).range([0, width]);
           y = d3.scale.sqrt().domain([
@@ -36,6 +36,9 @@
           ]).range([height, 0]).nice();
           sample = $('.report .sample');
           showSample = function(d) {
+            var date;
+            date = new Date(d.timeStamp * 1000);
+            sample.find('.timeStamp').text("" + date);
             sample.find('.elapsedTime').text("" + d.elapsedTimeStr + " s");
             sample.find('.responseCode').text(d.responseCode);
             sample.find('.bytes').text("" + d.bytes + " B");
@@ -45,7 +48,7 @@
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(6);
           graph = d3.select(canvas[0]);
           graph.selectAll(".mark").data(data).enter().append("circle").attr("class", "mark").attr("cx", function(d, i) {
-            return x(d.timeStamp);
+            return x(d.timeSinceStart);
           }).attr("cy", function(d, i) {
             return y(d.elapsedTime);
           }).attr("r", 2.5).on("mouseover", showSample);

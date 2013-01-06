@@ -13,7 +13,7 @@ define ["jquery", "d3"], ($, d3) ->
         $(".tops .response-time").render data.map(sampleFormatter), { label: href: -> @label }
 
         x = d3.scale.linear()
-          .domain([d3.min(data, (d) -> d.timeStamp), d3.max(data, (d) -> d.timeStamp) + 5])
+          .domain([d3.min(data, (d) -> d.timeSinceStart), d3.max(data, (d) -> d.timeSinceStart) + 5])
           .range([0, width])
 
         y = d3.scale.sqrt()
@@ -24,6 +24,8 @@ define ["jquery", "d3"], ($, d3) ->
         sample = $('.report .sample')
 
         showSample = (d) ->
+          date = new Date(d.timeStamp*1000)
+          sample.find('.timeStamp').text "#{date}"
           sample.find('.elapsedTime').text "#{d.elapsedTimeStr} s"
           sample.find('.responseCode').text d.responseCode
           sample.find('.bytes').text "#{d.bytes} B"
@@ -46,7 +48,7 @@ define ["jquery", "d3"], ($, d3) ->
         .enter()
           .append("circle")
           .attr("class", "mark")
-          .attr("cx", (d, i) -> x(d.timeStamp))
+          .attr("cx", (d, i) -> x(d.timeSinceStart))
           .attr("cy", (d, i) -> y(d.elapsedTime))
           .attr("r", 2.5)
           .on("mouseover", showSample)
