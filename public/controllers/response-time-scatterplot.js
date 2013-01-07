@@ -10,7 +10,6 @@
         width = canvas.width();
         $.getJSON(url, function(data) {
           var graph, sample, sampleFormatter, showSample, x, xAxis, y, yAxis;
-          console.log(data);
           sampleFormatter = function(d) {
             d.elapsedTimeStr = d.elapsedTime.toFixed(3);
             return d;
@@ -48,7 +47,6 @@
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(6);
           graph = d3.select(canvas[0]);
           graph.selectAll(".mark").data(data).enter().append("circle").attr("class", function(d) {
-            console.log(d.failed);
             if (d.failed) {
               return "mark failed";
             } else {

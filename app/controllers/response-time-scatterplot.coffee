@@ -5,12 +5,11 @@ define ["jquery", "d3"], ($, d3) ->
       height         = canvas.height()
       width          = canvas.width()
       $.getJSON url, (data) ->
-        console.log data
         sampleFormatter = (d) ->
           d.elapsedTimeStr = d.elapsedTime.toFixed 3
           d
 
-        $(".tops .response-time").render data.map(sampleFormatter), { label: href: -> @label }
+        $(".tops .response-time").render data.map(sampleFormatter), label: href: -> @label
 
         x = d3.scale.linear()
           .domain([d3.min(data, (d) -> d.timeSinceStart), d3.max(data, (d) -> d.timeSinceStart) + 5])
@@ -47,7 +46,7 @@ define ["jquery", "d3"], ($, d3) ->
           .data(data)
         .enter()
           .append("circle")
-          .attr("class", (d) -> console.log d.failed; if d.failed then "mark failed" else "mark passed")
+          .attr("class", (d) -> if d.failed then "mark failed" else "mark passed")
           .attr("cx", (d) -> x(d.timeSinceStart))
           .attr("cy", (d) -> y(d.elapsedTime))
           .attr("r", 2.5)
