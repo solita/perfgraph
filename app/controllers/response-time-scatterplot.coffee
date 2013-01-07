@@ -47,9 +47,9 @@ define ["jquery", "d3"], ($, d3) ->
           .data(data)
         .enter()
           .append("circle")
-          .attr("class", "mark")
-          .attr("cx", (d, i) -> x(d.timeSinceStart))
-          .attr("cy", (d, i) -> y(d.elapsedTime))
+          .attr("class", (d) -> console.log d.failed; if d.failed then "mark failed" else "mark passed")
+          .attr("cx", (d) -> x(d.timeSinceStart))
+          .attr("cy", (d) -> y(d.elapsedTime))
           .attr("r", 2.5)
           .on("mouseover", showSample)
 

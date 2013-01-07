@@ -93,7 +93,6 @@ newTestFiles = () ->
           .fail(console.log))
 
       buildNumbers.reduce reducer, [])
-    .fail(console.log)
 
 exports.processTestResults = () ->
   newTestFiles().fail(console.log).allResolved()

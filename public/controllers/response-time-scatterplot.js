@@ -47,9 +47,16 @@
           xAxis = d3.svg.axis().scale(x);
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(6);
           graph = d3.select(canvas[0]);
-          graph.selectAll(".mark").data(data).enter().append("circle").attr("class", "mark").attr("cx", function(d, i) {
+          graph.selectAll(".mark").data(data).enter().append("circle").attr("class", function(d) {
+            console.log(d.failed);
+            if (d.failed) {
+              return "mark failed";
+            } else {
+              return "mark passed";
+            }
+          }).attr("cx", function(d) {
             return x(d.timeSinceStart);
-          }).attr("cy", function(d, i) {
+          }).attr("cy", function(d) {
             return y(d.elapsedTime);
           }).attr("r", 2.5).on("mouseover", showSample);
           graph.append("g").attr("class", "axis").call(yAxis);

@@ -15,7 +15,9 @@ path{fill:none}
 .current-build{stroke-width:3px;stroke:#4682b4;shape-rendering:crispEdges}
 .axis text{font-size:11px}
 .x.axis text{display:none}
-.report .mark{stroke:#800000;stroke-width:.75;fill:none}
+.report .mark{stroke-width:1;fill:none}
+.report .mark.failed{stroke:#800000}
+.report .mark.passed{stroke:#4682b4}
 .report .testrun{padding-left:1em}
 .report .sample span{padding-left:.5em;color:#800000}
 .tops .response-time{color:#800000}
