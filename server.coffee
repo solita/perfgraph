@@ -1,12 +1,8 @@
 express = require "express"
 http    = require "http"
 path    = require "path"
-mongodb = require "mongodb"
-q       = require "q"
-_       = require "lodash"
-d3      = require "d3"
-util    = require "util"
 samples = require "./server/samples"
+pull    = require "./server/pull"
 
 app     = express()
 
@@ -27,21 +23,32 @@ app.configure "development", ->
   app.use express.errorHandler()
 
 app.get "/response-time/:testCase", (req, res) ->
-  testCases =
-    lh: /Lainhuutotodistus/
-    rt: /Rasitustodistus/
-    vo: /Vuokraoikeus/
-
   samples.responseTimeTrend(testCases[req.params.testCase])
-    .then (trend) -> res.send trend
+    .then((trend) -> res.send trend)
+    .done()
 
 app.get "/response-time-raw/:testCase", (req, res) ->
   samples.elapsedTimeRaw(req.params.testCase)
-    .then (trend) -> res.send trend
+    .then((trend) -> res.send trend)
+    .done()
+
+app.get "/error-trend/:testCase", (req, res) ->
+  samples.errorTrend(req.params.testCase)
+    .then((trend) -> res.send trend)
+    .done()
 
 app.get "/reports/:testCase/:build.json", (req, res) ->
   samples.report(req.params.testCase, req.params.build)
-    .then (report) -> res.send report
+    .then((report) -> res.send report)
+    .done()
+
+app.get "/process-builds", (req, res) ->
+  pull.processTestResults()
+    .then((status) -> res.send 200)
+    .done()
 
 http.createServer(app).listen app.get("port"), app.get("host"), ->
-  console.log "Express server listening on port " + app.get("port")
+  console.log "Express server listening on port #{app.get("port")}"
+
+# Fetch new results from Jenkins periodically
+setInterval (() -> pull.processTestResults().done()), 5 * 60000
