@@ -1,7 +1,7 @@
 define ["jquery", "d3"], ($, d3) ->
 
   class ResponseTimeScatterPlot
-    constructor: (canvas, url) ->
+    constructor: (canvas, url, markSize) ->
       height         = canvas.height()
       width          = canvas.width()
       $.getJSON url, (data) ->
@@ -14,6 +14,7 @@ define ["jquery", "d3"], ($, d3) ->
         x = d3.scale.linear()
           .domain([d3.min(data, (d) -> d.timeSinceStart), d3.max(data, (d) -> d.timeSinceStart) + 5])
           .range([0, width])
+          .nice()
 
         y = d3.scale.sqrt()
           .domain([0, d3.max(data, (d) -> d.elapsedTime)])
@@ -49,7 +50,7 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("class", (d) -> if d.failed then "mark failed" else "mark passed")
           .attr("cx", (d) -> x(d.timeSinceStart))
           .attr("cy", (d) -> y(d.elapsedTime))
-          .attr("r", 2.5)
+          .attr("r", markSize)
           .on("mouseover", showSample)
 
         graph.append("g")

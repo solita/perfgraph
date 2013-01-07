@@ -4,7 +4,7 @@
     var ResponseTimeScatterPlot;
     return ResponseTimeScatterPlot = (function() {
 
-      function ResponseTimeScatterPlot(canvas, url) {
+      function ResponseTimeScatterPlot(canvas, url, markSize) {
         var height, width;
         height = canvas.height();
         width = canvas.width();
@@ -27,7 +27,7 @@
             }), d3.max(data, function(d) {
               return d.timeSinceStart;
             }) + 5
-          ]).range([0, width]);
+          ]).range([0, width]).nice();
           y = d3.scale.sqrt().domain([
             0, d3.max(data, function(d) {
               return d.elapsedTime;
@@ -56,7 +56,7 @@
             return x(d.timeSinceStart);
           }).attr("cy", function(d) {
             return y(d.elapsedTime);
-          }).attr("r", 2.5).on("mouseover", showSample);
+          }).attr("r", markSize).on("mouseover", showSample);
           graph.append("g").attr("class", "axis").call(yAxis);
           return graph.append("g").attr("class", "axis").attr("transform", "translate(0, " + height + ")").call(xAxis);
         });

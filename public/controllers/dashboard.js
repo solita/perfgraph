@@ -19,7 +19,7 @@
         $.getJSON('/last-successful-build/lh.json', function(data) {
           var last, scatterPlot;
           last = data[0];
-          return scatterPlot = new ResponseTimeScatterPlot(elem.find(".lh.response-time.scatter-plot"), "/reports/" + last.testCaseId + "/" + last.build + ".json");
+          return scatterPlot = new ResponseTimeScatterPlot(elem.find(".lh.response-time.scatter-plot"), "/reports/" + last.testCaseId + "/" + last.build + ".json", 1);
         });
         this.rtErrors = new ErrorGraph(this.elem.find(".rt.error-percentage"));
         this.voErrors = new ErrorGraph(this.elem.find(".vo.error-percentage"));

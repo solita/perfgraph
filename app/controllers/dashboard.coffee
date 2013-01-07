@@ -21,7 +21,7 @@ define ["jquery",
       elem = @elem # FIXME, fix access inside callback (this reference)
       $.getJSON '/last-successful-build/lh.json', (data) ->
         last = data[0]
-        scatterPlot = new ResponseTimeScatterPlot elem.find(".lh.response-time.scatter-plot"), "/reports/#{last.testCaseId}/#{last.build}.json"
+        scatterPlot = new ResponseTimeScatterPlot elem.find(".lh.response-time.scatter-plot"), "/reports/#{last.testCaseId}/#{last.build}.json", 1
 
       #@lhErrors = new ErrorGraph @elem.find(".lh.error-percentage")
       @rtErrors = new ErrorGraph @elem.find(".rt.error-percentage")

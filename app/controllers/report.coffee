@@ -12,4 +12,4 @@ define ["jquery", "d3", "controllers/response-time-scatterplot"], ($, d3, Respon
     show: (testCase, build) ->
       @elem.removeClass "hidden"
       @graph.empty()
-      scatterPlot = new ResponseTimeScatterPlot @graph, "/reports/#{testCase}/#{build}.json"
+      scatterPlot = new ResponseTimeScatterPlot @graph, "/reports/#{testCase}/#{build}.json", 2

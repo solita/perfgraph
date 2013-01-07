@@ -3,6 +3,9 @@ th{font-weight:normal}
 .dashboard{position:absolute;top:0;bottom:0;width:90%}
 .tops{width:90%}
 .dashboard .response-time,.dashboard .error-percentage{width:45%}
+.dashboard .mark{stroke-width:1;fill:none}
+.dashboard .mark.failed{stroke:#800000}
+.dashboard .mark.passed{stroke:#4682b4}
 .graph{border:1px dotted #808080;padding:30px}
 path{fill:none}
 .tile{cursor:hand}
