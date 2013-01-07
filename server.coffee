@@ -49,8 +49,10 @@ app.get "/process-builds", (req, res) ->
 
 app.get "/last-successful-build/:testCase.json", (req, res) ->
   samples.lastSuccessfulBuild(req.params.testCase)
-   .then (result) -> 
-     res.send result
+   .then( (result) -> 
+     res.send result)
+   .done()
+
 
 http.createServer(app).listen app.get("port"), app.get("host"), ->
   console.log "Express server listening on port #{app.get("port")}"
