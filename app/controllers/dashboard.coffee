@@ -1,7 +1,8 @@
 define ["jquery",
         "controllers/error-graph",
         "controllers/response-time-graph",
-        "controllers/response-time-heat-map"], ($, ErrorGraph, ResponseTimeGraph, ResponseTimeHeatMap) ->
+        "controllers/response-time-heat-map",
+        "controllers/response-time-scatterplot"], ($, ErrorGraph, ResponseTimeGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot) ->
 
   class DashboardController
     constructor: (@elem) ->
@@ -17,7 +18,12 @@ define ["jquery",
       @rtResponseTime = new ResponseTimeHeatMap @elem.find(".rt.response-time"), "/response-time-raw/rt"
       @voResponseTime = new ResponseTimeHeatMap @elem.find(".vo.response-time"), "/response-time-raw/vo"
 
-      @lhErrors = new ErrorGraph @elem.find(".lh.error-percentage")
+      elem = @elem # FIXME, fix access inside callback (this reference)
+      $.getJSON '/last-successful-build/lh.json', (data) ->
+        last = data[0]
+        scatterPlot = new ResponseTimeScatterPlot elem.find(".lh.response-time.scatter-plot"), "/reports/#{last.testCaseId}/#{last.build}.json"
+
+      #@lhErrors = new ErrorGraph @elem.find(".lh.error-percentage")
       @rtErrors = new ErrorGraph @elem.find(".rt.error-percentage")
       @voErrors = new ErrorGraph @elem.find(".vo.error-percentage")
 

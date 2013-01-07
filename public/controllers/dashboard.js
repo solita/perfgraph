@@ -1,6 +1,6 @@
 (function() {
 
-  define(["jquery", "controllers/error-graph", "controllers/response-time-graph", "controllers/response-time-heat-map"], function($, ErrorGraph, ResponseTimeGraph, ResponseTimeHeatMap) {
+  define(["jquery", "controllers/error-graph", "controllers/response-time-graph", "controllers/response-time-heat-map", "controllers/response-time-scatterplot"], function($, ErrorGraph, ResponseTimeGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot) {
     var DashboardController;
     return DashboardController = (function() {
 
@@ -15,7 +15,12 @@
         this.lhResponseTime = new ResponseTimeHeatMap(this.elem.find(".lh.response-time"), "/response-time-raw/lh");
         this.rtResponseTime = new ResponseTimeHeatMap(this.elem.find(".rt.response-time"), "/response-time-raw/rt");
         this.voResponseTime = new ResponseTimeHeatMap(this.elem.find(".vo.response-time"), "/response-time-raw/vo");
-        this.lhErrors = new ErrorGraph(this.elem.find(".lh.error-percentage"));
+        elem = this.elem;
+        $.getJSON('/last-successful-build/lh.json', function(data) {
+          var last, scatterPlot;
+          last = data[0];
+          return scatterPlot = new ResponseTimeScatterPlot(elem.find(".lh.response-time.scatter-plot"), "/reports/" + last.testCaseId + "/" + last.build + ".json");
+        });
         this.rtErrors = new ErrorGraph(this.elem.find(".rt.error-percentage"));
         this.voErrors = new ErrorGraph(this.elem.find(".vo.error-percentage"));
       }
