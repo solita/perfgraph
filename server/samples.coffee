@@ -79,3 +79,13 @@ exports.report = (testCase, build) ->
         d.timeSinceStart = d.timeStamp - beginTime
         d)
     .fail(console.log)
+
+exports.lastSuccessfulBuild = (testCaseId) ->
+  samples
+    .then((samples) ->
+      cursor = samples
+        .find({testCaseId: testCaseId},
+              {build: 1, testCase:1})
+        .sort({build: -1})
+        .limit(1)
+      q.ninvoke cursor, "toArray")

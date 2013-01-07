@@ -43,5 +43,10 @@ app.get "/reports/:testCase/:build.json", (req, res) ->
   samples.report(req.params.testCase, req.params.build)
     .then (report) -> res.send report
 
+app.get "/last-successful-build/:testCase.json", (req, res) ->
+  samples.lastSuccessfulBuild(req.params.testCase)
+   .then (result) -> 
+     res.send result
+
 http.createServer(app).listen app.get("port"), app.get("host"), ->
   console.log "Express server listening on port " + app.get("port")
