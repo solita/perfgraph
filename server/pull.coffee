@@ -1,8 +1,8 @@
-Q = require "q"
-request = require "request"
-xml2js = require "xml2js"
+Q           = require "q"
+request     = require "request"
+xml2js      = require "xml2js"
 MongoClient = require("mongodb").MongoClient
-util = require "util"
+samples     = require "./samples"
 
 hostname    = "ceto.solita.fi"
 port        = 9080
@@ -15,27 +15,26 @@ testCases =
 
 get = (url) ->
   deferred = Q.defer()
-  req = request {url: url, timeout: 60000}, (err, res, body) ->
+  req = request {url: url, timeout: 600000}, (err, res, body) ->
     if err or res.statusCode != 200
       deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode} url: #{url}"
     else
       deferred.resolve body
   deferred.promise
 
-db      = Q.ninvoke MongoClient, "connect", "mongodb://localhost/kios-perf"
-samples = db.then (db) -> Q.ninvoke db, "collection", "samples"
+availableBuildNums = () ->
+  get("http://#{hostname}:#{port}/job/#{projectName}/api/json")
+    .then(((body) ->
+      json = JSON.parse(body)
+      allBuilds = json.builds.map (b) -> b.number
+      allBuilds.filter (b) -> b <= json.lastCompletedBuild.number))
+    .fail(console.log)
 
-savedBuildNums = samples.then (samples) -> Q.ninvoke samples, "distinct", "build"
-
-availableBuildNums = get("http://#{hostname}:#{port}/job/#{projectName}/api/json")
-  .then(((body) ->
-    json = JSON.parse(body)
-    allBuilds = json.builds.map (b) -> b.number
-    allBuilds.filter (b) -> b <= json.lastCompletedBuild.number))
-
-newBuildNums = Q.all([availableBuildNums, savedBuildNums])
-  .spread(
-    ((availableBuildNums, savedBuildNums) -> availableBuildNums.filter (b) -> savedBuildNums.indexOf(b) == -1))
+newBuildNums = () ->
+  Q.all([availableBuildNums(), samples.savedBuilds()])
+    .spread(
+      ((availableBuildNums, savedBuilds) -> availableBuildNums.filter (b) -> savedBuilds.indexOf(b) == -1))
+    .fail(console.log)
 
 getTestFile = (d) ->
   console.log "Processing build ##{d.build}, test case #{d.testCase}"
@@ -46,14 +45,14 @@ getTestFile = (d) ->
     fileSize = (samples.charCodeAt(i) for s, i in samples).length
     console.log "build ##{d.build}, test case #{d.testCase} downloaded. File size: #{fileSize}"
     d.samples = samples
-    testData = 
-      d: d 
+    testData =
+      d: d
       url: url
 
 parseResults = (testData) ->
   tr = testData.d
   url = testData.url
-  console.log "build ##{tr.build}, test case #{tr.testCase} JTL file parse"
+  console.log "Parsing JTL test file: build ##{tr.build}, test case #{tr.testCase}"
 
   # xml2js uses sax-js, which often fails for invalid xml files
   # Use ugly regexp to "validate" JML by checking the existence of the end tag
@@ -83,20 +82,18 @@ parseResults = (testData) ->
         assertion["errorMessage"]   = s.errorMessage[0]   if s.errorMessage
         assertion
 
-saveResults = (results) ->
-  samples.then (samples) -> Q.ninvoke samples, "insert", results
+newTestFiles = () ->
+  newBuildNums().then((buildNumbers) ->
+      jtlFiles = Object.keys(testCases)
 
-testResults = newBuildNums.then (buildNumbers) ->
-  jtlFiles = Object.keys(testCases)
+      reducer = (res, build) -> res.concat(for tc in jtlFiles
+        getTestFile({build: build, testCase: tc})
+          .then(parseResults)
+          .then(samples.saveResults)
+          .fail(console.log))
 
-  reducer = (res, build) -> res.concat(for tc in jtlFiles
-    getTestFile({build: build, testCase: tc})
-      .then(parseResults)
-      .then(saveResults, console.log))
+      buildNumbers.reduce reducer, [])
+    .fail(console.log)
 
-  buildNumbers.reduce reducer, []
-
-testResults
-  .allResolved()
-  .fin(-> db.then (db) -> db.close())
-  .done()
+exports.processTestResults = () ->
+  newTestFiles().fail(console.log).allResolved()
