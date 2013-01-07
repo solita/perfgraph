@@ -6,13 +6,10 @@ d3      = require "d3"
 db      = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
 samples = db.then (db) -> Q.ninvoke db, "collection", "samples"
 
-latestBuilds = (testCaseId) ->
+exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["lh", "rt", "vo"]}) ->
   samples
-    .then((samples) ->
-      Q.ninvoke samples, "distinct", "build", testCaseId: testCaseId)
-    .then((builds) ->
-      console.log builds
-      builds.sort().reverse())
+    .then((samples) -> Q.ninvoke samples, "distinct", "build", testCaseId: testCaseId)
+    .then((builds)  -> builds.sort().reverse())
 
 exports.saveResults = (results) ->
   samples

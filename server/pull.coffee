@@ -31,9 +31,11 @@ availableBuildNums = () ->
     .fail(console.log)
 
 newBuildNums = () ->
-  Q.all([availableBuildNums(), samples.savedBuilds()])
+  Q.all([availableBuildNums(), samples.latestBuilds()])
     .spread(
-      ((availableBuildNums, savedBuilds) -> availableBuildNums.filter (b) -> savedBuilds.indexOf(b) == -1))
+      ((availableBuildNums, savedBuilds) ->
+        console.log availableBuildNums, savedBuilds
+        availableBuildNums.filter (b) -> savedBuilds.indexOf(b) == -1))
     .fail(console.log)
 
 getTestFile = (d) ->
