@@ -14,10 +14,8 @@ path{fill:none}
 .boxplot.percentiles:hover{cursor:hand;stroke-width:7px;stroke:#add8e6}
 .boxplot.median{stroke-width:1px;stroke:#fff}
 .error-percentage path{stroke:#800000}
-.axis path,.axis line{fill:none;stroke:#808080;shape-rendering:crispEdges}
-.current-build{stroke-width:3px;stroke:#4682b4;shape-rendering:crispEdges}
 .axis text{font-size:11px}
-.x.axis text{display:none}
+.axis path,.axis line{fill:none;stroke:#808080;shape-rendering:crispEdges}
 .report .mark{stroke-width:1;fill:none}
 .report .mark.failed{stroke:#800000}
 .report .mark.passed{stroke:#4682b4}

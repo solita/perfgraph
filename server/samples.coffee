@@ -22,7 +22,6 @@ exports.saveResults = (results) ->
 exports.responseTimeTrendInBuckets = (testCaseId) ->
   Q.all([samples, latestBuilds(testCaseId, limit: 30)])
     .spread((samples, latestBuilds) ->
-      console.log latestBuilds
       cursor = samples
         .find({testCaseId: testCaseId, build: {$in: latestBuilds}}, {elapsedTime: 1, build: 1, _id: 0})
         .sort({build: 1, elapsedTime: 1})
