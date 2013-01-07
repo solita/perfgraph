@@ -95,7 +95,7 @@ exports.lastSuccessfulBuild = (testCaseId) ->
     .then((samples) ->
       cursor = samples
         .find({testCaseId: testCaseId},
-              {build: 1, testCase:1})
+              {build: 1, testCaseId:1})
         .sort({build: -1})
         .limit(1)
       q.ninvoke cursor, "toArray")
