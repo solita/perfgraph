@@ -26,12 +26,12 @@
               return d.timeSinceStart;
             }), d3.max(data, function(d) {
               return d.timeSinceStart;
-            }) + 5
-          ]).range([0, width]).nice();
-          y = d3.scale.sqrt().domain([
-            0, d3.max(data, function(d) {
-              return d.elapsedTime;
             })
+          ]).range([0, width]).nice();
+          y = d3.scale.linear().domain([
+            0, d3.max(data.map(function(d) {
+              return d.elapsedTime;
+            }).concat([5]))
           ]).range([height, 0]).nice();
           sample = $('.report .sample');
           showSample = function(d) {
@@ -43,7 +43,7 @@
             sample.find('.bytes').text("" + d.bytes + " B");
             return sample.find('.label').text(d.label).attr("href", d.label);
           };
-          xAxis = d3.svg.axis().scale(x);
+          xAxis = d3.svg.axis().scale(x).ticks(6);
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(6);
           graph = d3.select(canvas[0]);
           graph.selectAll(".mark").data(data).enter().append("circle").attr("class", function(d) {

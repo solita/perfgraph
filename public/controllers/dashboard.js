@@ -12,17 +12,12 @@
         height = $(window).height() * 0.7 / (rowCount - 1);
         width = $(window).width() * 0.7 / (columnCount - 1);
         this.elem.find(".graph").width(width).height(height);
-        this.lhResponseTime = new ResponseTimeHeatMap(this.elem.find(".lh.response-time"), "/response-time-raw/lh");
-        this.rtResponseTime = new ResponseTimeHeatMap(this.elem.find(".rt.response-time"), "/response-time-raw/rt");
-        this.voResponseTime = new ResponseTimeHeatMap(this.elem.find(".vo.response-time"), "/response-time-raw/vo");
-        elem = this.elem;
-        $.getJSON('/last-successful-build/lh.json', function(data) {
-          var last, scatterPlot;
-          last = data[0];
-          return scatterPlot = new ResponseTimeScatterPlot(elem.find(".lh.response-time.scatter-plot"), "/reports/" + last.testCaseId + "/" + last.build + ".json", 1);
-        });
-        this.rtErrors = new ErrorGraph(this.elem.find(".rt.error-percentage"));
-        this.voErrors = new ErrorGraph(this.elem.find(".vo.error-percentage"));
+        this.lhResponseTime = new ResponseTimeHeatMap(this.elem.find(".lh.response-time"), "/response-time-trend/lh");
+        this.rtResponseTime = new ResponseTimeHeatMap(this.elem.find(".rt.response-time"), "/response-time-trend/rt");
+        this.voResponseTime = new ResponseTimeHeatMap(this.elem.find(".vo.response-time"), "/response-time-trend/vo");
+        this.lhScatterPlot = new ResponseTimeScatterPlot(this.elem.find(".lh.response-time.scatter-plot"), "/reports/lh/latest.json", 0.5);
+        this.rtScatterPlot = new ResponseTimeScatterPlot(this.elem.find(".rt.response-time.scatter-plot"), "/reports/rt/latest.json", 0.5);
+        this.voScatterPlot = new ResponseTimeScatterPlot(this.elem.find(".vo.response-time.scatter-plot"), "/reports/vo/latest.json", 0.5);
       }
 
       DashboardController.prototype.hide = function() {

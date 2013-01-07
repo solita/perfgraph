@@ -14,18 +14,13 @@ define ["jquery",
 
       @elem.find(".graph").width(width).height(height)
 
-      @lhResponseTime = new ResponseTimeHeatMap @elem.find(".lh.response-time"), "/response-time-raw/lh"
-      @rtResponseTime = new ResponseTimeHeatMap @elem.find(".rt.response-time"), "/response-time-raw/rt"
-      @voResponseTime = new ResponseTimeHeatMap @elem.find(".vo.response-time"), "/response-time-raw/vo"
+      @lhResponseTime = new ResponseTimeHeatMap @elem.find(".lh.response-time"), "/response-time-trend/lh"
+      @rtResponseTime = new ResponseTimeHeatMap @elem.find(".rt.response-time"), "/response-time-trend/rt"
+      @voResponseTime = new ResponseTimeHeatMap @elem.find(".vo.response-time"), "/response-time-trend/vo"
 
-      elem = @elem # FIXME, fix access inside callback (this reference)
-      $.getJSON '/last-successful-build/lh.json', (data) ->
-        last = data[0]
-        scatterPlot = new ResponseTimeScatterPlot elem.find(".lh.response-time.scatter-plot"), "/reports/#{last.testCaseId}/#{last.build}.json", 1
-
-      #@lhErrors = new ErrorGraph @elem.find(".lh.error-percentage")
-      @rtErrors = new ErrorGraph @elem.find(".rt.error-percentage")
-      @voErrors = new ErrorGraph @elem.find(".vo.error-percentage")
+      @lhScatterPlot = new ResponseTimeScatterPlot @elem.find(".lh.response-time.scatter-plot"), "/reports/lh/latest.json", 0.5
+      @rtScatterPlot = new ResponseTimeScatterPlot @elem.find(".rt.response-time.scatter-plot"), "/reports/rt/latest.json", 0.5
+      @voScatterPlot = new ResponseTimeScatterPlot @elem.find(".vo.response-time.scatter-plot"), "/reports/vo/latest.json", 0.5
 
     hide: () -> $('.dashboard').addClass "hidden"
     show: () -> $('.dashboard').removeClass "hidden"

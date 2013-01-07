@@ -22,23 +22,18 @@ app.configure ->
 app.configure "development", ->
   app.use express.errorHandler()
 
-app.get "/response-time/:testCase", (req, res) ->
-  samples.responseTimeTrend(testCases[req.params.testCase])
+app.get "/response-time-trend/:testCaseId", ({params: {testCaseId}}, res) ->
+  samples.responseTimeTrendInBuckets(testCaseId)
     .then((trend) -> res.send trend)
     .done()
 
-app.get "/response-time-raw/:testCase", (req, res) ->
-  samples.elapsedTimeRaw(req.params.testCase)
+app.get "/error-trend/:testCase", ({params: {testCaseId}}, res) ->
+  samples.errorTrend(testCaseId)
     .then((trend) -> res.send trend)
     .done()
 
-app.get "/error-trend/:testCase", (req, res) ->
-  samples.errorTrend(req.params.testCase)
-    .then((trend) -> res.send trend)
-    .done()
-
-app.get "/reports/:testCase/:build.json", (req, res) ->
-  samples.report(req.params.testCase, req.params.build)
+app.get "/reports/:testCaseId/:build.json", ({params: {testCaseId, build}}, res) ->
+  samples.report(testCaseId, build)
     .then((report) -> res.send report)
     .done()
 
@@ -46,13 +41,6 @@ app.get "/process-builds", (req, res) ->
   pull.processTestResults()
     .then((status) -> res.send 200)
     .done()
-
-app.get "/last-successful-build/:testCase.json", (req, res) ->
-  samples.lastSuccessfulBuild(req.params.testCase)
-   .then( (result) -> 
-     res.send result)
-   .done()
-
 
 http.createServer(app).listen app.get("port"), app.get("host"), ->
   console.log "Express server listening on port #{app.get("port")}"

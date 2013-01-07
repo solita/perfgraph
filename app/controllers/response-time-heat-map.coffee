@@ -8,12 +8,14 @@ define ["jquery", "d3"], ($, d3) ->
         x = d3.scale.linear()
           .domain([d3.min(data, (d) -> d.build), d3.max(data, (d) -> d.build) + 1])
           .range([0, width])
+          .nice()
 
-        y = d3.scale.sqrt()
+        y = d3.scale.linear()
           .domain([0, d3.max(data, (d) -> d.bucket + 5)])
           .range([height, 0])
+          .nice()
 
-        z = d3.scale.sqrt()
+        z = d3.scale.linear()
           .domain([0, d3.max data, (d) -> d.count])
           .range(["lightblue", "black"])
 
@@ -38,7 +40,7 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("x", (d, i) -> x(d.build))
           .attr("y", (d, i) -> y(d.bucket))
           .attr("width", (d, i) -> 10)
-          .attr("height", (d, i) -> y(d.bucket) - y(d.bucket + 5))
+          .attr("height", (d, i) -> y(d.bucket) - y(d.bucket + d.bucketSize))
           .style("fill", (d) -> z(d.count))
           .on("click", (d) -> page "/reports/#{d.testCase}/#{d.build}")
 

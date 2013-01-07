@@ -12,12 +12,12 @@ define ["jquery", "d3"], ($, d3) ->
         $(".tops .response-time").render data.map(sampleFormatter), label: href: -> @label
 
         x = d3.scale.linear()
-          .domain([d3.min(data, (d) -> d.timeSinceStart), d3.max(data, (d) -> d.timeSinceStart) + 5])
+          .domain([d3.min(data, (d) -> d.timeSinceStart), d3.max(data, (d) -> d.timeSinceStart)])
           .range([0, width])
           .nice()
 
-        y = d3.scale.sqrt()
-          .domain([0, d3.max(data, (d) -> d.elapsedTime)])
+        y = d3.scale.linear()
+          .domain([0, d3.max data.map((d) -> d.elapsedTime).concat [5]])
           .range([height, 0])
           .nice()
 
@@ -35,6 +35,7 @@ define ["jquery", "d3"], ($, d3) ->
 
         xAxis = d3.svg.axis()
           .scale(x)
+          .ticks(6)
 
         yAxis = d3.svg.axis()
           .scale(y)
