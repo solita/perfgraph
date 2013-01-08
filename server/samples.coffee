@@ -25,8 +25,8 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
         Q.ninvoke cursor, "toArray")
     .then((results) ->
       elapsedTimesByBuild = _.groupBy(results, "build")
-      bucketCount = 20
-      bucketSize = Math.ceil d3.max(results, (d) -> d.elapsedTime) / bucketCount
+      #bucketCount = 20
+      bucketSize = 5 #Math.ceil d3.max(results, (d) -> d.elapsedTime) / bucketCount
       elapsedTimesByBuildInBuckets = _.map elapsedTimesByBuild, (samples, build) ->
         buckets = _.groupBy samples, (sample) -> bucketSize * Math.ceil sample.elapsedTime / bucketSize
         _.map buckets, (val, key) ->
