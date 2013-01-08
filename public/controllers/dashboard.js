@@ -17,14 +17,11 @@
         testCases = ["lh", "rt", "vo"];
         this.elem.find(".graph").width(width).height(height);
         this.responseTimeTrends = (function() {
-          var _i, _len, _results,
-            _this = this;
+          var _i, _len, _results;
           _results = [];
           for (_i = 0, _len = testCases.length; _i < _len; _i++) {
             t = testCases[_i];
-            _results.push((function(t) {
-              return new ResponseTimeHeatMap(_this.elem.find("." + t + ".response-time"), "/response-time-trend/" + t);
-            })(t));
+            _results.push(new ResponseTimeHeatMap(this.elem.find("." + t + ".response-time"), "/response-time-trend/" + t));
           }
           return _results;
         }).call(this);

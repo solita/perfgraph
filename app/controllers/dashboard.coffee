@@ -16,8 +16,7 @@ define ["jquery",
       @elem.find(".graph").width(width).height(height)
 
       @responseTimeTrends = for t in testCases
-        do (t) =>
-          new ResponseTimeHeatMap @elem.find(".#{t}.response-time"), "/response-time-trend/#{t}"
+        new ResponseTimeHeatMap @elem.find(".#{t}.response-time"), "/response-time-trend/#{t}"
 
       @responseTimeLatests = for t in testCases
         do (t) =>
