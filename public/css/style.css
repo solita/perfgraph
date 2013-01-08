@@ -1,6 +1,8 @@
 body{padding:20px;font-family:arial}
 th{font-weight:normal}
-.dashboard{position:absolute;top:0;bottom:0;width:90%}
+.dashboard table{position:absolute;top:0;bottom:0;width:90%}
+.status{position:absolute;font-size:small;top:0;right:5;margin-top:0}
+.status .updated{padding-left:5}
 .tops{width:90%}
 .dashboard .response-time,.dashboard .error-percentage{width:45%}
 .dashboard .mark{stroke-width:1;fill:none}

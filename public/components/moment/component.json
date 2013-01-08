@@ -1,0 +1,8 @@
+{
+  "name": "moment",
+  "version": "1.7.2",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/timrwood/moment.git"
+  }
+}

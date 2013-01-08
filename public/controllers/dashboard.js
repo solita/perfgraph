@@ -1,8 +1,14 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  define(["jquery", "controllers/error-graph", "controllers/response-time-graph", "controllers/response-time-heat-map", "controllers/response-time-scatterplot"], function($, ErrorGraph, ResponseTimeGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot) {
-    var DashboardController;
+  define(function(require) {
+    var $, DashboardController, ErrorGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot, io, moment;
+    $ = require("jquery");
+    io = require("socket.io");
+    moment = require("moment");
+    ErrorGraph = require("controllers/error-graph");
+    ResponseTimeHeatMap = require("controllers/response-time-heat-map");
+    ResponseTimeScatterPlot = require("controllers/response-time-scatterplot");
     return DashboardController = (function() {
 
       function DashboardController(elem) {
@@ -43,12 +49,13 @@
           return _results;
         }).call(this);
         this.graphs = this.responseTimeTrends.concat(this.responseTimeLatests);
+        io.connect().on("change", this.update);
         this.update();
-        setInterval(this.update, 60 * 1000);
       }
 
       DashboardController.prototype.update = function() {
         var g, _i, _len, _ref, _results;
+        $(".updated").html(moment().format("HH:mm <br /> D.M.YYYY"));
         _ref = this.graphs;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {

@@ -1,6 +1,7 @@
 express = require "express"
 http    = require "http"
 path    = require "path"
+io      = require "socket.io"
 samples = require "./server/samples"
 pull    = require "./server/pull"
 
@@ -39,11 +40,11 @@ app.get "/reports/:testCaseId/:build.json", ({params: {testCaseId, build}}, res)
 
 app.get "/process-builds", (req, res) ->
   pull.processTestResults()
-    .then((status) -> res.send 200)
+    .then(-> res.send 200; io.sockets.emit "change")
     .done()
 
-http.createServer(app).listen app.get("port"), app.get("host"), ->
-  console.log "Express server listening on port #{app.get("port")}"
+server = http.createServer(app)
+io     = io.listen(server)
 
-# Fetch new results from Jenkins periodically
-setInterval (() -> pull.processTestResults().done()), 5 * 60000
+server.listen app.get("port"), app.get("host"), ->
+  console.log "Express server listening on port #{app.get("port")}"

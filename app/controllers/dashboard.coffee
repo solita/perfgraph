@@ -1,8 +1,11 @@
-define ["jquery",
-        "controllers/error-graph",
-        "controllers/response-time-graph",
-        "controllers/response-time-heat-map",
-        "controllers/response-time-scatterplot"], ($, ErrorGraph, ResponseTimeGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot) ->
+define (require) ->
+  $      = require "jquery"
+  io     = require "socket.io"
+  moment = require "moment"
+
+  ErrorGraph              = require "controllers/error-graph"
+  ResponseTimeHeatMap     = require "controllers/response-time-heat-map"
+  ResponseTimeScatterPlot = require "controllers/response-time-scatterplot"
 
   class DashboardController
     constructor: (@elem) ->
@@ -26,10 +29,12 @@ define ["jquery",
 
       @graphs = @responseTimeTrends.concat @responseTimeLatests
 
+      io.connect().on "change", @update
       @update()
-      setInterval(@update, 60 * 1000)
+
 
     update: =>
+      $(".updated").html moment().format "HH:mm <br /> D.M.YYYY"
       g.update() for g in @graphs
 
 

@@ -8,30 +8,33 @@ html(lang="en")
     link(rel="stylesheet", href="/css/style.css")
   body
 
-    table.dashboard.hidden
-      thead
-        th
-        th.response-time Vasteaika
-        th.error-percentage Viimeisin testitulos
-      tbody
-        tr.lh
-          td LH
-          td
-            svg.graph.lh.response-time
-          td
-            svg.graph.lh.response-time.scatter-plot
-        tr.rt
-          td RT
-          td
-            svg.graph.rt.response-time
-          td
-            svg.graph.rt.response-time.scatter-plot
-        tr.vo
-          td VO
-          td
-            svg.graph.vo.response-time
-          td
-            svg.graph.vo.response-time.scatter-plot
+    .dashboard.hidden
+      .status.updated 2012-234-1234
+
+      table
+        thead
+          th
+          th.response-time Vasteaika
+          th.error-percentage Viimeisin testitulos
+        tbody
+          tr.lh
+            td LH
+            td
+              svg.graph.lh.response-time
+            td
+              svg.graph.lh.response-time.scatter-plot
+          tr.rt
+            td RT
+            td
+              svg.graph.rt.response-time
+            td
+              svg.graph.rt.response-time.scatter-plot
+          tr.vo
+            td VO
+            td
+              svg.graph.vo.response-time
+            td
+              svg.graph.vo.response-time.scatter-plot
 
     .report.hidden
       h3.title
