@@ -21,12 +21,12 @@
             for (var _i = firstBuild; firstBuild <= lastBuild ? _i <= lastBuild : _i >= lastBuild; firstBuild <= lastBuild ? _i++ : _i--){ _results.push(_i); }
             return _results;
           }).apply(this)).rangeBands([0, width], 0.1);
-          y = d3.scale.linear().domain([
+          y = d3.scale.sqrt().domain([
             0, d3.max(data, function(d) {
               return d.bucket;
             })
           ]).range([height, 0]).nice();
-          z = d3.scale.linear().domain([
+          z = d3.scale.sqrt().domain([
             0, d3.max(data, function(d) {
               return d.count;
             })

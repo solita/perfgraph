@@ -12,12 +12,12 @@ define ["jquery", "d3"], ($, d3) ->
           .domain([firstBuild..lastBuild])
           .rangeBands([0, width], 0.1)
 
-        y = d3.scale.linear()
+        y = d3.scale.sqrt()
           .domain([0, d3.max(data, (d) -> d.bucket)])
           .range([height, 0])
           .nice()
 
-        z = d3.scale.linear()
+        z = d3.scale.sqrt()
           .domain([0, d3.max data, (d) -> d.count])
           .range(["lightblue", "black"])
 
