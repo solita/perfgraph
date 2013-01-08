@@ -10,10 +10,14 @@
         width = canvas.width();
         $.getJSON(url, function(data) {
           var firstBuild, graph, labels, lastBuild, showLabel, x, xAxis, y, yAxis, z, _i, _results;
-          lastBuild = d3.max(data, function(d) {
+          data = {
+            samples: data,
+            maxElapsedTimeInBuilds: 600
+          };
+          lastBuild = d3.max(data.samples, function(d) {
             return d.build;
           });
-          firstBuild = d3.min(data, function(d) {
+          firstBuild = d3.min(data.samples, function(d) {
             return d.build;
           });
           x = d3.scale.ordinal().domain((function() {
@@ -21,13 +25,9 @@
             for (var _i = firstBuild; firstBuild <= lastBuild ? _i <= lastBuild : _i >= lastBuild; firstBuild <= lastBuild ? _i++ : _i--){ _results.push(_i); }
             return _results;
           }).apply(this)).rangeBands([0, width], 0.1);
-          y = d3.scale.sqrt().domain([
-            0, d3.max(data, function(d) {
-              return d.bucket;
-            })
-          ]).range([height, 0]).nice();
+          y = d3.scale.sqrt().domain([0, Math.max(data.maxElapsedTimeInBuilds, 60)]).range([height, 0]).nice();
           z = d3.scale.sqrt().domain([
-            0, d3.max(data, function(d) {
+            0, d3.max(data.samples, function(d) {
               return d.count;
             })
           ]).range(["lightblue", "black"]);
@@ -44,7 +44,7 @@
               return [firstBuild, lastBuild, d.build].indexOf(build) < 0;
             });
           };
-          return graph.selectAll(".tile").data(data).enter().append("rect").attr("class", "tile").attr("x", function(d) {
+          return graph.selectAll(".tile").data(data.samples).enter().append("rect").attr("class", "tile").attr("x", function(d) {
             return x(d.build);
           }).attr("y", function(d) {
             return y(d.bucket);

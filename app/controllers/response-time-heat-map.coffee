@@ -5,20 +5,24 @@ define ["jquery", "d3"], ($, d3) ->
       height = canvas.height()
       width  = canvas.width()
       $.getJSON url, (data) ->
-        lastBuild  = d3.max(data, (d) -> d.build)
-        firstBuild = d3.min(data, (d) -> d.build)
+        data =
+          samples: data
+          maxElapsedTimeInBuilds: 600
+
+        lastBuild  = d3.max(data.samples, (d) -> d.build)
+        firstBuild = d3.min(data.samples, (d) -> d.build)
 
         x = d3.scale.ordinal()
           .domain([firstBuild..lastBuild])
           .rangeBands([0, width], 0.1)
 
         y = d3.scale.sqrt()
-          .domain([0, d3.max(data, (d) -> d.bucket)])
+          .domain([0, Math.max(data.maxElapsedTimeInBuilds, 60)])
           .range([height, 0])
           .nice()
 
         z = d3.scale.sqrt()
-          .domain([0, d3.max data, (d) -> d.count])
+          .domain([0, d3.max data.samples, (d) -> d.count])
           .range(["lightblue", "black"])
 
         xAxis = d3.svg.axis()
@@ -50,7 +54,7 @@ define ["jquery", "d3"], ($, d3) ->
             [firstBuild, lastBuild, d.build].indexOf(build) < 0)
 
         graph.selectAll(".tile")
-          .data(data)
+          .data(data.samples)
         .enter()
           .append("rect")
           .attr("class", "tile")

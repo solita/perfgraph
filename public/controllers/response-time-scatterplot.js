@@ -12,11 +12,15 @@
         width = this.elem.width();
         $.getJSON(url, function(data) {
           var graph, sample, sampleFormatter, showSample, x, xAxis, y, yAxis;
+          data = {
+            samples: data,
+            maxElapsedTimeInBuild: 7
+          };
           sampleFormatter = function(d) {
             d.elapsedTimeStr = d.elapsedTime.toFixed(3);
             return d;
           };
-          $(".tops .response-time").render(data.map(sampleFormatter), {
+          $(".tops .response-time").render(data.samples.map(sampleFormatter), {
             label: {
               href: function() {
                 return this.label;
@@ -24,17 +28,13 @@
             }
           });
           x = d3.scale.linear().domain([
-            d3.min(data, function(d) {
+            d3.min(data.samples, function(d) {
               return d.timeSinceStart;
-            }), d3.max(data, function(d) {
+            }), d3.max(data.samples, function(d) {
               return d.timeSinceStart;
             })
           ]).range([0, width]).nice();
-          y = d3.scale.sqrt().domain([
-            0, d3.max(data.map(function(d) {
-              return d.elapsedTime;
-            }).concat([5]))
-          ]).range([height, 0]).nice();
+          y = d3.scale.sqrt().domain([0, Math.max(data.maxElapsedTimeInBuild, 5)]).range([height, 0]).nice();
           sample = $('.report .sample');
           showSample = function(d) {
             var date;
@@ -48,7 +48,7 @@
           xAxis = d3.svg.axis().scale(x).ticks(6);
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(6);
           graph = d3.select(_this.elem[0]);
-          graph.selectAll(".mark").data(data).enter().append("circle").attr("class", function(d) {
+          graph.selectAll(".mark").data(data.samples).enter().append("circle").attr("class", function(d) {
             if (d.failed) {
               return "mark failed";
             } else {

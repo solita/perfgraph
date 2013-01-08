@@ -5,19 +5,24 @@ define ["jquery", "d3"], ($, d3) ->
       height         = @elem.height()
       width          = @elem.width()
       $.getJSON url, (data) =>
+
+        data =
+          samples: data
+          maxElapsedTimeInBuild: 7
+
         sampleFormatter = (d) ->
           d.elapsedTimeStr = d.elapsedTime.toFixed 3
           d
 
-        $(".tops .response-time").render data.map(sampleFormatter), label: href: -> @label
+        $(".tops .response-time").render data.samples.map(sampleFormatter), label: href: -> @label
 
         x = d3.scale.linear()
-          .domain([d3.min(data, (d) -> d.timeSinceStart), d3.max(data, (d) -> d.timeSinceStart)])
+          .domain([d3.min(data.samples, (d) -> d.timeSinceStart), d3.max(data.samples, (d) -> d.timeSinceStart)])
           .range([0, width])
           .nice()
 
         y = d3.scale.sqrt()
-          .domain([0, d3.max data.map((d) -> d.elapsedTime).concat [5]])
+          .domain([0, Math.max(data.maxElapsedTimeInBuild, 5)])
           .range([height, 0])
           .nice()
 
@@ -45,7 +50,7 @@ define ["jquery", "d3"], ($, d3) ->
         graph = d3.select(@elem[0])
 
         graph.selectAll(".mark")
-          .data(data)
+          .data(data.samples)
         .enter()
           .append("circle")
           .attr("class", (d) -> if d.failed then "mark failed" else "mark passed")
