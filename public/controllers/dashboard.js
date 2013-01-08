@@ -1,4 +1,5 @@
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   define(["jquery", "controllers/error-graph", "controllers/response-time-graph", "controllers/response-time-heat-map", "controllers/response-time-scatterplot"], function($, ErrorGraph, ResponseTimeGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot) {
     var DashboardController;
@@ -7,6 +8,8 @@
       function DashboardController(elem) {
         var columnCount, height, rowCount, width;
         this.elem = elem;
+        this.update = __bind(this.update, this);
+
         columnCount = this.elem.find("tr:first-child td").length;
         rowCount = this.elem.find("tr").length;
         height = $(window).height() * 0.7 / (rowCount - 1);
@@ -27,7 +30,20 @@
         this.voScatterPlot.elem.on("click", function(d) {
           return page("/reports/vo/latest");
         });
+        this.update();
+        setInterval(this.update, 60 * 1000);
       }
+
+      DashboardController.prototype.update = function() {
+        var g, _i, _len, _ref, _results;
+        _ref = [this.lhScatterPlot, this.rtScatterPlot, this.voScatterPlot];
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          g = _ref[_i];
+          _results.push(g.update());
+        }
+        return _results;
+      };
 
       DashboardController.prototype.hide = function() {
         return $('.dashboard').addClass("hidden");

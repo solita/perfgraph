@@ -26,5 +26,12 @@ define ["jquery",
       @rtScatterPlot.elem.on("click", (d) -> page "/reports/rt/latest")
       @voScatterPlot.elem.on("click", (d) -> page "/reports/vo/latest")
 
+      @update()
+      setInterval(@update, 60 * 1000)
+
+    update: =>
+      for g in [@lhScatterPlot, @rtScatterPlot, @voScatterPlot]
+        g.update()
+
     hide: () -> $('.dashboard').addClass "hidden"
     show: () -> $('.dashboard').removeClass "hidden"
