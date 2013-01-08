@@ -52,6 +52,9 @@
           xAxis = d3.svg.axis().scale(x).ticks(6);
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(6);
           graph = d3.select(_this.elem[0]);
+          graph.selectAll(".axis").remove();
+          graph.append("g").attr("class", "axis").call(yAxis);
+          graph.append("g").attr("class", "axis").attr("transform", "translate(0, " + _this.height + ")").call(xAxis);
           marks = graph.selectAll(".mark").data(data.samples).attr("class", function(d) {
             if (d.failed) {
               return "mark failed";
@@ -74,10 +77,7 @@
           }).attr("cy", function(d) {
             return y(d.elapsedTime);
           }).attr("r", _this.markSize).on("mouseover", showSample);
-          marks.exit().remove();
-          graph.selectAll(".axis").remove();
-          graph.append("g").attr("class", "axis").call(yAxis);
-          return graph.append("g").attr("class", "axis").attr("transform", "translate(0, " + _this.height + ")").call(xAxis);
+          return marks.exit().remove();
         });
       };
 

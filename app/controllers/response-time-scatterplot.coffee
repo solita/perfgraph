@@ -50,6 +50,18 @@ define ["jquery", "d3"], ($, d3) ->
 
         graph = d3.select(@elem[0])
 
+        graph.selectAll(".axis").remove()
+
+        graph
+          .append("g")
+          .attr("class", "axis")
+          .call(yAxis)
+
+        graph.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(0, #{@height})")
+          .call(xAxis)
+
         marks = graph.selectAll(".mark").data(data.samples)
           .attr("class", (d) -> if d.failed then "mark failed" else "mark passed")
           .attr("cx", (d) -> x(d.timeSinceStart))
@@ -65,14 +77,4 @@ define ["jquery", "d3"], ($, d3) ->
 
         marks.exit().remove()
 
-        graph.selectAll(".axis").remove()
 
-        graph
-          .append("g")
-          .attr("class", "axis")
-          .call(yAxis)
-
-        graph.append("g")
-          .attr("class", "axis")
-          .attr("transform", "translate(0, #{@height})")
-          .call(xAxis)

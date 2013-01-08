@@ -24,11 +24,13 @@ define ["jquery",
           g.elem.on("click", (d) -> page "/reports/#{t}/latest")
           g
 
+      @graphs = @responseTimeTrends.concat @responseTimeLatests
+
       @update()
       setInterval(@update, 60 * 1000)
 
     update: =>
-      g.update() for g in @responseTimeLatests
+      g.update() for g in @graphs
 
 
     hide: () -> $('.dashboard').addClass "hidden"

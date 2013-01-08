@@ -42,13 +42,14 @@
           }
           return _results;
         }).call(this);
+        this.graphs = this.responseTimeTrends.concat(this.responseTimeLatests);
         this.update();
         setInterval(this.update, 60 * 1000);
       }
 
       DashboardController.prototype.update = function() {
         var g, _i, _len, _ref, _results;
-        _ref = this.responseTimeLatests;
+        _ref = this.graphs;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           g = _ref[_i];
