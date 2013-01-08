@@ -1,10 +1,10 @@
 define ["jquery", "d3"], ($, d3) ->
 
   class ResponseTimeScatterPlot
-    constructor: (canvas, url, markSize) ->
-      height         = canvas.height()
-      width          = canvas.width()
-      $.getJSON url, (data) ->
+    constructor: (@elem, url, markSize) ->
+      height         = @elem.height()
+      width          = @elem.width()
+      $.getJSON url, (data) =>
         sampleFormatter = (d) ->
           d.elapsedTimeStr = d.elapsedTime.toFixed 3
           d
@@ -16,7 +16,7 @@ define ["jquery", "d3"], ($, d3) ->
           .range([0, width])
           .nice()
 
-        y = d3.scale.linear()
+        y = d3.scale.sqrt()
           .domain([0, d3.max data.map((d) -> d.elapsedTime).concat [5]])
           .range([height, 0])
           .nice()
@@ -42,7 +42,7 @@ define ["jquery", "d3"], ($, d3) ->
           .orient("left")
           .ticks(6)
 
-        graph = d3.select(canvas[0])
+        graph = d3.select(@elem[0])
 
         graph.selectAll(".mark")
           .data(data)

@@ -18,6 +18,15 @@
         this.lhScatterPlot = new ResponseTimeScatterPlot(this.elem.find(".lh.response-time.scatter-plot"), "/reports/lh/latest.json", 0.5);
         this.rtScatterPlot = new ResponseTimeScatterPlot(this.elem.find(".rt.response-time.scatter-plot"), "/reports/rt/latest.json", 0.5);
         this.voScatterPlot = new ResponseTimeScatterPlot(this.elem.find(".vo.response-time.scatter-plot"), "/reports/vo/latest.json", 0.5);
+        this.lhScatterPlot.elem.on("click", function(d) {
+          return page("/reports/lh/latest");
+        });
+        this.rtScatterPlot.elem.on("click", function(d) {
+          return page("/reports/rt/latest");
+        });
+        this.voScatterPlot.elem.on("click", function(d) {
+          return page("/reports/vo/latest");
+        });
       }
 
       DashboardController.prototype.hide = function() {

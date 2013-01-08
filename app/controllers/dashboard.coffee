@@ -22,5 +22,9 @@ define ["jquery",
       @rtScatterPlot = new ResponseTimeScatterPlot @elem.find(".rt.response-time.scatter-plot"), "/reports/rt/latest.json", 0.5
       @voScatterPlot = new ResponseTimeScatterPlot @elem.find(".vo.response-time.scatter-plot"), "/reports/vo/latest.json", 0.5
 
+      @lhScatterPlot.elem.on("click", (d) -> page "/reports/lh/latest")
+      @rtScatterPlot.elem.on("click", (d) -> page "/reports/rt/latest")
+      @voScatterPlot.elem.on("click", (d) -> page "/reports/vo/latest")
+
     hide: () -> $('.dashboard').addClass "hidden"
     show: () -> $('.dashboard').removeClass "hidden"

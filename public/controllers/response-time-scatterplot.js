@@ -4,10 +4,12 @@
     var ResponseTimeScatterPlot;
     return ResponseTimeScatterPlot = (function() {
 
-      function ResponseTimeScatterPlot(canvas, url, markSize) {
-        var height, width;
-        height = canvas.height();
-        width = canvas.width();
+      function ResponseTimeScatterPlot(elem, url, markSize) {
+        var height, width,
+          _this = this;
+        this.elem = elem;
+        height = this.elem.height();
+        width = this.elem.width();
         $.getJSON(url, function(data) {
           var graph, sample, sampleFormatter, showSample, x, xAxis, y, yAxis;
           sampleFormatter = function(d) {
@@ -28,7 +30,7 @@
               return d.timeSinceStart;
             })
           ]).range([0, width]).nice();
-          y = d3.scale.linear().domain([
+          y = d3.scale.sqrt().domain([
             0, d3.max(data.map(function(d) {
               return d.elapsedTime;
             }).concat([5]))
@@ -45,7 +47,7 @@
           };
           xAxis = d3.svg.axis().scale(x).ticks(6);
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(6);
-          graph = d3.select(canvas[0]);
+          graph = d3.select(_this.elem[0]);
           graph.selectAll(".mark").data(data).enter().append("circle").attr("class", function(d) {
             if (d.failed) {
               return "mark failed";
