@@ -29,8 +29,8 @@ define ["jquery",
       setInterval(@update, 60 * 1000)
 
     update: =>
-      for g in @responseTimeLatests
-        g.update()
+      g.update() for g in @responseTimeLatests
+
 
     hide: () -> $('.dashboard').addClass "hidden"
     show: () -> $('.dashboard').removeClass "hidden"
