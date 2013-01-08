@@ -11,26 +11,25 @@ define ["jquery",
       rowCount    = @elem.find("tr").length
       height      = $(window).height() * 0.7 / (rowCount - 1)
       width       = $(window).width() * 0.7 / (columnCount - 1)
+      testCases   = ["lh", "rt", "vo"]
 
       @elem.find(".graph").width(width).height(height)
 
-      @lhResponseTime = new ResponseTimeHeatMap @elem.find(".lh.response-time"), "/response-time-trend/lh"
-      @rtResponseTime = new ResponseTimeHeatMap @elem.find(".rt.response-time"), "/response-time-trend/rt"
-      @voResponseTime = new ResponseTimeHeatMap @elem.find(".vo.response-time"), "/response-time-trend/vo"
+      @responseTimeTrends = for t in testCases
+        do (t) =>
+          new ResponseTimeHeatMap @elem.find(".#{t}.response-time"), "/response-time-trend/#{t}"
 
-      @lhScatterPlot = new ResponseTimeScatterPlot @elem.find(".lh.response-time.scatter-plot"), "/reports/lh/latest.json", 0.5
-      @rtScatterPlot = new ResponseTimeScatterPlot @elem.find(".rt.response-time.scatter-plot"), "/reports/rt/latest.json", 0.5
-      @voScatterPlot = new ResponseTimeScatterPlot @elem.find(".vo.response-time.scatter-plot"), "/reports/vo/latest.json", 0.5
-
-      @lhScatterPlot.elem.on("click", (d) -> page "/reports/lh/latest")
-      @rtScatterPlot.elem.on("click", (d) -> page "/reports/rt/latest")
-      @voScatterPlot.elem.on("click", (d) -> page "/reports/vo/latest")
+      @responseTimeLatests = for t in testCases
+        do (t) =>
+          g = new ResponseTimeScatterPlot @elem.find(".#{t}.response-time.scatter-plot"), "/reports/#{t}/latest.json", 0.5
+          g.elem.on("click", (d) -> page "/reports/#{t}/latest")
+          g
 
       @update()
       setInterval(@update, 60 * 1000)
 
     update: =>
-      for g in [@lhScatterPlot, @rtScatterPlot, @voScatterPlot]
+      for g in @responseTimeLatests
         g.update()
 
     hide: () -> $('.dashboard').addClass "hidden"
