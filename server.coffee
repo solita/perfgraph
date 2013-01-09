@@ -12,6 +12,7 @@ app.configure ->
   app.set "host", process.env.IP or "0.0.0.0"
   app.use express.favicon()
   app.use express.logger("dev")
+  app.use express.compress()
   app.use express.bodyParser() # Parse post-request body
   app.use express.methodOverride() # http://stackoverflow.com/questions/8378338/what-does-connect-js-methodoverride-do
   app.use app.router
