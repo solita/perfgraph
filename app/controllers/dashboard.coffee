@@ -29,14 +29,15 @@ define (require) ->
 
       @graphs = @responseTimeTrends.concat @responseTimeLatests
 
-      io.connect().on "change", @update
+      @socket = io.connect()
+      @socket.on "change", @update
+      @socket.on "reload", -> location.reload()
       @update()
 
 
     update: =>
       $(".updated").html moment().format "HH:mm <br /> D.M.YYYY"
       g.update() for g in @graphs
-
 
     hide: () -> $('.dashboard').addClass "hidden"
     show: () -> $('.dashboard').removeClass "hidden"

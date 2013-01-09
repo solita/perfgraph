@@ -43,6 +43,9 @@ app.get "/process-builds", (req, res) ->
     .then(-> res.send 200; io.sockets.emit "change")
     .done()
 
+app.get "/force-reload", (req, res) ->
+  res.send 200; io.sockets.emit "reload"
+
 server = http.createServer(app)
 io     = io.listen(server)
 

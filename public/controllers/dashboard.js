@@ -49,7 +49,11 @@
           return _results;
         }).call(this);
         this.graphs = this.responseTimeTrends.concat(this.responseTimeLatests);
-        io.connect().on("change", this.update);
+        this.socket = io.connect();
+        this.socket.on("change", this.update);
+        this.socket.on("reload", function() {
+          return location.reload();
+        });
         this.update();
       }
 
