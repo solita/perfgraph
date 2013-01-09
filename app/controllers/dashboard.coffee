@@ -31,7 +31,7 @@ define (require) ->
 
       @socket = io.connect()
       @socket.on "change", @update
-      @socket.on "reload", -> location.reload()
+      @socket.on "reload", -> location.reload true
       @update()
 
 

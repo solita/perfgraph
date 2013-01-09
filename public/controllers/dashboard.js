@@ -52,7 +52,7 @@
         this.socket = io.connect();
         this.socket.on("change", this.update);
         this.socket.on("reload", function() {
-          return location.reload();
+          return location.reload(true);
         });
         this.update();
       }
