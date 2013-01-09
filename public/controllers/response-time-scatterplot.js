@@ -1,6 +1,6 @@
 (function() {
 
-  define(["jquery", "d3"], function($, d3) {
+  define(["jquery", "d3", "moment"], function($, d3, moment) {
     var ResponseTimeScatterPlot;
     return ResponseTimeScatterPlot = (function() {
 
@@ -42,7 +42,7 @@
           sample = $('.report .sample');
           showSample = function(d) {
             var date;
-            date = new Date(d.timeStamp * 1000);
+            date = moment.unix(d.timeStamp).format("D.M.YYYY HH:mm:ss");
             sample.find('.timeStamp').text("" + date);
             sample.find('.elapsedTime').text("" + d.elapsedTimeStr + " s");
             sample.find('.responseCode').text(d.responseCode);
