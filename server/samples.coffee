@@ -6,10 +6,10 @@ d3      = require "d3"
 db      = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
 samples = db.then (db) -> Q.ninvoke db, "collection", "samples"
 
-exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["lh", "rt", "vo"]}) ->
+exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["lh", "rt", "vo"]}, {limit} = {}) ->
   samples
     .then((samples) -> Q.ninvoke samples, "distinct", "build", testCaseId: testCaseId)
-    .then((builds)  -> builds.sort().reverse())
+    .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
 
 exports.saveResults = (results) ->
   samples
@@ -25,8 +25,7 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
         Q.ninvoke cursor, "toArray")
     .then((results) ->
       elapsedTimesByBuild = _.groupBy(results, "build")
-      #bucketCount = 20
-      bucketSize = 5 #Math.ceil d3.max(results, (d) -> d.elapsedTime) / bucketCount
+      bucketSize = 5
       elapsedTimesByBuildInBuckets = _.map elapsedTimesByBuild, (samples, build) ->
         buckets = _.groupBy samples, (sample) -> bucketSize * Math.ceil sample.elapsedTime / bucketSize
         _.map buckets, (val, key) ->
@@ -41,7 +40,7 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
 
 exports.report = (testCaseId, build) ->
   build = if build == "latest"
-      latestBuilds(testCaseId).then((bs) -> bs[0])
+      latestBuilds(testCaseId).then((builds) -> builds[0])
     else
       parseInt build
 
