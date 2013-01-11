@@ -4,9 +4,10 @@
     var ResponseTimeHeatMap;
     return ResponseTimeHeatMap = (function() {
 
-      function ResponseTimeHeatMap(elem, url) {
+      function ResponseTimeHeatMap(elem, url, testCase) {
         this.elem = elem;
         this.url = url;
+        this.testCase = testCase;
         this.height = this.elem.height();
         this.width = this.elem.width();
       }
@@ -15,6 +16,7 @@
         var _this = this;
         return $.getJSON(this.url, function(data) {
           var firstBuild, graph, labels, lastBuild, showLabel, tiles, x, xAxis, y, yAxis, z, _i, _results;
+          console.log("testCase: " + _this.testCase);
           lastBuild = d3.max(data.buckets, function(d) {
             return d.build;
           });
@@ -57,7 +59,7 @@
           }).style("fill", function(d) {
             return z(d.count);
           }).on("click", function(d) {
-            return page("/reports/" + d.testCase + "/" + d.build);
+            return page("/reports/" + _this.testCase + "/" + d.build);
           });
           tiles.enter().append("rect").attr("class", "tile").on("mouseover", showLabel).attr("x", function(d) {
             return x(d.build);
@@ -70,7 +72,7 @@
           }).style("fill", function(d) {
             return z(d.count);
           }).on("click", function(d) {
-            return page("/reports/" + d.testCase + "/" + d.build);
+            return page("/reports/" + _this.testCase + "/" + d.build);
           });
           return tiles.exit().remove();
         });
