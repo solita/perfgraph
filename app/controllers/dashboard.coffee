@@ -19,7 +19,7 @@ define (require) ->
       @elem.find(".graph").width(width).height(height)
 
       @responseTimeTrends = for t in testCases
-        new ResponseTimeHeatMap @elem.find(".#{t}.response-time"), "/response-time-trend/#{t}", t
+        new ResponseTimeHeatMap @elem.find(".#{t}.response-time"), "/response-time-trend/#{t}"
 
       @responseTimeLatests = for t in testCases
         do (t) =>

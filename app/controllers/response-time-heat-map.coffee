@@ -1,13 +1,12 @@
 define ["jquery", "d3"], ($, d3) ->
 
   class ResponseTimeHeatMap
-    constructor: (@elem, @url, @testCase) ->
+    constructor: (@elem, @url) ->
       @height = @elem.height()
       @width  = @elem.width()
 
     update: () ->
       $.getJSON @url, (data) =>
-        console.log "testCase: #{@testCase}"
         lastBuild  = d3.max(data.buckets, (d) -> d.build)
         firstBuild = d3.min(data.buckets, (d) -> d.build)
 
@@ -61,7 +60,7 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("width",  (d) -> x.rangeBand())
           .attr("height", (d) -> y(d.bucket) - y(d.bucket + data.bucketSize))
           .style("fill",  (d) -> z(d.count))
-          .on("click",    (d) => page "/reports/#{@testCase}/#{d.build}")
+          .on("click",    (d) -> page "/reports/#{d.testCase}/#{d.build}")
 
         tiles.enter()
           .append("rect")
@@ -72,6 +71,6 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("width",  (d) -> x.rangeBand())
           .attr("height", (d) -> y(d.bucket) - y(d.bucket + data.bucketSize))
           .style("fill",  (d) -> z(d.count))
-          .on("click",    (d) => page "/reports/#{@testCase}/#{d.build}")
+          .on("click",    (d) -> page "/reports/#{d.testCase}/#{d.build}")
 
         tiles.exit().remove()

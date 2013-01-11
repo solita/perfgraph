@@ -27,7 +27,7 @@
           _results = [];
           for (_i = 0, _len = testCases.length; _i < _len; _i++) {
             t = testCases[_i];
-            _results.push(new ResponseTimeHeatMap(this.elem.find("." + t + ".response-time"), "/response-time-trend/" + t, t));
+            _results.push(new ResponseTimeHeatMap(this.elem.find("." + t + ".response-time"), "/response-time-trend/" + t));
           }
           return _results;
         }).call(this);
