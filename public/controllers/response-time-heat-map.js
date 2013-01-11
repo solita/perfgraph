@@ -15,14 +15,10 @@
         var _this = this;
         return $.getJSON(this.url, function(data) {
           var firstBuild, graph, labels, lastBuild, showLabel, tiles, x, xAxis, y, yAxis, z, _i, _results;
-          data = {
-            samples: data,
-            maxElapsedTimeInBuilds: 600
-          };
-          lastBuild = d3.max(data.samples, function(d) {
+          lastBuild = d3.max(data.buckets, function(d) {
             return d.build;
           });
-          firstBuild = d3.min(data.samples, function(d) {
+          firstBuild = d3.min(data.buckets, function(d) {
             return d.build;
           });
           x = d3.scale.ordinal().domain((function() {
@@ -30,9 +26,9 @@
             for (var _i = firstBuild; firstBuild <= lastBuild ? _i <= lastBuild : _i >= lastBuild; firstBuild <= lastBuild ? _i++ : _i--){ _results.push(_i); }
             return _results;
           }).apply(this)).rangeBands([0, _this.width], 0.1);
-          y = d3.scale.sqrt().domain([0, Math.max(data.maxElapsedTimeInBuilds, 60)]).range([_this.height, 0]).nice();
+          y = d3.scale.sqrt().domain([0, Math.max(data.maxResponseTimeBucket, 60)]).range([_this.height, 0]).nice();
           z = d3.scale.sqrt().domain([
-            0, d3.max(data.samples, function(d) {
+            0, d3.max(data.buckets, function(d) {
               return d.count;
             })
           ]).range(["lightblue", "black"]);
@@ -50,14 +46,14 @@
               return [firstBuild, lastBuild, d.build].indexOf(build) < 0;
             });
           };
-          tiles = graph.selectAll(".tile").data(data.samples).attr("x", function(d) {
+          tiles = graph.selectAll(".tile").data(data.buckets).attr("x", function(d) {
             return x(d.build);
           }).attr("y", function(d) {
             return y(d.bucket);
           }).attr("width", function(d) {
             return x.rangeBand();
           }).attr("height", function(d) {
-            return y(d.bucket) - y(d.bucket + d.bucketSize);
+            return y(d.bucket) - y(d.bucket + data.bucketSize);
           }).style("fill", function(d) {
             return z(d.count);
           }).on("click", function(d) {
@@ -70,7 +66,7 @@
           }).attr("width", function(d) {
             return x.rangeBand();
           }).attr("height", function(d) {
-            return y(d.bucket) - y(d.bucket + d.bucketSize);
+            return y(d.bucket) - y(d.bucket + data.bucketSize);
           }).style("fill", function(d) {
             return z(d.count);
           }).on("click", function(d) {

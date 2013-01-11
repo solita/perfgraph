@@ -7,24 +7,20 @@ define ["jquery", "d3"], ($, d3) ->
 
     update: () ->
       $.getJSON @url, (data) =>
-        data =
-          samples: data
-          maxElapsedTimeInBuilds: 600
-
-        lastBuild  = d3.max(data.samples, (d) -> d.build)
-        firstBuild = d3.min(data.samples, (d) -> d.build)
+        lastBuild  = d3.max(data.buckets, (d) -> d.build)
+        firstBuild = d3.min(data.buckets, (d) -> d.build)
 
         x = d3.scale.ordinal()
           .domain([firstBuild..lastBuild])
           .rangeBands([0, @width], 0.1)
 
         y = d3.scale.sqrt()
-          .domain([0, Math.max(data.maxElapsedTimeInBuilds, 60)])
+          .domain([0, Math.max(data.maxResponseTimeBucket, 60)])
           .range([@height, 0])
           .nice()
 
         z = d3.scale.sqrt()
-          .domain([0, d3.max data.samples, (d) -> d.count])
+          .domain([0, d3.max data.buckets, (d) -> d.count])
           .range(["lightblue", "black"])
 
         xAxis = d3.svg.axis()
@@ -58,11 +54,11 @@ define ["jquery", "d3"], ($, d3) ->
             [firstBuild, lastBuild, d.build].indexOf(build) < 0)
 
         tiles = graph.selectAll(".tile")
-          .data(data.samples)
+          .data(data.buckets)
           .attr("x",      (d) -> x(d.build))
           .attr("y",      (d) -> y(d.bucket))
           .attr("width",  (d) -> x.rangeBand())
-          .attr("height", (d) -> y(d.bucket) - y(d.bucket + d.bucketSize))
+          .attr("height", (d) -> y(d.bucket) - y(d.bucket + data.bucketSize))
           .style("fill",  (d) -> z(d.count))
           .on("click",    (d) -> page "/reports/#{d.testCase}/#{d.build}")
 
@@ -73,7 +69,7 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("x",      (d) -> x(d.build))
           .attr("y",      (d) -> y(d.bucket))
           .attr("width",  (d) -> x.rangeBand())
-          .attr("height", (d) -> y(d.bucket) - y(d.bucket + d.bucketSize))
+          .attr("height", (d) -> y(d.bucket) - y(d.bucket + data.bucketSize))
           .style("fill",  (d) -> z(d.count))
           .on("click",    (d) -> page "/reports/#{d.testCase}/#{d.build}")
 

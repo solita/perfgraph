@@ -11,6 +11,15 @@ exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["lh", "rt", "vo"]},
     .then((samples) -> Q.ninvoke samples, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
 
+maxResponseTimeInBuilds = (builds) ->
+  samples.then((samples) ->
+      cursor = samples
+        .find({build: {$in: builds}}, {elapsedTime: 1, _id: 0})
+        .sort(elapsedTime: -1)
+        .limit(1)
+      Q.ninvoke cursor, "toArray")
+    .then((maxResponseTimeArr) -> maxResponseTimeArr[0].elapsedTime)
+
 exports.saveResults = (results) ->
   samples
     .then((samples) -> Q.ninvoke samples, "insert", results)
@@ -22,20 +31,22 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
       cursor = samples
         .find({testCaseId: testCaseId, build: {$in: latestBuilds}}, {elapsedTime: 1, build: 1, _id: 0})
         .sort({build: 1, elapsedTime: 1})
-        Q.ninvoke cursor, "toArray")
-    .then((results) ->
-      elapsedTimesByBuild = _.groupBy(results, "build")
+      Q.all([Q.ninvoke(cursor, "toArray"), maxResponseTimeInBuilds(latestBuilds)]))
+    .spread((results, maxResponseTime) ->
+      responseTimesByBuild = _.groupBy(results, "build")
       bucketSize = 5
-      elapsedTimesByBuildInBuckets = _.map elapsedTimesByBuild, (samples, build) ->
+      responseTimesByBuildInBuckets = _.map responseTimesByBuild, (samples, build) ->
         buckets = _.groupBy samples, (sample) -> bucketSize * Math.ceil sample.elapsedTime / bucketSize
         _.map buckets, (val, key) ->
-          bucketSize: bucketSize
           bucket: parseInt key
           count:  val.length
           build:  parseInt build
-          testCase: testCaseId
 
-      _.flatten elapsedTimesByBuildInBuckets)
+      data =
+        testCase: testCaseId
+        bucketSize: bucketSize
+        maxResponseTimeBucket: bucketSize * Math.ceil maxResponseTime / bucketSize
+        buckets: _.flatten responseTimesByBuildInBuckets)
     .fail(console.log)
 
 exports.report = (testCaseId, build) ->
