@@ -60,7 +60,7 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("width",  (d) -> x.rangeBand())
           .attr("height", (d) -> y(d.bucket) - y(d.bucket + data.bucketSize))
           .style("fill",  (d) -> z(d.count))
-          .on("click",    (d) -> page "/reports/#{d.testCase}/#{d.build}")
+          .on("click",    (d) -> page "/reports/#{data.testCase}/#{d.build}")
 
         tiles.enter()
           .append("rect")
@@ -71,6 +71,6 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("width",  (d) -> x.rangeBand())
           .attr("height", (d) -> y(d.bucket) - y(d.bucket + data.bucketSize))
           .style("fill",  (d) -> z(d.count))
-          .on("click",    (d) -> page "/reports/#{d.testCase}/#{d.build}")
+          .on("click",    (d) -> page "/reports/#{data.testCase}/#{d.build}")
 
         tiles.exit().remove()

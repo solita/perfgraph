@@ -57,7 +57,7 @@
           }).style("fill", function(d) {
             return z(d.count);
           }).on("click", function(d) {
-            return page("/reports/" + d.testCase + "/" + d.build);
+            return page("/reports/" + data.testCase + "/" + d.build);
           });
           tiles.enter().append("rect").attr("class", "tile").on("mouseover", showLabel).attr("x", function(d) {
             return x(d.build);
@@ -70,7 +70,7 @@
           }).style("fill", function(d) {
             return z(d.count);
           }).on("click", function(d) {
-            return page("/reports/" + d.testCase + "/" + d.build);
+            return page("/reports/" + data.testCase + "/" + d.build);
           });
           return tiles.exit().remove();
         });
