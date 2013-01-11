@@ -1,7 +1,7 @@
 Q           = require "q"
-request     = require "request"
 xml2js      = require "xml2js"
 MongoClient = require("mongodb").MongoClient
+get         = require("./pull-util").get
 samples     = require "./samples"
 
 hostname    = "ceto.solita.fi"
@@ -12,15 +12,6 @@ testCases =
   'KIOS-TP_TP_Lainhuutotodistus_pdf.jtl': 'lh'
   'KIOS-TP_TP_Rasitustodistus_pdf.jtl': 'rt'
   'KIOS-TP_TP_Vuokraoikeustodistus_pdf.jtl': 'vo'
-
-get = (url) ->
-  deferred = Q.defer()
-  req = request {url: url, timeout: 600000}, (err, res, body) ->
-    if err or res.statusCode != 200
-      deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode} url: #{url}"
-    else
-      deferred.resolve body
-  deferred.promise
 
 availableBuildNums = () ->
   get("http://#{hostname}:#{port}/job/#{projectName}/api/json")
