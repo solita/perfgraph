@@ -1,11 +1,11 @@
-express = require "express"
-http    = require "http"
-path    = require "path"
-io      = require "socket.io"
-samples = require "./server/samples"
-pull    = require "./server/pull"
-
-app     = express()
+express       = require "express"
+http          = require "http"
+path          = require "path"
+io            = require "socket.io"
+samples       = require "./server/samples"
+pullTulosteet = require "./server/pull-tulosteet"
+pullEraajo    = require "./server/pull-eraajo"
+app           = express()
 
 app.configure ->
   app.set "port", process.env.PORT or 3000
@@ -40,9 +40,21 @@ app.get "/reports/:testCaseId/:build.json", ({params: {testCaseId, build}}, res)
     .done()
 
 app.get "/process-builds", (req, res) ->
-  pull.processTestResults()
-    .then(-> res.send 200; io.sockets.emit "change")
-    .done()
+    pullTulosteet.processTestResults()
+      .then(-> res.send 200; io.sockets.emit "change")
+      .done()
+
+app.get "/process-builds/:projectId", ({params: {projectId}}, res) ->
+  if projectId == 'eraajo'
+    pullEraajo.processTestResults()
+      .then(-> res.send 200; io.sockets.emit "change")
+      .done()
+  else if projectId == 'tulosteet'
+    pullTulosteet.processTestResults()
+      .then(-> res.send 200; io.sockets.emit "change")
+      .done()
+  else
+    res.send 404
 
 app.get "/force-reload", (req, res) ->
   res.send 200; io.sockets.emit "reload"
