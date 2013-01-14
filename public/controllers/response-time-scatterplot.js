@@ -34,7 +34,7 @@
               return d.timeSinceStart;
             })
           ]).range([0, _this.width]).nice();
-          y = d3.scale.sqrt().domain([0, Math.max(data.maxElapsedTimeInBuild, 4.5)]).range([_this.height, 0]).nice();
+          y = d3.scale.sqrt().domain([0, Math.max(data.maxElapsedTimeInBuild)]).range([_this.height, 0]).nice();
           sample = $('.report .sample');
           showSample = function(d) {
             var date;

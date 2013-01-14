@@ -19,7 +19,7 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
           .nice()
 
         y = d3.scale.sqrt()
-          .domain([0, Math.max(data.maxElapsedTimeInBuild, 4.5)])
+          .domain([0, Math.max(data.maxElapsedTimeInBuild)])
           .range([@height, 0])
           .nice()
 
