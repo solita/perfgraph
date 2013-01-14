@@ -2,7 +2,8 @@ Q           = require "q"
 request     = require "request"
 
 class PullUtil
-  # Entity is the one who knows how to get latestBuilds, parseResults and saveResults
+  # Entity is the one who knows how to get
+  # testCaseUrl, buildListUrl, latestBuilds, parseResults and saveResults
   constructor: (@hostname, @port, @projectName, @testCases, @entity) ->
 
   newTestFiles: () ->
@@ -30,9 +31,7 @@ class PullUtil
 
   getTestFile: (d) ->
     console.log "Processing build ##{d.build}, test case #{d.testCase}"
-
-    jtlPath = "job/#{@projectName}/#{d.build}/artifact/kios-tp-performance/target/jmeter/report/#{d.testCase}"
-    url = "http://#{@hostname}:#{@port}/#{jtlPath}"
+    url = @entity.testCaseUrl d.build, d.testCase
     @get(url).then (samples) ->
       fileSize = (samples.charCodeAt(i) for s, i in samples).length
       console.log "build ##{d.build}, test case #{d.testCase} downloaded. File size: #{fileSize}"
@@ -42,7 +41,7 @@ class PullUtil
         url: url
 
   availableBuildNums: () ->
-    @get("http://#{@hostname}:#{@port}/job/#{@projectName}/api/json")
+    @get(@entity.buildListUrl)
     .then(((body) ->
       json = JSON.parse(body)
       allBuilds = json.builds.map (b) -> b.number

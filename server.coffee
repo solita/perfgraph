@@ -2,9 +2,8 @@ express       = require "express"
 http          = require "http"
 path          = require "path"
 io            = require "socket.io"
-samples       = require "./server/samples"
-pullTulosteet = require "./server/pull-tulosteet"
-pullEraajo    = require "./server/pull-eraajo"
+tulosteet     = require "./server/tulosteet"
+eraajot       = require "./server/eraajot"
 app           = express()
 
 app.configure ->
@@ -25,32 +24,32 @@ app.configure "development", ->
   app.use express.errorHandler()
 
 app.get "/response-time-trend/:testCaseId", ({params: {testCaseId}}, res) ->
-  samples.responseTimeTrendInBuckets(testCaseId)
+  tulosteet.responseTimeTrendInBuckets(testCaseId)
     .then((trend) -> res.send trend)
     .done()
 
 app.get "/error-trend/:testCase", ({params: {testCaseId}}, res) ->
-  samples.errorTrend(testCaseId)
+  tulosteet.errorTrend(testCaseId)
     .then((trend) -> res.send trend)
     .done()
 
 app.get "/reports/:testCaseId/:build.json", ({params: {testCaseId, build}}, res) ->
-  samples.report(testCaseId, build)
+  tulosteet.report(testCaseId, build)
     .then((report) -> res.send report)
     .done()
 
 app.get "/process-builds", (req, res) ->
-    pullTulosteet.processTestResults()
+    tulosteet.processTestResults()
       .then(-> res.send 200; io.sockets.emit "change")
       .done()
 
 app.get "/process-builds/:projectId", ({params: {projectId}}, res) ->
-  if projectId == 'eraajo'
-    pullEraajo.processTestResults()
+  if projectId == 'eraajot'
+    eraajot.processTestResults()
       .then(-> res.send 200; io.sockets.emit "change")
       .done()
   else if projectId == 'tulosteet'
-    pullTulosteet.processTestResults()
+    tulosteet.processTestResults()
       .then(-> res.send 200; io.sockets.emit "change")
       .done()
   else

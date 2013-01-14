@@ -1,10 +1,30 @@
-mongodb = require "mongodb"
-Q       = require "q"
-_       = require "lodash"
-d3      = require "d3"
+mongodb     = require "mongodb"
+Q           = require "q"
+_           = require "lodash"
+d3          = require "d3"
+xml2js      = require "xml2js"
+MongoClient = require("mongodb").MongoClient
+PullUtil    = require("./pull-util").PullUtil
 
-db      = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
-samples = db.then (db) -> Q.ninvoke db, "collection", "samples"
+hostname    = "ceto.solita.fi"
+port        = 9080
+projectName = "KIOS%20Perf%20Test%20TP%20tulosteet%20tomcat-kios%20at%20ceto"
+
+testCases   =
+  'KIOS-TP_TP_Lainhuutotodistus_pdf.jtl': 'lh'
+  'KIOS-TP_TP_Rasitustodistus_pdf.jtl': 'rt'
+  'KIOS-TP_TP_Vuokraoikeustodistus_pdf.jtl': 'vo'
+
+db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
+samples     = db.then (db) -> Q.ninvoke db, "collection", "samples"
+
+exports.testCaseUrl = (build, testCase) ->
+  "http://#{hostname}:#{port}/job/#{projectName}/#{build}/artifact/kios-tp-performance/target/jmeter/report/#{testCase}"
+
+exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
+
+exports.processTestResults = () ->
+  pullUtil.newTestFiles().fail(console.log).allResolved()
 
 exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["lh", "rt", "vo"]}, {limit} = {}) ->
   samples
@@ -109,3 +129,5 @@ exports.parseResults = (testData) ->
         assertion["failureMessage"] = s.failureMessage[0] if s.failureMessage
         assertion["errorMessage"]   = s.errorMessage[0]   if s.errorMessage
         assertion
+
+pullUtil = new PullUtil(hostname, port, projectName, testCases, exports)

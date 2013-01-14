@@ -1,19 +1,37 @@
-mongodb = require "mongodb"
-Q       = require "q"
-_       = require "lodash"
-d3      = require "d3"
+mongodb     = require "mongodb"
+Q           = require "q"
+_           = require "lodash"
+d3          = require "d3"
+xml2js      = require "xml2js"
+MongoClient = require("mongodb").MongoClient
+PullUtil    = require("./pull-util").PullUtil
 
-db      = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
-batches = db.then (db) -> Q.ninvoke db, "collection", "batches"
+hostname    = "ceto.solita.fi"
+port        = 9080
+projectName = "KIOS%20Perf%20Test%20TP%20eraajo%20velocity"
+
+testCases =
+  '01-irrotus-lhtiedot-kunta_kunta=21_olotila=1-md.xml': '01'
+
+db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
+eraajot     = db.then (db) -> Q.ninvoke db, "collection", "eraajot"
+
+exports.processTestResults = () ->
+  pullUtil.newTestFiles().fail(console.log).allResolved()
+
+exports.testCaseUrl = (build, testCase) ->
+  "http://#{hostname}:#{port}/job/#{projectName}/#{build}/artifact/kios-tp-eraajo-velocity-performance/target/#{testCase}"
+
+exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 
 exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["01"]}, {limit} = {}) ->
-  batches
-    .then((batches) -> Q.ninvoke batches, "distinct", "build", testCaseId: testCaseId)
+  eraajot
+    .then((eraajot) -> Q.ninvoke eraajot, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
 
 exports.saveResults = (results) ->
-  batches
-    .then((batches) -> Q.ninvoke batches, "insert", results)
+  eraajot
+    .then((eraajot) -> Q.ninvoke eraajot, "insert", results)
     .fail(console.log)
 
 exports.parseResults = (testData) ->
@@ -49,3 +67,5 @@ exports.parseResults = (testData) ->
     #     assertion["failureMessage"] = s.failureMessage[0] if s.failureMessage
     #     assertion["errorMessage"]   = s.errorMessage[0]   if s.errorMessage
     #     assertion
+
+pullUtil = new PullUtil(hostname, port, projectName, testCases, exports)
