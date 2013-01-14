@@ -7,10 +7,6 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
 
     update: () ->
       $.getJSON @url, (data) =>
-        data =
-          samples: data
-          maxElapsedTimeInBuild: 7
-
         sampleFormatter = (d) ->
           d.elapsedTimeStr = d.elapsedTime.toFixed 3
           d
@@ -23,7 +19,7 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
           .nice()
 
         y = d3.scale.sqrt()
-          .domain([0, Math.max(data.maxElapsedTimeInBuild, 5)])
+          .domain([0, Math.max(data.maxElapsedTimeInBuild, 4.5)])
           .range([@height, 0])
           .nice()
 

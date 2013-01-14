@@ -14,7 +14,9 @@ exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["lh", "rt", "vo"]},
 maxResponseTimeInBuilds = (builds) ->
   samples.then((samples) ->
       cursor = samples
-        .find({build: {$in: builds}}, {elapsedTime: 1, _id: 0})
+        .find({build: {$in: builds}}, {elapsedTime: 1, timeStamp: 1, _id: 0})
+        .sort(timeStamp: 1)
+        .skip(1)
         .sort(elapsedTime: -1)
         .limit(1)
       Q.ninvoke cursor, "toArray")
@@ -62,13 +64,17 @@ exports.report = (testCaseId, build) ->
           elapsedTime: 1, build: 1, bytes: 1, label: 1,
           assertions: 1, timeStamp: 1, responseCode: 1, _id: 0})
         .sort({elapsedTime: -1})
-      Q.ninvoke cursor, "toArray")
-    .then((results) ->
-      beginTime = d3.min results, (d) -> d.timeStamp
-      _.map results, (d) ->
+      Q.all([Q.ninvoke(cursor, "toArray"), maxResponseTimeInBuilds([build])]))
+    .spread((samples, maxResponseTime) ->
+      beginTime = d3.min samples, (d) -> d.timeStamp
+      samples = _.map samples, (d) ->
         d.failed         = (d.assertions.map (a) -> a.failure || a.error).reduce (r, f) -> r || f
         d.timeSinceStart = d.timeStamp - beginTime
-        d)
+        d
+
+      data =
+        maxElapsedTimeInBuild: maxResponseTime
+        samples: samples)
     .fail(console.log)
 
 exports.parseResults = (testData) ->
