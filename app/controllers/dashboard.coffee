@@ -29,15 +29,24 @@ define (require) ->
 
       @graphs = @responseTimeTrends.concat @responseTimeLatests
 
+      @updateButton = $(".update")
+      @updateProgressIcon = $(".progress")
+      @updateButton.on "click", @processBuilds
+
       @socket = io.connect()
       @socket.on "change", @update
       @socket.on "reload", -> location.reload true
       @update()
 
+    processBuilds: =>
+      @updateButton.prop "disabled", true
+      @updateProgressIcon.removeClass "hidden"
+      $.get "/process-builds"
 
     update: =>
-      $(".updated").html moment().format "HH:mm <br /> D.M.YYYY"
       g.update() for g in @graphs
+      @updateButton.prop "disabled", false
+      @updateProgressIcon.addClass "hidden"
 
     hide: () -> $('.dashboard').addClass "hidden"
     show: () -> $('.dashboard').removeClass "hidden"

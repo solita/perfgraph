@@ -1,8 +1,9 @@
 body{padding:20px;font-family:arial}
 th{font-weight:normal}
 .dashboard table{position:absolute;top:0;bottom:0;width:90%}
-.status{position:absolute;font-size:small;top:0;right:5;margin-top:0}
-.status .updated{padding-left:5}
+.status{position:absolute;font-size:small;top:5;right:10;margin-top:0}
+.status .update{float:left}
+.status .progress{float:left;margin-right:10;margin-top:2}
 .tops{width:90%}
 .dashboard .response-time,.dashboard .error-percentage{width:45%}
 .dashboard .mark{stroke-width:1;fill:none}

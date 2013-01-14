@@ -16,6 +16,8 @@
         this.elem = elem;
         this.update = __bind(this.update, this);
 
+        this.processBuilds = __bind(this.processBuilds, this);
+
         columnCount = this.elem.find("tr:first-child td").length;
         rowCount = this.elem.find("tr").length;
         height = $(window).height() * 0.7 / (rowCount - 1);
@@ -49,6 +51,9 @@
           return _results;
         }).call(this);
         this.graphs = this.responseTimeTrends.concat(this.responseTimeLatests);
+        this.updateButton = $(".update");
+        this.updateProgressIcon = $(".progress");
+        this.updateButton.on("click", this.processBuilds);
         this.socket = io.connect();
         this.socket.on("change", this.update);
         this.socket.on("reload", function() {
@@ -57,16 +62,21 @@
         this.update();
       }
 
+      DashboardController.prototype.processBuilds = function() {
+        this.updateButton.prop("disabled", true);
+        this.updateProgressIcon.removeClass("hidden");
+        return $.get("/process-builds");
+      };
+
       DashboardController.prototype.update = function() {
-        var g, _i, _len, _ref, _results;
-        $(".updated").html(moment().format("HH:mm <br /> D.M.YYYY"));
+        var g, _i, _len, _ref;
         _ref = this.graphs;
-        _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           g = _ref[_i];
-          _results.push(g.update());
+          g.update();
         }
-        return _results;
+        this.updateButton.prop("disabled", false);
+        return this.updateProgressIcon.addClass("hidden");
       };
 
       DashboardController.prototype.hide = function() {
