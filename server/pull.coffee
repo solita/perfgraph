@@ -1,8 +1,7 @@
 Q           = require "q"
 xml2js      = require "xml2js"
 MongoClient = require("mongodb").MongoClient
-get         = require("./pull-util").get
-samples     = require "./samples"
+PullUtil    = require("./pull-util").PullUtil
 
 hostname    = "ceto.solita.fi"
 port        = 9080
@@ -13,34 +12,6 @@ testCases =
   'KIOS-TP_TP_Rasitustodistus_pdf.jtl': 'rt'
   'KIOS-TP_TP_Vuokraoikeustodistus_pdf.jtl': 'vo'
 
-availableBuildNums = () ->
-  get("http://#{hostname}:#{port}/job/#{projectName}/api/json")
-    .then(((body) ->
-      json = JSON.parse(body)
-      allBuilds = json.builds.map (b) -> b.number
-      allBuilds.filter (b) -> b <= json.lastCompletedBuild.number))
-    .fail(console.log)
-
-newBuildNums = () ->
-  Q.all([availableBuildNums(), samples.latestBuilds()])
-    .spread(
-      ((availableBuildNums, savedBuilds) ->
-        console.log availableBuildNums, savedBuilds
-        availableBuildNums.filter (b) -> savedBuilds.indexOf(b) == -1))
-    .fail(console.log)
-
-getTestFile = (d) ->
-  console.log "Processing build ##{d.build}, test case #{d.testCase}"
-
-  jtlPath = "/job/#{projectName}/#{d.build}/artifact/kios-tp-performance/target/jmeter/report/#{d.testCase}"
-  url = "http://#{hostname}:#{port}/#{jtlPath}"
-  get(url).then (samples) ->
-    fileSize = (samples.charCodeAt(i) for s, i in samples).length
-    console.log "build ##{d.build}, test case #{d.testCase} downloaded. File size: #{fileSize}"
-    d.samples = samples
-    testData =
-      d: d
-      url: url
 
 parseResults = (testData) ->
   tr = testData.d
@@ -75,17 +46,7 @@ parseResults = (testData) ->
         assertion["errorMessage"]   = s.errorMessage[0]   if s.errorMessage
         assertion
 
-newTestFiles = () ->
-  newBuildNums().then((buildNumbers) ->
-      jtlFiles = Object.keys(testCases)
-
-      reducer = (res, build) -> res.concat(for tc in jtlFiles
-        getTestFile({build: build, testCase: tc})
-          .then(parseResults)
-          .then(samples.saveResults)
-          .fail(console.log))
-
-      buildNumbers.reduce reducer, [])
+pullUtil = new PullUtil(hostname, port, projectName, testCases, parseResults)
 
 exports.processTestResults = () ->
-  newTestFiles().fail(console.log).allResolved()
+  pullUtil.newTestFiles().fail(console.log).allResolved()
