@@ -48,6 +48,9 @@ exports.saveResults = (results) ->
     .fail(console.log)
 
 exports.responseTimeTrendInBuckets = (testCaseId) ->
+  bucketSize = 5
+  buckle = (elapsedTime) -> Math.max(bucketSize, bucketSize * Math.ceil elapsedTime / bucketSize)
+
   Q.all([samples, latestBuilds(testCaseId, limit: 30)])
     .spread((samples, latestBuilds) ->
       cursor = samples
@@ -56,9 +59,9 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
       Q.all([Q.ninvoke(cursor, "toArray"), maxResponseTimeInBuilds(latestBuilds)]))
     .spread((results, maxResponseTime) ->
       responseTimesByBuild = _.groupBy(results, "build")
-      bucketSize = 5
+
       responseTimesByBuildInBuckets = _.map responseTimesByBuild, (samples, build) ->
-        buckets = _.groupBy samples, (sample) -> bucketSize * Math.ceil sample.elapsedTime / bucketSize
+        buckets = _.groupBy samples, (sample) -> buckle sample.elapsedTime
         _.map buckets, (val, key) ->
           bucket: parseInt key
           count:  val.length
@@ -67,7 +70,7 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
       data =
         testCase: testCaseId
         bucketSize: bucketSize
-        maxResponseTimeBucket: bucketSize * Math.ceil maxResponseTime / bucketSize
+        maxResponseTimeBucket: buckle maxResponseTime
         buckets: _.flatten responseTimesByBuildInBuckets)
     .fail(console.log)
 
@@ -90,6 +93,7 @@ exports.report = (testCaseId, build) ->
       samples = _.map samples, (d) ->
         d.failed         = (d.assertions.map (a) -> a.failure || a.error).reduce (r, f) -> r || f
         d.timeSinceStart = d.timeStamp - beginTime
+        delete d.assertions
         d
 
       data =
