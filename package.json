@@ -12,7 +12,8 @@
       "request": ">= 2.12",
       "xml2js": ">= 0.2.2",
       "sax": ">= 0.4.3",
-      "socket.io": ">= 0.9.11"
+      "socket.io": ">= 0.9.11",
+      "moment": ">= 1.6.0"
   }
   , "devDependencies": {
       "grunt-contrib-coffee": ">= 0.3.2",

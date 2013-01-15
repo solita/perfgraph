@@ -1,4 +1,5 @@
 mongodb     = require "mongodb"
+moment      = require "moment"
 Q           = require "q"
 _           = require "lodash"
 d3          = require "d3"
@@ -46,26 +47,13 @@ exports.parseResults = (testData) ->
 
   parser = new xml2js.Parser()
   Q.ninvoke(parser, "parseString", tr.samples).then (bodyJson) ->
-    throw Error bodyJson
-    # for sample in bodyJson?.testResults?.httpSample || []
-    #   testCaseId:     testCases[tr.testCase]
-    #   testCase:       tr.testCase
-    #   responseStatus: parseInt sample.$.rc
-    #   build:          parseInt tr.build
-    #   elapsedTime:    parseInt(sample.$.t) / 1000
-    #   latencyTime:    parseInt(sample.$.lt) / 1000
-    #   timeStamp:      parseInt(sample.$.ts) / 1000
-    #   responseCode:   parseInt sample.$.rc
-    #   label:          sample.$.lb
-    #   bytes:          parseInt sample.$.by
-    #   assertions:     for s in sample.assertionResult
-    #     assertion =
-    #       name: s.name[0]
-    #       failure: s.failure[0] == 'true'
-    #       error: s.error[0] == 'true'
-
-    #     assertion["failureMessage"] = s.failureMessage[0] if s.failureMessage
-    #     assertion["errorMessage"]   = s.errorMessage[0]   if s.errorMessage
-    #     assertion
+    data = bodyJson["y:metatiedot"]
+    result =
+      testCaseId:     testCases[tr.testCase]
+      testCase:       tr.testCase
+      build:          parseInt tr.build
+      elapsedTime:    parseInt(data["y:tiedostonLuonninKestoMillisekunteina"][0]) / 1000
+      timeStamp:      moment(data["y:tiedostonLuontiaika"][0]).valueOf()
+      itemCount:      parseInt data["y:kohteidenLukumaara"][0]
 
 pullUtil = new PullUtil(hostname, port, projectName, testCases, exports)
