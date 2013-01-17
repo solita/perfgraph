@@ -84,7 +84,7 @@ exports.report = (testCaseId, build) ->
     .spread((samples, build) ->
       cursor = samples
         .find({build: build, testCaseId: testCaseId},{
-          elapsedTime: 1, build: 1, bytes: 1, label: 1,
+          elapsedTime: 1, bytes: 1, label: 1,
           assertions: 1, timeStamp: 1, responseCode: 1, _id: 0})
         .sort({elapsedTime: -1})
       Q.all([Q.ninvoke(cursor, "toArray"), maxResponseTimeInBuilds([build])]))
