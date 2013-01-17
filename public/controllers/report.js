@@ -20,7 +20,7 @@
         var scatterPlot;
         this.elem.removeClass("hidden");
         this.graph.empty();
-        scatterPlot = new ResponseTimeScatterPlot(this.graph, "/reports/" + testCase + "/" + build + ".json", 2);
+        scatterPlot = new ResponseTimeScatterPlot(this.graph, "/reports/" + testCase + "/" + build + ".json", 2, testCase, build);
         return scatterPlot.update();
       };
 

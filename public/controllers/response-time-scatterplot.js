@@ -4,10 +4,12 @@
     var ResponseTimeScatterPlot;
     return ResponseTimeScatterPlot = (function() {
 
-      function ResponseTimeScatterPlot(elem, url, markSize) {
+      function ResponseTimeScatterPlot(elem, url, markSize, testCaseId, build) {
         this.elem = elem;
         this.url = url;
         this.markSize = markSize;
+        this.testCaseId = testCaseId;
+        this.build = build;
         this.height = this.elem.height();
         this.width = this.elem.width();
       }
@@ -27,6 +29,8 @@
               }
             }
           });
+          $(".testCaseId").text("" + _this.testCaseId);
+          $(".build").text("#" + _this.build);
           x = d3.scale.linear().domain([
             d3.min(data.samples, function(d) {
               return d.timeSinceStart;

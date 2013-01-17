@@ -43,7 +43,10 @@ html(lang="en")
       h3.title
         a(href="/") dashboard
         | /
-        a.testrun(href="#") lainhuutotodistukset #1234
+        a.testrun(href="#")
+          span.testCaseId 
+          &nbsp;
+          span.build #
 
       svg.graph.response-time.scatter-plot
 
