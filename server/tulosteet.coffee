@@ -48,10 +48,10 @@ exports.saveResults = (results) ->
     .fail(console.log)
 
 exports.responseTimeTrendInBuckets = (testCaseId) ->
-  bucketSize = 5
+  bucketSize = 1
   buckle = (elapsedTime) -> Math.max(bucketSize, bucketSize * Math.ceil elapsedTime / bucketSize)
 
-  Q.all([samples, latestBuilds(testCaseId, limit: 30)])
+  Q.all([samples, latestBuilds(testCaseId, limit: 15)])
     .spread((samples, latestBuilds) ->
       cursor = samples
         .find({testCaseId: testCaseId, build: {$in: latestBuilds}}, {elapsedTime: 1, build: 1, _id: 0})
