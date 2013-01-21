@@ -15,36 +15,20 @@ html(lang="en")
         button.update Update now
 
       table
-        thead
-          th
-          th.response-time Vasteaika
-          th.error-percentage Viimeisin testitulos
         tbody
-          tr.lh
-            td LH
+          tr.proto
             td
-              svg.graph.lh.response-time
+              svg.graph.response-time
             td
-              svg.graph.lh.response-time.scatter-plot
-          tr.rt
-            td RT
-            td
-              svg.graph.rt.response-time
-            td
-              svg.graph.rt.response-time.scatter-plot
-          tr.vo
-            td VO
-            td
-              svg.graph.vo.response-time
-            td
-              svg.graph.vo.response-time.scatter-plot
+              svg.graph.response-time.scatter-plot
+
 
     .report.hidden
       h3.title
         a(href="/") dashboard
         | /
         a.testrun(href="#")
-          span.testCaseId 
+          span.testCaseId
           &nbsp;
           span.build #
 

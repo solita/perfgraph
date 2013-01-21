@@ -12,45 +12,39 @@
     return DashboardController = (function() {
 
       function DashboardController(elem) {
-        var columnCount, height, rowCount, t, testCases, width;
+        var columnCount, gs, height, proto, rowCount, t, testCases, width, _fn, _i, _len,
+          _this = this;
         this.elem = elem;
         this.update = __bind(this.update, this);
 
         this.processBuilds = __bind(this.processBuilds, this);
 
-        columnCount = this.elem.find("tr:first-child td").length;
-        rowCount = this.elem.find("tr").length;
-        height = $(window).height() * 0.7 / (rowCount - 1);
-        width = $(window).width() * 0.7 / (columnCount - 1);
         testCases = ["lh", "rt", "vo"];
+        columnCount = this.elem.find("tr:first-child td").length;
+        rowCount = testCases.length;
+        height = $(window).height() * 0.83 / rowCount;
+        width = $(window).width() * 0.83 / columnCount;
         this.elem.find(".graph").width(width).height(height);
-        this.responseTimeTrends = (function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = testCases.length; _i < _len; _i++) {
-            t = testCases[_i];
-            _results.push(new ResponseTimeHeatMap(this.elem.find("." + t + ".response-time"), "/response-time-trend/" + t));
-          }
-          return _results;
-        }).call(this);
-        this.responseTimeLatests = (function() {
-          var _i, _len, _results,
-            _this = this;
-          _results = [];
-          for (_i = 0, _len = testCases.length; _i < _len; _i++) {
-            t = testCases[_i];
-            _results.push((function(t) {
-              var g;
-              g = new ResponseTimeScatterPlot(_this.elem.find("." + t + ".response-time.scatter-plot"), "/reports/" + t + "/latest.json", 0.5);
-              g.elem.on("click", function(d) {
-                return page("/reports/" + t + "/latest");
-              });
-              return g;
-            })(t));
-          }
-          return _results;
-        }).call(this);
-        this.graphs = this.responseTimeTrends.concat(this.responseTimeLatests);
+        proto = this.elem.find("tr.proto");
+        gs = [];
+        _fn = function(t) {
+          var g, n;
+          n = proto.clone();
+          proto.parent().append(n);
+          g = new ResponseTimeHeatMap(n.find(".response-time"), "/response-time-trend/" + t);
+          gs.push(g);
+          g = new ResponseTimeScatterPlot(n.find(".response-time.scatter-plot"), "/reports/" + t + "/latest.json", 0.5);
+          g.elem.on("click", function(d) {
+            return page("/reports/" + t + "/latest");
+          });
+          return gs.push(g);
+        };
+        for (_i = 0, _len = testCases.length; _i < _len; _i++) {
+          t = testCases[_i];
+          _fn(t);
+        }
+        this.graphs = gs;
+        proto.remove();
         this.updateButton = $(".update");
         this.updateProgressIcon = $(".progress");
         this.updateButton.on("click", this.processBuilds);
