@@ -14,37 +14,24 @@ html(lang="en")
           img(src="/images/ajax-loader.gif")
         button.update Update now
 
-      table
-        thead
-          th
-          th.response-time Vasteaika
-          th.error-percentage Viimeisin testitulos
-        tbody
-          tr.lh
-            td LH
-            td
-              svg.graph.lh.response-time
-            td
-              svg.graph.lh.response-time.scatter-plot
-          tr.rt
-            td RT
-            td
-              svg.graph.rt.response-time
-            td
-              svg.graph.rt.response-time.scatter-plot
-          tr.vo
-            td VO
-            td
-              svg.graph.vo.response-time
-            td
-              svg.graph.vo.response-time.scatter-plot
+      .test-case-container
+        svg.graph.lh.response-time
+        svg.graph.lh.response-time-scatter-plot
+      .test-case-container
+        svg.graph.rt.response-time
+        svg.graph.rt.response-time-scatter-plot
+      .test-case-container
+        svg.graph.vo.response-time
+        svg.graph.vo.response-time-scatter-plot
+      .test-case-container
+        svg.graph
 
     .report.hidden
       h3.title
         a(href="/") dashboard
         | /
         a.testrun(href="#")
-          span.testCaseId 
+          span.testCaseId
           &nbsp;
           span.build #
 

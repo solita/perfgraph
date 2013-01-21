@@ -1,6 +1,8 @@
-body{padding:20px;font-family:arial}
+body{padding:0;margin:0;font-family:arial}
 th{font-weight:normal}
-.dashboard table{position:absolute;top:0;bottom:0;width:90%}
+.dashboard{position:absolute;top:0;bottom:0;width:100%}
+.test-case-container{float:left;margin:0;margin-top:20px;padding:0;height:25%;width:50%}
+.test-case-container .graph{float:left;width:45%;height:90%;margin-top:2%;margin-left:2%;border:1px dotted #808080}
 .status{position:absolute;font-size:small;top:5;right:10;margin-top:0}
 .status .update{float:left}
 .status .progress{float:left;margin-right:10;margin-top:2}
@@ -9,7 +11,6 @@ th{font-weight:normal}
 .dashboard .mark{stroke-width:1;fill:none}
 .dashboard .mark.failed{stroke:#800000}
 .dashboard .mark.passed{stroke:#4682b4}
-.graph{border:1px dotted #808080;padding:30px}
 path{fill:none}
 .tile{cursor:hand}
 .boxplot{shape-rendering:crispEdges;stroke:#4682b4}

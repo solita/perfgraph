@@ -12,18 +12,13 @@
     return DashboardController = (function() {
 
       function DashboardController(elem) {
-        var columnCount, height, rowCount, t, testCases, width;
+        var t, testCases;
         this.elem = elem;
         this.update = __bind(this.update, this);
 
         this.processBuilds = __bind(this.processBuilds, this);
 
-        columnCount = this.elem.find("tr:first-child td").length;
-        rowCount = this.elem.find("tr").length;
-        height = $(window).height() * 0.7 / (rowCount - 1);
-        width = $(window).width() * 0.7 / (columnCount - 1);
         testCases = ["lh", "rt", "vo"];
-        this.elem.find(".graph").width(width).height(height);
         this.responseTimeTrends = (function() {
           var _i, _len, _results;
           _results = [];
@@ -41,7 +36,7 @@
             t = testCases[_i];
             _results.push((function(t) {
               var g;
-              g = new ResponseTimeScatterPlot(_this.elem.find("." + t + ".response-time.scatter-plot"), "/reports/" + t + "/latest.json", 0.5);
+              g = new ResponseTimeScatterPlot(_this.elem.find("." + t + ".response-time-scatter-plot"), "/reports/" + t + "/latest.json", 0.5);
               g.elem.on("click", function(d) {
                 return page("/reports/" + t + "/latest");
               });

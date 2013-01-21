@@ -10,8 +10,10 @@
         this.markSize = markSize;
         this.testCaseId = testCaseId;
         this.build = build;
-        this.height = this.elem.height();
-        this.width = this.elem.width();
+        console.log(this.elem.first());
+        this.height = this.elem.first().height();
+        this.width = this.elem.first().width();
+        console.log(this.height, this.width);
       }
 
       ResponseTimeScatterPlot.prototype.update = function() {

@@ -27,8 +27,9 @@
   });
 
   require(['jquery', 'page', 'transparency', 'controllers/dashboard', 'controllers/report'], function($, page, transparency, DashboardController, ReportController) {
+    var setup;
     transparency.register($);
-    return $(function() {
+    setup = function() {
       var dashboard, report;
       dashboard = new DashboardController($(".dashboard"));
       report = new ReportController($(".report"));
@@ -41,7 +42,8 @@
         return report.show(ctx.params.testCase, ctx.params.build);
       });
       return page();
-    });
+    };
+    return setTimeout(setup, 1000);
   });
 
 }).call(this);
