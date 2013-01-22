@@ -12,7 +12,8 @@ port        = 9080
 projectName = "KIOS%20Perf%20Test%20TP%20eraajo%20velocity"
 
 testCases =
-  '01-irrotus-lhtiedot-kunta_kunta=21_olotila=1-md.xml': 'ea/lh/kunta'
+  '01-ealh-kunta-md.xml': 'ealh/kunta'
+  '02-kypt-kunta-md.xml': 'kypt/kunta'
 
 db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
 eraajot     = db.then (db) -> Q.ninvoke db, "collection", "eraajot"
