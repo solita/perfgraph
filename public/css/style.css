@@ -1,5 +1,6 @@
 body{padding:0;margin:0;font-family:arial}
 th{font-weight:normal}
+.clear{clear:both}
 .dashboard{position:absolute;top:0;bottom:0;width:100%}
 .test-case-container{float:left;margin:10 0 40 0;padding:0;height:30%;width:50%}
 .test-case-container .title{text-align:center}
@@ -20,10 +21,12 @@ path{fill:none}
 .line{stroke:#800000}
 .axis text{font-size:11px}
 .axis path,.axis line{fill:none;stroke:#808080;shape-rendering:crispEdges}
+.report{margin-left:20px}
 .report .mark{stroke-width:1;fill:none}
 .report .mark.failed{stroke:#800000}
 .report .mark.passed{stroke:#4682b4}
-.report .testrun{padding-left:1em}
+.report .response-time-scatter-plot{padding:5 15 20 30;float:left;width:90%;height:50%;margin:10 0 0 10}
+.report .title span{padding-left:.5em}
 .report .sample span{padding-left:.5em;color:#800000}
 .tops .response-time{color:#800000}
 .tops .response-time .elapsedTimeStr,.tops .response-time .responseCode{text-align:right}

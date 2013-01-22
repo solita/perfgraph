@@ -4,33 +4,34 @@
     var ResponseTimeScatterPlot;
     return ResponseTimeScatterPlot = (function() {
 
-      function ResponseTimeScatterPlot(elem, url, markSize, testCaseId, build) {
+      function ResponseTimeScatterPlot(elem, url, markSize) {
         this.elem = elem;
         this.url = url;
         this.markSize = markSize;
-        this.testCaseId = testCaseId;
-        this.build = build;
-        this.height = this.elem.height();
-        this.width = this.elem.width();
       }
 
-      ResponseTimeScatterPlot.prototype.update = function() {
+      ResponseTimeScatterPlot.prototype.update = function(url) {
         var _this = this;
-        return $.getJSON(this.url, function(data) {
+        if (url == null) {
+          url = this.url;
+        }
+        this.height = this.elem.height();
+        this.width = this.elem.width();
+        return $.getJSON(url, function(data) {
           var graph, marks, sample, sampleFormatter, showSample, x, xAxis, y, yAxis;
+          console.log(data);
           sampleFormatter = function(d) {
             d.elapsedTimeStr = d.elapsedTime.toFixed(3);
             return d;
           };
-          $(".tops .response-time").render(data.samples.map(sampleFormatter), {
+          _this.elem.find(".tops .response-time").render(data.samples.map(sampleFormatter), {
             label: {
               href: function() {
                 return this.label;
               }
             }
           });
-          $(".testCaseId").text("" + _this.testCaseId);
-          $(".build").text("#" + _this.build);
+          _this.elem.find(".testCaseId").text(url);
           x = d3.scale.linear().domain([
             d3.min(data.samples, function(d) {
               return d.timeSinceStart;

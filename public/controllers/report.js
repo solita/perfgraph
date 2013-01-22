@@ -5,11 +5,8 @@
     return ReportController = (function() {
 
       function ReportController(elem) {
-        var height, width;
         this.elem = elem;
-        height = $(window).height() * 0.5;
-        width = $(window).width() * 0.9;
-        this.graph = this.elem.find(".graph").width(width).height(height);
+        this.scatterPlot = new ResponseTimeScatterPlot(this.elem.find(".graph"), "", 2);
       }
 
       ReportController.prototype.hide = function() {
@@ -17,11 +14,10 @@
       };
 
       ReportController.prototype.show = function(testCase, build) {
-        var scatterPlot;
+        this.elem.find(".testCaseId").text(testCase);
+        this.elem.find(".build").text(build);
         this.elem.removeClass("hidden");
-        this.graph.empty();
-        scatterPlot = new ResponseTimeScatterPlot(this.graph, "/reports/" + testCase + "/" + build + ".json", 2, testCase, build);
-        return scatterPlot.update();
+        return this.scatterPlot.update("/reports/" + testCase + "/" + build + ".json");
       };
 
       return ReportController;

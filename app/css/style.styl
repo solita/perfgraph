@@ -6,6 +6,9 @@ body
 th
   font-weight normal
 
+.clear
+  clear both
+
 .dashboard
   position absolute
   top 0px
@@ -90,6 +93,9 @@ path
   stroke grey
   shape-rendering crispEdges
 
+.report
+  margin-left 20px
+
 .report .mark
   stroke-width 1
   fill none
@@ -100,8 +106,15 @@ path
 .report .mark.passed
   stroke steelblue
 
-.report .testrun
-  padding-left 1em
+.report .response-time-scatter-plot
+  padding 5 15 20 30
+  float left
+  width 90%
+  height 50%
+  margin 10 0 0 10
+
+.report .title span
+  padding-left 0.5em
 
 .report .sample span
   padding-left 0.5em

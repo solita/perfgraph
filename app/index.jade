@@ -33,18 +33,18 @@ html(lang="en")
         .title Eräajot
         svg.graph.era-ajo.throughput
 
-    .report.hidden
+    .report
       h3.title
         a(href="/") dashboard
-        | /
+        span /
         a.testrun(href="#")
           span.testCaseId
-          &nbsp;
-          span.build #
+          span /
+          span.build
 
-      svg.graph.response-time.scatter-plot
+      svg.graph.response-time-scatter-plot
 
-      table.sample
+      table.sample.clear
         tr
           td Time:
           td

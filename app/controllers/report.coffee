@@ -2,15 +2,11 @@ define ["jquery", "d3", "controllers/response-time-scatterplot"], ($, d3, Respon
 
   class ReportController
     constructor: (@elem) ->
-      height = $(window).height() * 0.5
-      width  = $(window).width() * 0.9
-      @graph = @elem.find(".graph")
-        .width(width)
-        .height(height)
+      @scatterPlot = new ResponseTimeScatterPlot @elem.find(".graph"), "", 2
 
     hide: () -> @elem.addClass "hidden"
     show: (testCase, build) ->
+      @elem.find(".testCaseId").text testCase
+      @elem.find(".build").text build
       @elem.removeClass "hidden"
-      @graph.empty()
-      scatterPlot = new ResponseTimeScatterPlot @graph, "/reports/#{testCase}/#{build}.json", 2, testCase, build
-      scatterPlot.update()
+      @scatterPlot.update("/reports/#{testCase}/#{build}.json")

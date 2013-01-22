@@ -1,20 +1,21 @@
 define ["jquery", "d3", "moment"], ($, d3, moment) ->
 
   class ResponseTimeScatterPlot
-    constructor: (@elem, @url, @markSize, @testCaseId, @build) ->
+    constructor: (@elem, @url, @markSize) ->
+
+    update: (url = @url) ->
       @height = @elem.height()
       @width  = @elem.width()
 
-    update: () ->
-      $.getJSON @url, (data) =>
+      $.getJSON url, (data) =>
+        console.log data
         sampleFormatter = (d) ->
           d.elapsedTimeStr = d.elapsedTime.toFixed 3
           d
 
-        $(".tops .response-time").render data.samples.map(sampleFormatter), label: href: -> @label
+        @elem.find(".tops .response-time").render data.samples.map(sampleFormatter), label: href: -> @label
 
-        $(".testCaseId").text "#{@testCaseId}"
-        $(".build").text "##{@build}"
+        @elem.find(".testCaseId").text url
 
         x = d3.scale.linear()
           .domain([d3.min(data.samples, (d) -> d.timeSinceStart), d3.max(data.samples, (d) -> d.timeSinceStart)])
