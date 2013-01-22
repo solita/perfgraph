@@ -37,7 +37,7 @@ exports.saveResults = (results) ->
 
 exports.throughput = () ->
   eraajot.then( (eraajot) ->
-    cursor = eraajot.find( {}, { testCaseId: 1, build: 1, itemCount: 1, elapsedTime: 1, _id: 0 } )
+    cursor = eraajot.find( {}, { testCaseId: 1, build: 1, itemCount: 1, elapsedTime: 1, _id: 0 } ).sort({build: 1})
     Q.ninvoke(cursor, "toArray").then( (results) ->
       results = _.map results, (d) ->
         d.throughput = d.itemCount / d.elapsedTime
