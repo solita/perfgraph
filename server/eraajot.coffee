@@ -35,6 +35,13 @@ exports.saveResults = (results) ->
     .then((eraajot) -> Q.ninvoke eraajot, "insert", results)
     .fail(console.log)
 
+exports.throughput = () ->
+  Q.when(
+    [ [ {testCaseId: "EA01", build: 1, itemsPerSec: 100},
+        {testCaseId: "EA01", build: 2, itemsPerSec: 110} ],
+      [ {testCaseId: "EA02", build: 1, itemsPerSec: 200},
+        {testCaseId: "EA02", build: 2, itemsPerSec: 220} ]])
+
 exports.parseResults = (testData) ->
   tr = testData.d
   url = testData.url

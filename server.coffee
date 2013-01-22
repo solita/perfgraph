@@ -33,6 +33,11 @@ app.get "/error-trend/:testCase", ({params: {testCaseId}}, res) ->
     .then((trend) -> res.send trend)
     .done()
 
+app.get "/eraajo-throughput.json", (req, res) ->
+  eraajot.throughput()
+    .then((trend) -> res.send trend)
+    .done()
+
 app.get "/reports/:testCaseId/:build.json", ({params: {testCaseId, build}}, res) ->
   tulosteet.report(testCaseId, build)
     .then((report) -> res.send report)
