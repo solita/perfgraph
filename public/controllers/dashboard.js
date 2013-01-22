@@ -13,41 +13,14 @@
     return DashboardController = (function() {
 
       function DashboardController(elem) {
-        var t, testCases;
+        var testCases;
         this.elem = elem;
         this.update = __bind(this.update, this);
 
         this.processBuilds = __bind(this.processBuilds, this);
 
         testCases = ["lh", "rt", "vo"];
-        this.responseTimeTrends = (function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = testCases.length; _i < _len; _i++) {
-            t = testCases[_i];
-            _results.push(new ResponseTimeHeatMap(this.elem.find("." + t + ".response-time"), "/response-time-trend/" + t));
-          }
-          return _results;
-        }).call(this);
-        this.responseTimeLatests = (function() {
-          var _i, _len, _results,
-            _this = this;
-          _results = [];
-          for (_i = 0, _len = testCases.length; _i < _len; _i++) {
-            t = testCases[_i];
-            _results.push((function(t) {
-              var g;
-              g = new ResponseTimeScatterPlot(_this.elem.find("." + t + ".response-time-scatter-plot"), "/reports/" + t + "/latest.json", 0.5);
-              g.elem.on("click", function(d) {
-                return page("/reports/" + t + "/latest");
-              });
-              return g;
-            })(t));
-          }
-          return _results;
-        }).call(this);
-        this.eraajoTroughput = new EraajoTroughput(this.elem.find(".era-ajo.throughput"), "/eraajot-trend.json");
-        this.graphs = this.responseTimeTrends.concat(this.responseTimeLatests);
+        this.graphs = [new EraajoTroughput(this.elem.find(".era-ajo.throughput"), "/eraajo-throughput.json")];
         this.updateButton = $(".update");
         this.updateProgressIcon = $(".progress");
         this.updateButton.on("click", this.processBuilds);

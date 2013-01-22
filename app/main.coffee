@@ -7,6 +7,7 @@ require.config
     "q": "components/q/q"
     "transparency": "components/transparency/lib/transparency"
     "moment": "components/moment/moment"
+    "lodash": "components/lodash/lodash"
   shim:
     d3: exports: "d3"
     "socket.io": exports: "io"

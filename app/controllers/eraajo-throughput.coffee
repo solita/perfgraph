@@ -1,44 +1,54 @@
-define ["jquery", "d3"], ($, d3) ->
+define ["jquery", "d3", "lodash"], ($, d3, _) ->
 
   class EraajoThroughput
     constructor: (@elem, @url) ->
-      height = @elem.height()
-      data   = ({x: n, y: 10 * Math.random()} for n in [0..29])
+      @width  = @elem.width()
+      @height = @elem.height()
 
-      x = d3.scale.linear()
-        .domain([0, data.length])
-        .range([0, @elem.width()])
+    update: ->
+      $.getJSON @url, (data) =>
+        console.log  data
 
-      y = d3.scale.linear()
-        .domain([0, 15])
-        .range([height, 0])
+        x = d3.scale.linear()
+          .domain(d3.extent _.flatten(data), (d) -> d.build)
+          .range([0, @width])
 
-      xAxis = d3.svg.axis()
-        .scale(x)
-        .ticks(0)
-        .tickSize(0)
+        y = d3.scale.linear()
+          .domain(d3.extent _.flatten(data), (d) -> d.itemsPerSec)
+          .range([@height, 0])
 
-      yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left")
-        .ticks(5)
-        .tickSize(3)
+        z = d3.scale.category10()
+          .domain(_.flatten(data).map (d) -> d.testCaseId)
 
-      graph = d3.select(@elem[0])
+        xAxis = d3.svg.axis()
+          .scale(x)
+          .ticks(0)
+          .tickSize(0)
 
-      line = d3.svg.line()
-        .x((d) -> x(d.x))
-        .y((d) -> y(d.y))
+        yAxis = d3.svg.axis()
+          .scale(y)
+          .orient("left")
+          .ticks(5)
+          .tickSize(3)
 
-      graph.append("path")
-        .attr("class", "error-percentage")
-        .attr("d", line(data))
+        graph = d3.select(@elem[0])
 
-      graph.append("g")
-        .attr("class", "axis")
-        .call(yAxis)
+        line = d3.svg.line()
+          .x((d) -> x(d.build))
+          .y((d) -> y(d.itemsPerSec))
 
-      graph.append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(0, #{height})")
-        .call(xAxis)
+        graph.selectAll(".line")
+            .data(data)
+          .enter().append("path")
+            .attr("class", "line")
+            .attr("d", line)
+            .style("stroke", (d) -> z(d[0].testCaseId))
+
+        graph.append("g")
+          .attr("class", "axis")
+          .call(yAxis)
+
+        graph.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(0, #{@height})")
+          .call(xAxis)

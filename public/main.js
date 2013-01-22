@@ -8,7 +8,8 @@
       "page": "components/page/index",
       "q": "components/q/q",
       "transparency": "components/transparency/lib/transparency",
-      "moment": "components/moment/moment"
+      "moment": "components/moment/moment",
+      "lodash": "components/lodash/lodash"
     },
     shim: {
       d3: {
