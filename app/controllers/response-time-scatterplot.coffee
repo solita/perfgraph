@@ -3,8 +3,8 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
   class ResponseTimeScatterPlot
     constructor: (@elem, @url, @markSize, @testCaseId, @build) ->
       console.log @elem.first()
-      @height = @elem.first().height()
-      @width  = @elem.first().width()
+      @height = @elem.height()
+      @width  = @elem.width()
       console.log @height, @width
 
     update: () ->

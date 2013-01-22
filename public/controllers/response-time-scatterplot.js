@@ -11,8 +11,8 @@
         this.testCaseId = testCaseId;
         this.build = build;
         console.log(this.elem.first());
-        this.height = this.elem.first().height();
-        this.width = this.elem.first().width();
+        this.height = this.elem.height();
+        this.width = this.elem.width();
         console.log(this.height, this.width);
       }
 

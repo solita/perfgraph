@@ -8,22 +8,29 @@ html(lang="en")
     link(rel="stylesheet", href="/css/style.css")
   body
 
-    .dashboard.hidden
+    .dashboard
       .status
         .progress.hidden
           img(src="/images/ajax-loader.gif")
         button.update Update now
 
       .test-case-container
+        .title Lainhuudotodistukset
         svg.graph.lh.response-time
         svg.graph.lh.response-time-scatter-plot
+
       .test-case-container
+        .title Rasitustodistukset
         svg.graph.rt.response-time
         svg.graph.rt.response-time-scatter-plot
+
       .test-case-container
+        .title Vuokraoikeustodistukset
         svg.graph.vo.response-time
         svg.graph.vo.response-time-scatter-plot
+
       .test-case-container
+        .title Eräajot
         svg.graph
 
     .report.hidden
