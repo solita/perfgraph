@@ -36,11 +36,15 @@ exports.saveResults = (results) ->
     .fail(console.log)
 
 exports.throughput = () ->
-  Q.when(
-    [ [ {testCaseId: "EA01", build: 1, itemsPerSec: 100},
-        {testCaseId: "EA01", build: 2, itemsPerSec: 110} ],
-      [ {testCaseId: "EA02", build: 1, itemsPerSec: 200},
-        {testCaseId: "EA02", build: 2, itemsPerSec: 220} ]])
+  eraajot.then( (eraajot) ->
+    cursor = eraajot.find( {}, { testCaseId: 1, build: 1, itemCount: 1, elapsedTime: 1, _id: 0 } )
+    Q.ninvoke(cursor, "toArray").then( (results) ->
+      _.map results, (d) ->
+        d.throughput = d.itemCount / d.elapsedTime
+        delete d.itemCount
+        delete d.elapsedTime
+        d
+      ))
 
 exports.parseResults = (testData) ->
   tr = testData.d
