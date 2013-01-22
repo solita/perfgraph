@@ -21,7 +21,7 @@ require ['jquery',
 
   transparency.register $
 
-  setup = ->
+  $ ->
     dashboard = new DashboardController $(".dashboard")
     report    = new ReportController $(".report")
 
@@ -33,5 +33,3 @@ require ['jquery',
       report.show ctx.params.testCase, ctx.params.build
 
     page()
-
-  setTimeout setup, 1000
