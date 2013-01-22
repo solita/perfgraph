@@ -15,13 +15,12 @@
         var _this = this;
         return $.getJSON(this.url, function(data) {
           var graph, line, x, xAxis, y, yAxis, z;
-          console.log(data);
           x = d3.scale.linear().domain(d3.extent(_.flatten(data), function(d) {
             return d.build;
-          })).range([0, _this.width]);
+          })).range([0, _this.width]).nice();
           y = d3.scale.linear().domain(d3.extent(_.flatten(data), function(d) {
-            return d.itemsPerSec;
-          })).range([_this.height, 0]);
+            return d.throughput;
+          })).range([_this.height, 0]).nice();
           z = d3.scale.category10().domain(_.flatten(data).map(function(d) {
             return d.testCaseId;
           }));
@@ -31,7 +30,7 @@
           line = d3.svg.line().x(function(d) {
             return x(d.build);
           }).y(function(d) {
-            return y(d.itemsPerSec);
+            return y(d.throughput);
           });
           graph.selectAll(".line").data(data).enter().append("path").attr("class", "line").attr("d", line).style("stroke", function(d) {
             return z(d[0].testCaseId);

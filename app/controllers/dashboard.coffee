@@ -12,17 +12,17 @@ define (require) ->
     constructor: (@elem) ->
       testCases   = ["lh", "rt", "vo"]
 
-      # @responseTimeTrends = for t in testCases
-      #   new ResponseTimeHeatMap @elem.find(".#{t}.response-time"), "/response-time-trend/#{t}"
+      responseTimeTrends = for t in testCases
+        new ResponseTimeHeatMap @elem.find(".#{t}.response-time"), "/response-time-trend/#{t}"
 
-      # @responseTimeLatests = for t in testCases
-      #   do (t) =>
-      #     g = new ResponseTimeScatterPlot @elem.find(".#{t}.response-time-scatter-plot"), "/reports/#{t}/latest.json", 0.5
-      #     g.elem.on("click", (d) -> page "/reports/#{t}/latest")
-      #     g
+      responseTimeLatests = for t in testCases
+        do (t) =>
+          g = new ResponseTimeScatterPlot @elem.find(".#{t}.response-time-scatter-plot"), "/reports/#{t}/latest.json", 0.5
+          g.elem.on("click", (d) -> page "/reports/#{t}/latest")
+          g
 
-      @graphs = [new EraajoTroughput @elem.find(".era-ajo.throughput"), "/eraajo-throughput.json"]
-      #@graphs = @responseTimeTrends.concat @responseTimeLatests
+      eraajoTroughput = new EraajoTroughput @elem.find(".era-ajo.throughput"), "/eraajo-throughput.json"
+      @graphs = responseTimeTrends.concat responseTimeLatests, [eraajoTroughput]
 
       @updateButton = $(".update")
       @updateProgressIcon = $(".progress")

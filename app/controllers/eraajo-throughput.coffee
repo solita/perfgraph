@@ -7,15 +7,15 @@ define ["jquery", "d3", "lodash"], ($, d3, _) ->
 
     update: ->
       $.getJSON @url, (data) =>
-        console.log  data
-
         x = d3.scale.linear()
           .domain(d3.extent _.flatten(data), (d) -> d.build)
           .range([0, @width])
+          .nice()
 
         y = d3.scale.linear()
-          .domain(d3.extent _.flatten(data), (d) -> d.itemsPerSec)
+          .domain(d3.extent _.flatten(data), (d) -> d.throughput)
           .range([@height, 0])
+          .nice()
 
         z = d3.scale.category10()
           .domain(_.flatten(data).map (d) -> d.testCaseId)
@@ -35,7 +35,7 @@ define ["jquery", "d3", "lodash"], ($, d3, _) ->
 
         line = d3.svg.line()
           .x((d) -> x(d.build))
-          .y((d) -> y(d.itemsPerSec))
+          .y((d) -> y(d.throughput))
 
         graph.selectAll(".line")
             .data(data)
