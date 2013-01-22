@@ -6,6 +6,7 @@ define (require) ->
   ErrorGraph              = require "controllers/error-graph"
   ResponseTimeHeatMap     = require "controllers/response-time-heat-map"
   ResponseTimeScatterPlot = require "controllers/response-time-scatterplot"
+  EraajoTroughput         = require "controllers/eraajo-throughput"
 
   class DashboardController
     constructor: (@elem) ->
@@ -20,6 +21,7 @@ define (require) ->
           g.elem.on("click", (d) -> page "/reports/#{t}/latest")
           g
 
+      @eraajoTroughput = new EraajoTroughput @elem.find(".era-ajo.throughput"), "/eraajot-trend.json"
       @graphs = @responseTimeTrends.concat @responseTimeLatests
 
       @updateButton = $(".update")

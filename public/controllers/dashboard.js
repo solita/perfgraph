@@ -2,13 +2,14 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   define(function(require) {
-    var $, DashboardController, ErrorGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot, io, moment;
+    var $, DashboardController, EraajoTroughput, ErrorGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot, io, moment;
     $ = require("jquery");
     io = require("socket.io");
     moment = require("moment");
     ErrorGraph = require("controllers/error-graph");
     ResponseTimeHeatMap = require("controllers/response-time-heat-map");
     ResponseTimeScatterPlot = require("controllers/response-time-scatterplot");
+    EraajoTroughput = require("controllers/eraajo-throughput");
     return DashboardController = (function() {
 
       function DashboardController(elem) {
@@ -45,6 +46,7 @@
           }
           return _results;
         }).call(this);
+        this.eraajoTroughput = new EraajoTroughput(this.elem.find(".era-ajo.throughput"), "/eraajot-trend.json");
         this.graphs = this.responseTimeTrends.concat(this.responseTimeLatests);
         this.updateButton = $(".update");
         this.updateProgressIcon = $(".progress");
