@@ -19,7 +19,6 @@
         this.width = this.elem.width();
         return $.getJSON(url, function(data) {
           var graph, marks, sample, sampleFormatter, showSample, x, xAxis, y, yAxis;
-          console.log(data);
           sampleFormatter = function(d) {
             d.elapsedTimeStr = d.elapsedTime.toFixed(3);
             return d;

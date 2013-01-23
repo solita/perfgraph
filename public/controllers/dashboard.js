@@ -19,7 +19,7 @@
 
         this.processBuilds = __bind(this.processBuilds, this);
 
-        testCases = ["lh", "rt", "vo"];
+        testCases = ["lh", "rt", "vo", "lhro"];
         responseTimeTrends = (function() {
           var _i, _len, _results;
           _results = [];

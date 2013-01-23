@@ -2,7 +2,7 @@ body{padding:0;margin:0;font-family:arial}
 th{font-weight:normal}
 .clear{clear:both}
 .dashboard{position:absolute;top:0;bottom:0;width:100%}
-.test-case-container{float:left;margin:10 0 40 0;padding:0;height:30%;width:50%}
+.test-case-container{float:left;margin:10 0 40 0;padding:0;height:25%;width:50%}
 .test-case-container .title{text-align:center}
 .test-case-container .graph{padding:5 15 20 30;float:left;width:40%;height:80%;margin:10 0 0 10}
 .status{position:absolute;font-size:small;top:5;right:10;margin-top:0}

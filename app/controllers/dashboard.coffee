@@ -10,7 +10,7 @@ define (require) ->
 
   class DashboardController
     constructor: (@elem) ->
-      testCases   = ["lh", "rt", "vo"]
+      testCases   = ["lh", "rt", "vo", "lhro"]
 
       responseTimeTrends = for t in testCases
         new ResponseTimeHeatMap @elem.find(".#{t}.response-time"), "/response-time-trend/#{t}"

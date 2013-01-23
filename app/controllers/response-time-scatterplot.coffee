@@ -8,7 +8,6 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
       @width  = @elem.width()
 
       $.getJSON url, (data) =>
-        console.log data
         sampleFormatter = (d) ->
           d.elapsedTimeStr = d.elapsedTime.toFixed 3
           d

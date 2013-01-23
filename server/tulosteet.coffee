@@ -14,6 +14,10 @@ testCases   =
   'KIOS-TP_TP_Lainhuutotodistus_pdf.jtl': 'lh'
   'KIOS-TP_TP_Rasitustodistus_pdf.jtl': 'rt'
   'KIOS-TP_TP_Vuokraoikeustodistus_pdf.jtl': 'vo'
+  'KIOS-UI_TP_Lainhuutorekisteriote_html.jtl': 'lhro'
+
+testCaseIds = for key in testCases
+  testCases[key]
 
 db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
 samples     = db.then (db) -> Q.ninvoke db, "collection", "samples"
@@ -26,7 +30,7 @@ exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 exports.processTestResults = () ->
   pullUtil.newTestFiles().fail(console.log).allResolved()
 
-exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["lh", "rt", "vo"]}, {limit} = {}) ->
+exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
   samples
     .then((samples) -> Q.ninvoke samples, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
