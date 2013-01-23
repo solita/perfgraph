@@ -16,9 +16,6 @@ testCases   =
   'KIOS-TP_TP_Vuokraoikeustodistus_pdf.jtl': 'vo'
   'KIOS-UI_TP_Lainhuutorekisteriote_html.jtl': 'lhro'
 
-testCaseIds = for key in testCases
-  testCases[key]
-
 db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
 samples     = db.then (db) -> Q.ninvoke db, "collection", "samples"
 
