@@ -30,7 +30,7 @@ exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 exports.processTestResults = () ->
   pullUtil.newTestFiles().fail(console.log).allResolved()
 
-exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
+exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["lh","rt","vo","lhro"]}, {limit} = {}) ->
   samples
     .then((samples) -> Q.ninvoke samples, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
