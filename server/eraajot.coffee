@@ -17,6 +17,8 @@ testCases =
   '01-ealh-kunta-md.xml': 'ealh/kunta'
   '02-kypt-kunta-md.xml': 'kypt/kunta'
 
+testCaseIds = _.values testCases
+
 db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
 eraajot     = db.then (db) -> Q.ninvoke db, "collection", "eraajot"
 
@@ -28,7 +30,7 @@ exports.testCaseUrl = (build, testCase) ->
 
 exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 
-exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["01"]}, {limit} = {}) ->
+exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
   eraajot
     .then((eraajot) -> Q.ninvoke eraajot, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
