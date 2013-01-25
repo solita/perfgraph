@@ -94,9 +94,9 @@ exports.report = (testCaseId, build) ->
           assertions: 1, timeStamp: 1, responseCode: 1, _id: 0})
         .sort({elapsedTime: -1})
       Q.all([Q.ninvoke(cursor, "toArray"), maxResponseTimeInBuilds([build])]))
-    .spread((tulosteet, maxResponseTime) ->
-      beginTime = d3.min tulosteet, (d) -> d.timeStamp
-      tulosteet = _.map tulosteet, (d) ->
+    .spread((samples, maxResponseTime) ->
+      beginTime = d3.min samples, (d) -> d.timeStamp
+      samples = _.map samples, (d) ->
         d.failed         = (d.assertions.map (a) -> a.failure || a.error).reduce (r, f) -> r || f
         d.timeSinceStart = d.timeStamp - beginTime
         delete d.assertions
