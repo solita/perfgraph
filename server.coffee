@@ -44,9 +44,11 @@ app.get "/reports/:testCaseId/:build.json", ({params: {testCaseId, build}}, res)
     .done()
 
 app.get "/process-builds", (req, res) ->
-    tulosteet.processTestResults()
-      .then(-> res.send 200; io.sockets.emit "change")
-      .done()
+  res.send 200;
+  # Disabled untill fixed
+  # tulosteet.processTestResults()
+  #   .then(-> res.send 200; io.sockets.emit "change")
+  #   .done()
 
 app.get "/process-builds/:projectId", ({params: {projectId}}, res) ->
   if projectId == 'eraajot'

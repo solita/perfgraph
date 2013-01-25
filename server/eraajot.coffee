@@ -6,6 +6,7 @@ d3          = require "d3"
 xml2js      = require "xml2js"
 MongoClient = require("mongodb").MongoClient
 PullUtil    = require("./pull-util").PullUtil
+logger      = require("./logger").logger
 
 hostname    = "ceto.solita.fi"
 port        = 9080
@@ -20,7 +21,7 @@ db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kio
 eraajot     = db.then (db) -> Q.ninvoke db, "collection", "eraajot"
 
 exports.processTestResults = () ->
-  pullUtil.newTestFiles().fail(console.log).allResolved()
+  pullUtil.newTestFiles().fail(logger).allResolved()
 
 exports.testCaseUrl = (build, testCase) ->
   "http://#{hostname}:#{port}/job/#{projectName}/#{build}/artifact/kios-tp-eraajo-velocity-performance/target/#{testCase}"
@@ -35,7 +36,7 @@ exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["01"]}, {limit} = {
 exports.saveResults = (results) ->
   eraajot
     .then((eraajot) -> Q.ninvoke eraajot, "insert", results)
-    .fail(console.log)
+    .fail(logger)
 
 exports.throughput = () ->
   eraajot.then( (eraajot) ->
@@ -53,7 +54,7 @@ exports.throughput = () ->
 exports.parseResults = (testData) ->
   tr = testData.d
   url = testData.url
-  console.log "Parsing JTL test file: build ##{tr.build}, test case #{tr.testCase}"
+  logger "Parsing JTL test file: build ##{tr.build}, test case #{tr.testCase}"
 
   # xml2js uses sax-js, which often fails for invalid xml files
   # Use ugly regexp to "validate" JML by checking the existence of the end tag

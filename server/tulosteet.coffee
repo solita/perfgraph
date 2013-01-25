@@ -5,6 +5,7 @@ d3          = require "d3"
 xml2js      = require "xml2js"
 MongoClient = require("mongodb").MongoClient
 PullUtil    = require("./pull-util").PullUtil
+logger      = require("./logger").logger
 
 hostname    = "ceto.solita.fi"
 port        = 9080
@@ -21,7 +22,7 @@ testCases   =
 testCaseIds = _.values testCases
 
 db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
-tulosteet     = db.then (db) -> Q.ninvoke db, "collection", "tulosteet"
+tulosteet   = db.then (db) -> Q.ninvoke db, "collection", "tulosteet"
 
 exports.testCaseUrl = (build, testCase) ->
   "http://#{hostname}:#{port}/job/#{projectName}/#{build}/artifact/kios-tp-performance/target/jmeter/report/#{testCase}"
@@ -29,7 +30,7 @@ exports.testCaseUrl = (build, testCase) ->
 exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 
 exports.processTestResults = () ->
-  pullUtil.newTestFiles().fail(console.log).allResolved()
+  pullUtil.newTestFiles().fail(logger).allResolved()
 
 exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
   tulosteet
@@ -50,7 +51,7 @@ maxResponseTimeInBuilds = (builds) ->
 exports.saveResults = (results) ->
   tulosteet
     .then((tulosteet) -> Q.ninvoke tulosteet, "insert", results)
-    .fail(console.log)
+    .fail(logger)
 
 exports.responseTimeTrendInBuckets = (testCaseId) ->
   bucketSize = 1
@@ -77,7 +78,7 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
         bucketSize: bucketSize
         maxResponseTimeBucket: buckle maxResponseTime
         buckets: _.flatten responseTimesByBuildInBuckets)
-    .fail(console.log)
+    .fail(logger)
 
 exports.report = (testCaseId, build) ->
   build = if build == "latest"
@@ -104,12 +105,12 @@ exports.report = (testCaseId, build) ->
       data =
         maxElapsedTimeInBuild: maxResponseTime
         samples: samples)
-    .fail(console.log)
+    .fail(logger)
 
 exports.parseResults = (testData) ->
   tr = testData.d
   url = testData.url
-  console.log "Parsing JTL test file: build ##{tr.build}, test case #{tr.testCase}"
+  logger "Parsing JTL test file: build ##{tr.build}, test case #{tr.testCase}"
 
   # xml2js uses sax-js, which often fails for invalid xml files
   # Use ugly regexp to "validate" JML by checking the existence of the end tag
