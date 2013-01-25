@@ -10,14 +10,18 @@ hostname    = "ceto.solita.fi"
 port        = 9080
 projectName = "KIOS%20Perf%20Test%20TP%20tulosteet%20tomcat-kios%20at%20ceto"
 
+parser = new xml2js.Parser()
+
 testCases   =
   'KIOS-TP_TP_Lainhuutotodistus_pdf.jtl': 'lh'
   'KIOS-TP_TP_Rasitustodistus_pdf.jtl': 'rt'
   'KIOS-TP_TP_Vuokraoikeustodistus_pdf.jtl': 'vo'
   'KIOS-UI_TP_Lainhuutorekisteriote_html.jtl': 'lhro'
 
+testCaseIds = _.values testCases
+
 db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
-samples     = db.then (db) -> Q.ninvoke db, "collection", "samples"
+tulosteet     = db.then (db) -> Q.ninvoke db, "collection", "tulosteet"
 
 exports.testCaseUrl = (build, testCase) ->
   "http://#{hostname}:#{port}/job/#{projectName}/#{build}/artifact/kios-tp-performance/target/jmeter/report/#{testCase}"
@@ -27,14 +31,14 @@ exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 exports.processTestResults = () ->
   pullUtil.newTestFiles().fail(console.log).allResolved()
 
-exports.latestBuilds = latestBuilds = (testCaseId = {"$in": ["lh","rt","vo","lhro"]}, {limit} = {}) ->
-  samples
-    .then((samples) -> Q.ninvoke samples, "distinct", "build", testCaseId: testCaseId)
+exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
+  tulosteet
+    .then((tulosteet) -> Q.ninvoke tulosteet, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
 
 maxResponseTimeInBuilds = (builds) ->
-  samples.then((samples) ->
-      cursor = samples
+  tulosteet.then((tulosteet) ->
+      cursor = tulosteet
         .find({build: {$in: builds}}, {elapsedTime: 1, timeStamp: 1, _id: 0})
         .sort(timeStamp: 1)
         .skip(1)
@@ -44,25 +48,25 @@ maxResponseTimeInBuilds = (builds) ->
     .then((maxResponseTimeArr) -> maxResponseTimeArr[0].elapsedTime)
 
 exports.saveResults = (results) ->
-  samples
-    .then((samples) -> Q.ninvoke samples, "insert", results)
+  tulosteet
+    .then((tulosteet) -> Q.ninvoke tulosteet, "insert", results)
     .fail(console.log)
 
 exports.responseTimeTrendInBuckets = (testCaseId) ->
   bucketSize = 1
   buckle = (elapsedTime) -> Math.max(bucketSize, bucketSize * Math.ceil elapsedTime / bucketSize)
 
-  Q.all([samples, latestBuilds(testCaseId, limit: 15)])
-    .spread((samples, latestBuilds) ->
-      cursor = samples
+  Q.all([tulosteet, latestBuilds(testCaseId, limit: 15)])
+    .spread((tulosteet, latestBuilds) ->
+      cursor = tulosteet
         .find({testCaseId: testCaseId, build: {$in: latestBuilds}}, {elapsedTime: 1, build: 1, _id: 0})
         .sort({build: 1, elapsedTime: 1})
       Q.all([Q.ninvoke(cursor, "toArray"), maxResponseTimeInBuilds(latestBuilds)]))
     .spread((results, maxResponseTime) ->
       responseTimesByBuild = _.groupBy(results, "build")
 
-      responseTimesByBuildInBuckets = _.map responseTimesByBuild, (samples, build) ->
-        buckets = _.groupBy samples, (sample) -> buckle sample.elapsedTime
+      responseTimesByBuildInBuckets = _.map responseTimesByBuild, (tulosteet, build) ->
+        buckets = _.groupBy tulosteet, (sample) -> buckle sample.elapsedTime
         _.map buckets, (val, key) ->
           bucket: parseInt key
           count:  val.length
@@ -81,17 +85,17 @@ exports.report = (testCaseId, build) ->
     else
       parseInt build
 
-  Q.all([samples, build])
-    .spread((samples, build) ->
-      cursor = samples
+  Q.all([tulosteet, build])
+    .spread((tulosteet, build) ->
+      cursor = tulosteet
         .find({build: build, testCaseId: testCaseId},{
           elapsedTime: 1, bytes: 1, label: 1,
           assertions: 1, timeStamp: 1, responseCode: 1, _id: 0})
         .sort({elapsedTime: -1})
       Q.all([Q.ninvoke(cursor, "toArray"), maxResponseTimeInBuilds([build])]))
-    .spread((samples, maxResponseTime) ->
-      beginTime = d3.min samples, (d) -> d.timeStamp
-      samples = _.map samples, (d) ->
+    .spread((tulosteet, maxResponseTime) ->
+      beginTime = d3.min tulosteet, (d) -> d.timeStamp
+      tulosteet = _.map tulosteet, (d) ->
         d.failed         = (d.assertions.map (a) -> a.failure || a.error).reduce (r, f) -> r || f
         d.timeSinceStart = d.timeStamp - beginTime
         delete d.assertions
@@ -112,7 +116,6 @@ exports.parseResults = (testData) ->
   unless tr.samples.match /<\/testResults>/
     throw new Error("Invalid JML file. Url: #{url}")
 
-  parser = new xml2js.Parser()
   Q.ninvoke(parser, "parseString", tr.samples).then (bodyJson) ->
     for sample in bodyJson?.testResults?.httpSample || []
       testCaseId:     testCases[tr.testCase]
