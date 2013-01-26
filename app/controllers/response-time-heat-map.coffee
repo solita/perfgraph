@@ -48,6 +48,22 @@ define ["jquery", "d3"], ($, d3) ->
           .selectAll("text")
           .classed("hidden", (build) -> [firstBuild, lastBuild].indexOf(build) < 0)
 
+        #Axis labels
+        graph.append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "end")
+          .attr("x", @width + 7)
+          .attr("y", @height + 20)
+          .text("build #")
+
+        graph.append("text")
+          .attr("class", "y label")
+          .attr("text-anchor", "end")
+          .attr("y", -36)
+          .attr("dy", ".75em")
+          .attr("transform", "rotate(-90)")
+          .text("response time [s]")
+
         labels    = graph.selectAll(".x.axis text")
         showLabel = (d) ->
           labels.classed("hidden", (build) ->

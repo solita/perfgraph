@@ -4,7 +4,7 @@ th{font-weight:normal}
 .dashboard{position:absolute;top:0;bottom:0;width:100%}
 .test-case-container{float:left;margin:10 0 40 0;padding:0;height:25%;width:50%}
 .test-case-container .title{text-align:center}
-.test-case-container .graph{padding:5 15 20 30;float:left;width:40%;height:80%;margin:10 0 0 10}
+.test-case-container .graph{padding:5 15 27 40;float:left;width:30%;height:80%;margin:10 0 0 10}
 .status{position:absolute;font-size:small;top:5;right:10;margin-top:0}
 .status .update{float:left}
 .status .progress{float:left;margin-right:10;margin-top:2}
@@ -25,9 +25,10 @@ path{fill:none}
 .report .mark{stroke-width:1;fill:none}
 .report .mark.failed{stroke:#800000}
 .report .mark.passed{stroke:#4682b4}
-.report .response-time-scatter-plot{padding:5 15 20 30;float:left;width:90%;height:50%;margin:10 0 0 10}
+.report .response-time-scatter-plot{padding:5 15 27 40;float:left;width:90%;height:50%;margin:10 0 0 10}
 .report .title span{padding-left:.5em}
 .report .sample span{padding-left:.5em;color:#800000}
 .tops .response-time{color:#800000}
 .tops .response-time .elapsedTimeStr,.tops .response-time .responseCode{text-align:right}
 .tops .response-time a{margin-left:20}
+.label{font-size:9px}

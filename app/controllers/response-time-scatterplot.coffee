@@ -61,6 +61,22 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
           .attr("transform", "translate(0, #{@height})")
           .call(xAxis)
 
+        #Axis labels
+        graph.append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "end")
+          .attr("x", @width + 13)
+          .attr("y", @height + 25)
+          .text("request time [s]")
+
+        graph.append("text")
+          .attr("class", "y label")
+          .attr("text-anchor", "end")
+          .attr("y", -36)
+          .attr("dy", ".75em")
+          .attr("transform", "rotate(-90)")
+          .text("response time [s]")
+
         marks = graph.selectAll(".mark").data(data.samples)
           .attr("class", (d) -> if d.failed then "mark failed" else "mark passed")
           .attr("cx", (d) -> x(d.timeSinceStart))
