@@ -23,7 +23,7 @@ db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kio
 eraajot     = db.then (db) -> Q.ninvoke db, "collection", "eraajot"
 
 exports.processTestResults = () ->
-  pullUtil.newTestFiles().fail(logger).allResolved()
+  pullUtil.newTestFiles().fail(logger).allResolved().then(-> db).then((db)-> db.close()).done()
 
 exports.testCaseUrl = (build, testCase) ->
   "http://#{hostname}:#{port}/job/#{projectName}/#{build}/artifact/kios-tp-eraajo-velocity-performance/target/#{testCase}"

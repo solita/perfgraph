@@ -5,6 +5,7 @@ io            = require "socket.io"
 tulosteet     = require "./server/tulosteet"
 eraajot       = require "./server/eraajot"
 memwatch      = require "memwatch"
+exec          = require('child_process').exec
 app           = express()
 
 memwatch.on('leak', (info) -> console.log info)
@@ -49,22 +50,9 @@ app.get "/reports/:testCaseId/:build.json", ({params: {testCaseId, build}}, res)
 
 app.get "/process-builds", (req, res) ->
   res.send 200;
-  # Disabled untill fixed
-  # tulosteet.processTestResults()
-  #   .then(-> res.send 200; io.sockets.emit "change")
-  #   .done()
-
-app.get "/process-builds/:projectId", ({params: {projectId}}, res) ->
-  if projectId == 'eraajot'
-    eraajot.processTestResults()
-      .then(-> res.send 200; io.sockets.emit "change")
-      .done()
-  else if projectId == 'tulosteet'
-    tulosteet.processTestResults()
-      .then(-> res.send 200; io.sockets.emit "change")
-      .done()
-  else
-    res.send 404
+  exec 'coffee ./server/pull.coffee', (err, stdout, stderr) ->
+    console.log stdout, stderr
+    io.sockets.emit "change"
 
 app.get "/force-reload", (req, res) ->
   res.send 200; io.sockets.emit "reload"

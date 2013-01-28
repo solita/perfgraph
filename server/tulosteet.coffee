@@ -19,23 +19,18 @@ testCases   =
   'KIOS-TP_TP_Vuokraoikeustodistus_pdf.jtl': 'vo'
   'KIOS-UI_TP_Lainhuutorekisteriote_html.jtl': 'lhro'
 
-testCaseIds = _.values testCases
-
-db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
-tulosteet   = db.then (db) -> Q.ninvoke db, "collection", "tulosteet"
-
-tulosteet
-  .then((tulosteet) ->
-    Q.ninvoke tulosteet, 'ensureIndex', {build: 1, elapsedTime: 1})
-  .fail(logger)
+testCaseIds   = _.values testCases
+_db           = Q.ninvoke(mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf")
+db            = _db.then((db) -> Q.ninvoke(db, 'ensureIndex', 'tulosteet', {build: 1, elapsedTime: 1}).then(-> db))
+tulosteet     = db.then (db) -> Q.ninvoke db, "collection", "tulosteet"
 
 exports.testCaseUrl = (build, testCase) ->
   "http://#{hostname}:#{port}/job/#{projectName}/#{build}/artifact/kios-tp-performance/target/jmeter/report/#{testCase}"
 
 exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 
-exports.processTestResults = () ->
-  pullUtil.newTestFiles().fail(logger).allResolved()
+exports.processTestResults = ->
+  pullUtil.newTestFiles().fail(logger).allResolved().then(-> db).then((db) -> db.close()).done()
 
 exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
   tulosteet
