@@ -54,7 +54,7 @@ define ["jquery", "d3", "lodash"], ($, d3, _) ->
           .call(xAxis)
 
         #Axis labels
-        graph.selectAll("x label").remove()
+        graph.selectAll(".x.label").remove()
         graph.append("text")
           .attr("class", "x label")
           .attr("text-anchor", "end")
@@ -62,7 +62,7 @@ define ["jquery", "d3", "lodash"], ($, d3, _) ->
           .attr("y", @height + 20)
           .text("build #")
 
-        graph.selectAll("y label").remove()
+        graph.selectAll(".y.label").remove()
         graph.append("text")
           .attr("class", "y label")
           .attr("text-anchor", "end")

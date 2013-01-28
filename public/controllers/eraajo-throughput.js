@@ -37,9 +37,9 @@
           });
           graph.append("g").attr("class", "axis").call(yAxis);
           graph.append("g").attr("class", "axis").attr("transform", "translate(0, " + _this.height + ")").call(xAxis);
-          graph.selectAll("x label").remove();
+          graph.selectAll(".x.label").remove();
           graph.append("text").attr("class", "x label").attr("text-anchor", "end").attr("x", _this.width + 7).attr("y", _this.height + 20).text("build #");
-          graph.selectAll("y label").remove();
+          graph.selectAll(".y.label").remove();
           return graph.append("text").attr("class", "y label").attr("text-anchor", "end").attr("y", -36).attr("dy", ".75em").attr("transform", "rotate(-90)").text("throughput [1/s]");
         });
       };
