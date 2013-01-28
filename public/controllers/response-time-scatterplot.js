@@ -55,7 +55,9 @@
           graph.selectAll(".axis").remove();
           graph.append("g").attr("class", "axis").call(yAxis);
           graph.append("g").attr("class", "axis").attr("transform", "translate(0, " + _this.height + ")").call(xAxis);
+          graph.selectAll("x label").remove();
           graph.append("text").attr("class", "x label").attr("text-anchor", "end").attr("x", _this.width + 13).attr("y", _this.height + 25).text("request time [s]");
+          graph.selectAll("y label").remove();
           graph.append("text").attr("class", "y label").attr("text-anchor", "end").attr("y", -36).attr("dy", ".75em").attr("transform", "rotate(-90)").text("response time [s]");
           marks = graph.selectAll(".mark").data(data.samples).attr("class", function(d) {
             if (d.failed) {

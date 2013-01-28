@@ -62,6 +62,7 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
           .call(xAxis)
 
         #Axis labels
+        graph.selectAll("x label").remove()
         graph.append("text")
           .attr("class", "x label")
           .attr("text-anchor", "end")
@@ -69,6 +70,7 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
           .attr("y", @height + 25)
           .text("request time [s]")
 
+        graph.selectAll("y label").remove()
         graph.append("text")
           .attr("class", "y label")
           .attr("text-anchor", "end")
