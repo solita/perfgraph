@@ -24,6 +24,11 @@ testCaseIds = _.values testCases
 db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
 tulosteet   = db.then (db) -> Q.ninvoke db, "collection", "tulosteet"
 
+tulosteet
+  .then((tulosteet) ->
+    Q.ninvoke tulosteet, 'ensureIndex', {build: 1, elapsedTime: 1})
+  .fail(logger)
+
 exports.testCaseUrl = (build, testCase) ->
   "http://#{hostname}:#{port}/job/#{projectName}/#{build}/artifact/kios-tp-performance/target/jmeter/report/#{testCase}"
 

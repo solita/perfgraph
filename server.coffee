@@ -4,7 +4,11 @@ path          = require "path"
 io            = require "socket.io"
 tulosteet     = require "./server/tulosteet"
 eraajot       = require "./server/eraajot"
+memwatch      = require "memwatch"
 app           = express()
+
+memwatch.on('leak', (info) -> console.log info)
+memwatch.on('stats', (stats) -> console.log stats)
 
 app.configure ->
   app.set "port", process.env.PORT or 3000
