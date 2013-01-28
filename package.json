@@ -1,24 +1,25 @@
 {
-    "name": "application-name"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "coffee-script": ">= 1.4.0",
-      "express": ">= 3.0.4",
-      "q": ">= 0.8.11",
-      "mongodb": ">= 1.2.5",
-      "d3": ">= 2.10.3",
-      "lodash": ">= 1.00",
-      "request": ">= 2.12",
-      "xml2js": ">= 0.2.2",
-      "sax": ">= 0.4.3",
-      "socket.io": ">= 0.9.11",
-      "moment": ">= 1.6.0"
-  }
-  , "devDependencies": {
-      "grunt-contrib-coffee": ">= 0.3.2",
-      "grunt-contrib-jade": ">= 0.3.1",
-      "grunt-contrib-stylus": ">= 0.3.1",
-      "grunt-reload": ">= 0.2.0"
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "coffee-script": ">= 1.4.0",
+    "express": ">= 3.0.4",
+    "q": ">= 0.8.11",
+    "mongodb": ">= 1.2.5",
+    "d3": ">= 2.10.3",
+    "lodash": ">= 1.00",
+    "request": ">= 2.12",
+    "xml2js": ">= 0.2.2",
+    "sax": ">= 0.4.3",
+    "socket.io": ">= 0.9.11",
+    "moment": ">= 1.6.0",
+    "memwatch": "~0.2.0"
+  },
+  "devDependencies": {
+    "grunt-contrib-coffee": ">= 0.3.2",
+    "grunt-contrib-jade": ">= 0.3.1",
+    "grunt-contrib-stylus": ">= 0.3.1",
+    "grunt-reload": ">= 0.2.0"
   }
 }
