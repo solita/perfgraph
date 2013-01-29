@@ -39,12 +39,9 @@
             return z(d[0].testCaseId);
           });
           lines.exit().remove();
-          graph.append("g").attr("class", "axis").call(yAxis);
-          graph.append("g").attr("class", "axis").attr("transform", "translate(0, " + _this.height + ")").call(xAxis);
-          graph.selectAll(".x.label").remove();
-          graph.append("text").attr("class", "x label").attr("text-anchor", "end").attr("x", _this.width + 7).attr("y", _this.height + 20).text("build #");
-          graph.selectAll(".y.label").remove();
-          return graph.append("text").attr("class", "y label").attr("text-anchor", "end").attr("y", -36).attr("dy", ".75em").attr("transform", "rotate(-90)").text("throughput [1/s]");
+          graph.selectAll(".axis").remove();
+          graph.append("g").attr("class", "y axis").call(yAxis).append("text").attr("class", "y label").attr("text-anchor", "end").attr("y", -36).attr("dy", ".75em").attr("transform", "rotate(-90)").text("throughput [1/s]");
+          return graph.append("g").attr("class", "x axis").attr("transform", "translate(0, " + _this.height + ")").call(xAxis).append("text").attr("class", "x label").attr("text-anchor", "end").attr("x", _this.width + 7).attr("y", 20).text("build #");
         });
       };
 

@@ -41,24 +41,8 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("class", "y axis")
           .call(yAxis)
 
-        graph.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0, #{@height})")
-          .call(xAxis)
-          .selectAll("text")
-          .classed("hidden", (build) -> [firstBuild, lastBuild].indexOf(build) < 0)
-
-        #Axis labels
-        graph.selectAll(".x.label").remove()
-        graph.append("text")
-          .attr("class", "x label")
-          .attr("text-anchor", "end")
-          .attr("x", @width + 7)
-          .attr("y", @height + 20)
-          .text("build #")
-
-        graph.selectAll(".y.label").remove()
-        graph.append("text")
+        graph.select(".y.axis")
+          .append("text")
           .attr("class", "y label")
           .attr("text-anchor", "end")
           .attr("y", -36)
@@ -66,10 +50,25 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("transform", "rotate(-90)")
           .text("response time [s]")
 
-        labels    = graph.selectAll(".x.axis text")
+        graph.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0, #{@height})")
+          .call(xAxis)
+          .selectAll("text")
+          .attr("class", "build")
+          .classed("hidden", (build) -> build not in [firstBuild, lastBuild])
+
+        graph.select(".x.axis")
+          .append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "end")
+          .attr("x", @width + 7)
+          .attr("y", 20)
+          .text("build #")
+
+        labels    = graph.selectAll(".x.axis .build")
         showLabel = (d) ->
-          labels.classed("hidden", (build) ->
-            [firstBuild, lastBuild, d.build].indexOf(build) < 0)
+          labels.classed("hidden", (build) -> build not in [firstBuild, lastBuild, d.build])
 
         tiles = graph.selectAll(".tile")
           .data(data.buckets)

@@ -49,29 +49,26 @@ define ["jquery", "d3", "lodash"], ($, d3, _) ->
 
         lines.exit().remove()
 
+        graph.selectAll(".axis").remove()
+
         graph.append("g")
-          .attr("class", "axis")
+          .attr("class", "y axis")
           .call(yAxis)
-
-        graph.append("g")
-          .attr("class", "axis")
-          .attr("transform", "translate(0, #{@height})")
-          .call(xAxis)
-
-        #Axis labels
-        graph.selectAll(".x.label").remove()
-        graph.append("text")
-          .attr("class", "x label")
-          .attr("text-anchor", "end")
-          .attr("x", @width + 7)
-          .attr("y", @height + 20)
-          .text("build #")
-
-        graph.selectAll(".y.label").remove()
-        graph.append("text")
+          .append("text")
           .attr("class", "y label")
           .attr("text-anchor", "end")
           .attr("y", -36)
           .attr("dy", ".75em")
           .attr("transform", "rotate(-90)")
           .text("throughput [1/s]")
+
+        graph.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0, #{@height})")
+          .call(xAxis)
+          .append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "end")
+          .attr("x", @width + 7)
+          .attr("y", 20)
+          .text("build #")
