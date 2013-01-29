@@ -73,5 +73,6 @@ exports.parseResults = (testData) ->
       elapsedTime:    parseInt(data["y:tiedostonLuonninKestoMillisekunteina"][0]) / 1000
       timeStamp:      moment(data["y:tiedostonLuontiaika"][0]).valueOf()
       itemCount:      parseInt data["y:kohteidenLukumaara"][0]
+      errorCount:     parseInt data["y:virheellistenKohteidenLukumaara"]?.at(0) || 0
 
 pullUtil = new PullUtil(hostname, port, projectName, testCases, exports)
