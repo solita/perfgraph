@@ -12,7 +12,7 @@ define ["jquery", "d3", "lodash"], ($, d3, _) ->
           .range([0, @width])
           .nice()
 
-        y = d3.scale.linear()
+        y = d3.scale.sqrt()
           .domain(d3.extent _.flatten(data), (d) -> d.throughput)
           .range([@height, 0])
           .nice()
