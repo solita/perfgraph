@@ -14,7 +14,7 @@
       EraajoThroughput.prototype.update = function() {
         var _this = this;
         return $.getJSON(this.url, function(data) {
-          var graph, line, x, xAxis, y, yAxis, z;
+          var graph, line, lines, x, xAxis, y, yAxis, z;
           x = d3.scale.linear().domain(d3.extent(_.flatten(data), function(d) {
             return d.build;
           })).range([0, _this.width]).nice();
@@ -32,9 +32,13 @@
           }).y(function(d) {
             return y(d.throughput);
           });
-          graph.selectAll(".line").data(data).enter().append("path").attr("class", "line").attr("d", line).style("stroke", function(d) {
+          lines = graph.selectAll(".line").data(data).attr("d", line).style("stroke", function(d) {
             return z(d[0].testCaseId);
           });
+          lines.enter().append("path").attr("class", "line").attr("d", line).style("stroke", function(d) {
+            return z(d[0].testCaseId);
+          });
+          lines.exit().remove();
           graph.append("g").attr("class", "axis").call(yAxis);
           graph.append("g").attr("class", "axis").attr("transform", "translate(0, " + _this.height + ")").call(xAxis);
           graph.selectAll(".x.label").remove();

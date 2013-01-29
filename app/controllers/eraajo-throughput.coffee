@@ -37,12 +37,17 @@ define ["jquery", "d3", "lodash"], ($, d3, _) ->
           .x((d) -> x(d.build))
           .y((d) -> y(d.throughput))
 
-        graph.selectAll(".line")
-            .data(data)
-          .enter().append("path")
-            .attr("class", "line")
-            .attr("d", line)
-            .style("stroke", (d) -> z(d[0].testCaseId))
+        lines = graph.selectAll(".line").data(data)
+          .attr("d", line)
+          .style("stroke", (d) -> z(d[0].testCaseId))
+
+        lines.enter()
+          .append("path")
+          .attr("class", "line")
+          .attr("d", line)
+          .style("stroke", (d) -> z(d[0].testCaseId))
+
+        lines.exit().remove()
 
         graph.append("g")
           .attr("class", "axis")
