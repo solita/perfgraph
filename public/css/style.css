@@ -5,7 +5,7 @@ th{font-weight:normal}
 .test-case-container{float:left;margin:10 0 60 0;padding:0;height:25%;width:50%}
 .test-case-container .title{text-align:center}
 .test-case-container .graph{padding:5 15 30 40;float:left;width:38%;height:80%;margin:10 0 0 10}
-.eraajo-status{margin-top:10;font-size:small;float:left}
+.eraajo-status{padding:5 15 30 40;margin:10 0 0 10;font-size:small;float:left}
 .eraajo-status .throughput,.eraajo-status .errors{text-align:right}
 .eraajo-status div{clear:both}
 .eraajo-status span{display:inline-block;height:20;float:left;margin-right:5}
