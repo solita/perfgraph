@@ -21,7 +21,7 @@ define (require) ->
           g.elem.on("click", (d) -> page "/reports/#{t}/latest")
           g
 
-      eraajoTroughput = new EraajoTroughput @elem.find(".era-ajo.throughput"), "/eraajo-throughput.json"
+      eraajoTroughput = new EraajoTroughput @elem.find(".eraajo.throughput"), "/eraajo-throughput.json"
       @graphs = responseTimeTrends.concat responseTimeLatests, [eraajoTroughput]
 
       @updateButton = $(".update")

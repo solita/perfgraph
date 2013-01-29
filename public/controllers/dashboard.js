@@ -46,7 +46,7 @@
           }
           return _results;
         }).call(this);
-        eraajoTroughput = new EraajoTroughput(this.elem.find(".era-ajo.throughput"), "/eraajo-throughput.json");
+        eraajoTroughput = new EraajoTroughput(this.elem.find(".eraajo.throughput"), "/eraajo-throughput.json");
         this.graphs = responseTimeTrends.concat(responseTimeLatests, [eraajoTroughput]);
         this.updateButton = $(".update");
         this.updateProgressIcon = $(".progress");
