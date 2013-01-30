@@ -1,6 +1,6 @@
 (function() {
 
-  define(["jquery", "d3", "lodash"], function($, d3, _) {
+  define(["jquery", "d3", "lodash", "transparency"], function($, d3, _) {
     var EraajoThroughput;
     return EraajoThroughput = (function() {
 
@@ -14,7 +14,7 @@
       EraajoThroughput.prototype.update = function() {
         var _this = this;
         return $.getJSON(this.url, function(data) {
-          var graph, line, lines, x, xAxis, y, yAxis, z;
+          var graph, legendData, line, lines, x, xAxis, y, yAxis, z;
           x = d3.scale.linear().domain(d3.extent(_.flatten(data), function(d) {
             return d.build;
           })).range([0, _this.width]).nice();
@@ -24,6 +24,23 @@
           z = d3.scale.category10().domain(_.flatten(data).map(function(d) {
             return d.testCaseId;
           }));
+          legendData = data.map(function(d) {
+            var latestBuild;
+            latestBuild = _.last(d);
+            return {
+              testCaseId: latestBuild.testCaseId,
+              build: latestBuild.build,
+              throughput: latestBuild.throughput.toFixed(1),
+              errorCount: latestBuild.errorCount
+            };
+          });
+          $(".eraajo-status .body").render(legendData, {
+            stroke: {
+              style: function() {
+                return "background-color: " + (z(this.testCaseId));
+              }
+            }
+          });
           xAxis = d3.svg.axis().scale(x).ticks(0).tickSize(0);
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(5).tickSize(3);
           graph = d3.select(_this.elem[0]);

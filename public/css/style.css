@@ -5,14 +5,15 @@ th{font-weight:normal}
 .test-case-container{float:left;margin:10 0 60 0;padding:0;height:25%;width:50%}
 .test-case-container .title{text-align:center}
 .test-case-container .graph{padding:5 15 30 40;float:left;width:38%;height:80%;margin:10 0 0 10}
+.eraajo.graph .line{stroke-width:2}
 .eraajo-status{padding:5 15 30 40;margin:10 0 0 10;font-size:small;float:left}
-.eraajo-status .throughput,.eraajo-status .errors{text-align:right}
 .eraajo-status div{clear:both}
 .eraajo-status span{display:inline-block;height:20;float:left;margin-right:5}
 .eraajo-status .stroke{width:1em;height:1em;margin-top:3}
-.eraajo-status .label{width:60}
-.eraajo-status .throughput{width:50}
-.eraajo-status .errors{width:50}
+.eraajo-status .build{width:40;text-align:right}
+.eraajo-status .testCaseId{width:60}
+.eraajo-status .throughput{width:50;text-align:right}
+.eraajo-status .errorCount{width:50;text-align:right}
 .status{position:absolute;font-size:small;top:5;right:10;margin-top:0}
 .status .update{float:left}
 .status .progress{float:left;margin-right:10;margin-top:2}
@@ -26,7 +27,6 @@ path{fill:none}
 .boxplot.percentiles{stroke-width:5px}
 .boxplot.percentiles:hover{cursor:hand;stroke-width:7px;stroke:#add8e6}
 .boxplot.median{stroke-width:1px;stroke:#fff}
-.line{stroke:#800000}
 .axis text{font-size:11px}
 .axis path,.axis line{fill:none;stroke:#808080;shape-rendering:crispEdges}
 .report{margin-left:20px}

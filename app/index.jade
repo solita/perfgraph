@@ -38,16 +38,19 @@ html(lang="en")
         .title Eräajot
         svg.graph.eraajo.throughput
         .eraajo-status
-          div
+          .head
             span.title.stroke
-            span.title.label
+            span.title.testCaseId
+            span.build Build
             span.title.throughput T [1/s]
-            span.title.errors Errors
-          div
-            span.stroke(style="background-color: #1f77b4")
-            span.label eahl/kunta
-            span.throughput N/A
-            span.errors N/A
+            span.title.errorCount Errors
+          .body
+            .row
+              span.stroke
+              span.testCaseId
+              span.build
+              span.throughput
+              span.errorCount
 
 
     .report

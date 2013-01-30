@@ -32,14 +32,14 @@ th
   height 80%
   margin 10 0 0 10
 
+.eraajo.graph .line
+  stroke-width 2
+
 .eraajo-status
   padding 5 15 30 40
   margin 10 0 0 10
   font-size small
   float left
-
-.eraajo-status .throughput, .eraajo-status .errors
-  text-align right
 
 .eraajo-status div
   clear both
@@ -55,14 +55,20 @@ th
   height 1em
   margin-top 3
 
-.eraajo-status .label
+.eraajo-status .build
+  width 40
+  text-align right
+
+.eraajo-status .testCaseId
   width 60
 
 .eraajo-status .throughput
   width 50
+  text-align right
 
-.eraajo-status .errors
+.eraajo-status .errorCount
   width 50
+  text-align right
 
 .status
   position absolute
@@ -113,9 +119,6 @@ path
 .boxplot.median
   stroke-width 1px
   stroke white
-
-.line
-  stroke maroon
 
 .axis text
   font-size 11px
