@@ -10,7 +10,7 @@
         this.markSize = markSize;
       }
 
-      ResponseTimeScatterPlot.prototype.update = function(url) {
+      ResponseTimeScatterPlot.prototype.update = function(url, cb) {
         var _this = this;
         if (url == null) {
           url = this.url;
@@ -18,18 +18,10 @@
         this.height = this.elem.height();
         this.width = this.elem.width();
         return $.getJSON(url, function(data) {
-          var graph, marks, sample, sampleFormatter, showSample, x, xAxis, y, yAxis;
-          sampleFormatter = function(d) {
-            d.elapsedTimeStr = d.elapsedTime.toFixed(3);
-            return d;
-          };
-          _this.elem.find(".tops .response-time").render(data.samples.map(sampleFormatter), {
-            label: {
-              href: function() {
-                return this.label;
-              }
-            }
-          });
+          var graph, marks, sample, showSample, x, xAxis, y, yAxis;
+          if (cb) {
+            cb(data);
+          }
           _this.elem.find(".testCaseId").text(url);
           x = d3.scale.linear().domain([
             d3.min(data.samples, function(d) {

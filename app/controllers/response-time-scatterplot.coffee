@@ -3,16 +3,12 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
   class ResponseTimeScatterPlot
     constructor: (@elem, @url, @markSize) ->
 
-    update: (url = @url) ->
+    update: (url = @url, cb) ->
       @height = @elem.height()
       @width  = @elem.width()
 
       $.getJSON url, (data) =>
-        sampleFormatter = (d) ->
-          d.elapsedTimeStr = d.elapsedTime.toFixed 3
-          d
-
-        @elem.find(".tops .response-time").render data.samples.map(sampleFormatter), label: href: -> @label
+        cb(data) if cb
 
         @elem.find(".testCaseId").text url
 
@@ -92,5 +88,4 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
           .on("mouseover", showSample)
 
         marks.exit().remove()
-
 

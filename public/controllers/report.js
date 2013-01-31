@@ -3,6 +3,22 @@
   define(["jquery", "d3", "controllers/response-time-scatterplot"], function($, d3, ResponseTimeScatterPlot) {
     var ReportController;
     return ReportController = (function() {
+      var sampleFormatter, updateTopsList;
+
+      sampleFormatter = function(d) {
+        d.elapsedTimeStr = d.elapsedTime.toFixed(3);
+        return d;
+      };
+
+      updateTopsList = function(data) {
+        return $(".tops .response-time").render(data.samples.map(sampleFormatter), {
+          label: {
+            href: function() {
+              return this.label;
+            }
+          }
+        });
+      };
 
       function ReportController(elem) {
         this.elem = elem;
@@ -17,7 +33,7 @@
         this.elem.find(".testCaseId").text(testCase);
         this.elem.find(".build").text(build);
         this.elem.removeClass("hidden");
-        return this.scatterPlot.update("/reports/" + testCase + "/" + build + ".json");
+        return this.scatterPlot.update("/reports/" + testCase + "/" + build + ".json", updateTopsList);
       };
 
       return ReportController;
