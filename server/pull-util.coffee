@@ -5,15 +5,14 @@ logger      = require("./logger").logger
 class PullUtil
   # Entity is the one who knows how to get
   # testCaseUrl, buildListUrl, latestBuilds, parseResults and saveResults
-  constructor: (@hostname, @port, @projectName, @testCases, @entity) ->
+  constructor: (@hostname, @port, @projectName, @testCaseFiles, @entity) ->
     @urlId = 0
     @urlDone = 0
 
   newTestFiles: () ->
     @newBuildNums().then((buildNumbers) =>
-      jtlFiles = Object.keys(@testCases)
 
-      reducer = (res, build) => res.concat(for tc in jtlFiles
+      reducer = (res, build) => res.concat(for tc in @testCaseFiles
         @getTestFile({build: build, testCase: tc})
           .then(@entity.parseResults)
           .then(@entity.saveResults)

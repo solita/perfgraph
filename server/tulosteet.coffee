@@ -139,4 +139,4 @@ exports.parseResults = (testData) ->
         assertion["errorMessage"]   = s.errorMessage[0]   if s.errorMessage
         assertion
 
-pullUtil = new PullUtil(hostname, port, projectName, testCases, exports)
+pullUtil = new PullUtil(hostname, port, projectName, _.keys(testCases), exports)

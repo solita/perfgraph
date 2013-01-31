@@ -13,13 +13,18 @@ port        = 9080
 projectName = "KIOS%20Perf%20Test%20TP%20eraajo%20velocity"
 
 testCases =
-  '01-ealh-kunta-md.xml': 'ealh/kunta'
-  '02-kypt-kunta-md.xml': 'kypt/kunta'
+  '01-ealh-kunta-md.xml':
+    id:  'ealh/kunta'
+    api: 'eraajo'
+  '02-kypt-kunta-md.xml':
+    id:  'kypt/kunta'
+    api: 'kyselypalvelu'
 
-testCaseIds = _.values testCases
+testCaseIds = _.map testCases, (a) -> a.id
+console.log testCaseIds
 
-db          = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
-eraajot     = db.then (db) -> Q.ninvoke db, "collection", "eraajot"
+db            = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
+eraajot       = db.then (db) -> Q.ninvoke db, "collection", "eraajot"
 
 exports.processTestResults = () ->
   pullUtil.newTestFiles().fail(logger).allResolved().then(-> db).then((db)-> db.close()).done()
@@ -39,9 +44,10 @@ exports.saveResults = (results) ->
     .then((eraajot) -> Q.ninvoke eraajot, "insert", results)
     .fail(logger)
 
-exports.throughput = () ->
+exports.throughput = (api) ->
+  console.log api
   eraajot.then( (eraajot) ->
-    cursor = eraajot.find( {}, { testCaseId: 1, build: 1, itemCount: 1, elapsedTime: 1, errorCount: 1, _id: 0 } ).sort({build: 1})
+    cursor = eraajot.find( {api: api}, {testCaseId: 1, build: 1, itemCount: 1, elapsedTime: 1, errorCount: 1, _id: 0 } ).sort({build: 1})
     Q.ninvoke(cursor, "toArray").then( (results) ->
       results = _.map results, (d) ->
         d.throughput = d.itemCount / d.elapsedTime
@@ -55,23 +61,20 @@ exports.throughput = () ->
 exports.parseResults = (testData) ->
   tr = testData.d
   url = testData.url
-  logger "Parsing JTL test file: build ##{tr.build}, test case #{tr.testCase}"
-
-  # xml2js uses sax-js, which often fails for invalid xml files
-  # Use ugly regexp to "validate" JML by checking the existence of the end tag
-  # unless tr.samples.match /<\/testResults>/
-  #   throw new Error("Invalid JML file. Url: #{url}")
+  logger "Parsing test file: build ##{tr.build}, test case #{tr.testCase}"
 
   parser = new xml2js.Parser()
   Q.ninvoke(parser, "parseString", tr.samples).then (bodyJson) ->
     data = bodyJson["y:metatiedot"]
+    throw Error("No 'metatiedot' tag found") unless data
     result =
-      testCaseId:     testCases[tr.testCase]
-      testCase:       tr.testCase
-      build:          parseInt tr.build
-      elapsedTime:    parseInt(data["y:tiedostonLuonninKestoMillisekunteina"][0]) / 1000
-      timeStamp:      moment(data["y:tiedostonLuontiaika"][0]).valueOf()
-      itemCount:      parseInt data["y:kohteidenLukumaara"][0]
-      errorCount:     parseInt data["y:virheellistenKohteidenLukumaara"]?.at(0) || 0
+      api:         testCases[tr.testCase]?.api
+      testCaseId:  testCases[tr.testCase]?.id
+      testCase:    tr.testCase
+      build:       parseInt tr.build
+      elapsedTime: parseInt(data["y:tiedostonLuonninKestoMillisekunteina"][0]) / 1000
+      timeStamp:   moment(data["y:tiedostonLuontiaika"][0]).valueOf()
+      itemCount:   parseInt data["y:kohteidenLukumaara"][0]
+      errorCount:  parseInt data["y:virheellistenKohteidenLukumaara"]?[0] || 0
 
-pullUtil = new PullUtil(hostname, port, projectName, testCases, exports)
+pullUtil = new PullUtil(hostname, port, projectName, _.keys(testCases), exports)

@@ -70,8 +70,8 @@
           }
           return _results;
         }).call(this);
-        eaTroughput = new TroughputLine(this.elem.find(".eraajo.throughput"), "/ea-throughput.json", updateCallback(this.elem.find(".eraajo.tietopalvelu.status .tbody")));
-        kpTroughput = new TroughputLine(this.elem.find(".kyselypalvelu.throughput"), "/kp-throughput.json", updateCallback(this.elem.find(".kyselypalvelu.tietopalvelu.status .tbody")));
+        eaTroughput = new TroughputLine(this.elem.find(".eraajo.throughput"), "/eraajo/throughput.json", updateCallback(this.elem.find(".eraajo.tietopalvelu.status .tbody")));
+        kpTroughput = new TroughputLine(this.elem.find(".kyselypalvelu.throughput"), "/kyselypalvelu/throughput.json", updateCallback(this.elem.find(".kyselypalvelu.tietopalvelu.status .tbody")));
         this.graphs = responseTimeTrends.concat(responseTimeLatests, [eaTroughput, kpTroughput]);
         this.updateButton = $(".update");
         this.updateProgressIcon = $(".progress");

@@ -19,9 +19,11 @@
           x = d3.scale.linear().domain(d3.extent(_.flatten(data), function(d) {
             return d.build;
           })).range([0, _this.width]).nice();
-          y = d3.scale.sqrt().domain(d3.extent(_.flatten(data), function(d) {
-            return d.throughput;
-          })).range([_this.height, 0]).nice();
+          y = d3.scale.sqrt().domain([
+            0, d3.max(_.flatten(data), function(d) {
+              return d.throughput;
+            })
+          ]).range([_this.height, 0]).nice();
           z = d3.scale.category10().domain(_.flatten(data).map(function(d) {
             return d.testCaseId;
           }));

@@ -3,7 +3,7 @@ http          = require "http"
 path          = require "path"
 io            = require "socket.io"
 tulosteet     = require "./server/tulosteet"
-eraajot       = require "./server/eraajot"
+tietopalvelut = require "./server/tietopalvelut"
 memwatch      = require "memwatch"
 exec          = require('child_process').exec
 app           = express()
@@ -38,13 +38,8 @@ app.get "/error-trend/:testCase", ({params: {testCaseId}}, res) ->
     .then((trend) -> res.send trend)
     .done()
 
-app.get "/ea-throughput.json", (req, res) ->
-  eraajot.throughput()
-    .then((trend) -> res.send trend)
-    .done()
-
-app.get "/kp-throughput.json", (req, res) ->
-  eraajot.throughput()
+app.get "/:api/throughput.json", ({params: {api}}, res) ->
+  tietopalvelut.throughput(api)
     .then((trend) -> res.send trend)
     .done()
 

@@ -1,5 +1,5 @@
-tulosteet = require "./tulosteet"
-eraajot   = require "./eraajot"
+#tulosteet     = require "./tulosteet"
+tietopalvelut = require "./tietopalvelut"
 
-tulosteet.processTestResults()
-eraajot.processTestResults()
+#tulosteet.processTestResults()
+tietopalvelut.processTestResults()

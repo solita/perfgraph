@@ -35,8 +35,8 @@ define (require) ->
           g.elem.on("click", (d) -> page "/reports/#{t}/latest")
           g
 
-      eaTroughput = new TroughputLine @elem.find(".eraajo.throughput"), "/ea-throughput.json", updateCallback @elem.find ".eraajo.tietopalvelu.status .tbody"
-      kpTroughput = new TroughputLine @elem.find(".kyselypalvelu.throughput"), "/kp-throughput.json", updateCallback @elem.find ".kyselypalvelu.tietopalvelu.status .tbody"
+      eaTroughput = new TroughputLine @elem.find(".eraajo.throughput"), "/eraajo/throughput.json", updateCallback @elem.find ".eraajo.tietopalvelu.status .tbody"
+      kpTroughput = new TroughputLine @elem.find(".kyselypalvelu.throughput"), "/kyselypalvelu/throughput.json", updateCallback @elem.find ".kyselypalvelu.tietopalvelu.status .tbody"
       @graphs = responseTimeTrends.concat responseTimeLatests, [eaTroughput, kpTroughput]
 
       @updateButton = $(".update")

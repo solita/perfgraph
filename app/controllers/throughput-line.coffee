@@ -14,7 +14,7 @@ define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
           .nice()
 
         y = d3.scale.sqrt()
-          .domain(d3.extent _.flatten(data), (d) -> d.throughput)
+          .domain([0, d3.max _.flatten(data), (d) -> d.throughput])
           .range([@height, 0])
           .nice()
 
