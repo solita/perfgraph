@@ -36,10 +36,9 @@ class PullUtil
   getTestFile: (d) ->
     logger "Processing build ##{d.build}, test case #{d.testCase}"
     url = @entity.testCaseUrl d.build, d.testCase
-    @get(url).then (samples) ->
-      fileSize = (samples.charCodeAt(i) for s, i in samples).length
-      logger "build ##{d.build}, test case #{d.testCase} downloaded. File size: #{fileSize}"
-      d.samples = samples
+    @get(url).then (body) ->
+      logger "build ##{d.build}, test case #{d.testCase} downloaded. File size: #{body.length}"
+      d.samples = body
       testData =
         d: d
         url: url
@@ -58,7 +57,7 @@ class PullUtil
     myUrlId = @urlId
     logger "Processing url: ##{@urlId} = #{url}"
     req = request {url: url, timeout: 60000}, (err, res, body) =>
-      if err or res.statusCode != 200
+      if err or res.statusCode != 200 or !body
         @urlDone = @urlDone + 1
         logger "Failed url ##{myUrlId}. #{@urlId-@urlDone} in queue"
         deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode} url: ##{myUrlId}"
