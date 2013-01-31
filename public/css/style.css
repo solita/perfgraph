@@ -2,21 +2,21 @@ body{padding:0;margin:0;font-family:arial}
 th{font-weight:normal}
 .clear{clear:both}
 .dashboard{position:absolute;top:0;bottom:0;width:100%}
-.test-case-container{float:left;margin:10 0 60 0;padding:0;height:25%;width:50%}
-.test-case-container .title{text-align:center}
-.test-case-container .graph{padding:5 15 30 40;float:left;width:38%;height:80%;margin:10 0 0 10}
-.eraajo.graph .line{stroke-width:2}
-.eraajo-status{padding:5 15 30 40;margin:10 0 0 10;font-size:small;float:left}
-.eraajo-status div{clear:both}
-.eraajo-status span{display:inline-block;height:20;float:left;margin-right:5}
-.eraajo-status .stroke{width:1em;height:1em;margin-top:3}
-.eraajo-status .build{width:40;text-align:right}
-.eraajo-status .testCaseId{width:60}
-.eraajo-status .throughput{width:50;text-align:right}
-.eraajo-status .errorCount{width:50;text-align:right}
-.status{position:absolute;font-size:small;top:5;right:10;margin-top:0}
-.status .update{float:left}
-.status .progress{float:left;margin-right:10;margin-top:2}
+.dashboard .test-case-container{float:left;margin:10 0 60 0;padding:0;height:25%;width:50%}
+.dashboard .test-case-container .title{text-align:center}
+.dashboard .test-case-container .graph{padding:5 15 30 40;float:left;width:38%;height:80%;margin:10 0 0 10}
+.tietopalvelu.graph .line{stroke-width:2}
+.tietopalvelu.status{padding:5 15 30 40;margin:10 0 0 10;font-size:small;float:left}
+.tietopalvelu.status div{clear:both}
+.tietopalvelu.status span{display:inline-block;height:20;float:left;margin-right:5}
+.tietopalvelu.status .stroke{width:1em;height:1em;margin-top:3}
+.tietopalvelu.status .build{width:40;text-align:right}
+.tietopalvelu.status .testCaseId{width:60}
+.tietopalvelu.status .throughput{width:50;text-align:right}
+.tietopalvelu.status .errorCount{width:50;text-align:right}
+.update-status{position:absolute;font-size:small;top:5;right:10;margin-top:0}
+.update-status .update{float:left}
+.update-status .progress{float:left;margin-right:10;margin-top:2}
 .tops{width:90%}
 .dashboard .mark{stroke-width:1;fill:none}
 .dashboard .mark.failed{stroke:#800000}

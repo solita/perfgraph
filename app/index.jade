@@ -9,7 +9,7 @@ html(lang="en")
   body
 
     .dashboard
-      .status
+      .update-status
         .progress.hidden
           img(src="/images/ajax-loader.gif")
         button.update Update now
@@ -36,15 +36,33 @@ html(lang="en")
 
       .test-case-container
         .title Eräajot
-        svg.graph.eraajo.throughput
-        .eraajo-status
-          .head
+        svg.graph.eraajo.tietopalvelu.throughput
+        .eraajo.tietopalvelu.status
+          .thead
             span.title.stroke
             span.title.testCaseId
             span.build Build
             span.title.throughput T [1/s]
             span.title.errorCount Errors
-          .body
+          .tbody
+            .row
+              span.stroke
+              span.testCaseId
+              span.build
+              span.throughput
+              span.errorCount
+
+      .test-case-container
+        .title Kyselypalvelu
+        svg.graph.kyselypalvelu.tietopalvelu.throughput
+        .kyselypalvelu.tietopalvelu.status
+          .thead
+            span.title.stroke
+            span.title.testCaseId
+            span.build Build
+            span.title.throughput T [1/s]
+            span.title.errorCount Errors
+          .tbody
             .row
               span.stroke
               span.testCaseId

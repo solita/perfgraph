@@ -2,18 +2,42 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   define(function(require) {
-    var $, DashboardController, EraajoTroughput, ErrorGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot, io, moment;
+    var $, DashboardController, ErrorGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot, TroughputLine, io, moment;
     $ = require("jquery");
     io = require("socket.io");
     moment = require("moment");
     ErrorGraph = require("controllers/error-graph");
     ResponseTimeHeatMap = require("controllers/response-time-heat-map");
     ResponseTimeScatterPlot = require("controllers/response-time-scatterplot");
-    EraajoTroughput = require("controllers/eraajo-throughput");
+    TroughputLine = require("controllers/throughput-line");
     return DashboardController = (function() {
+      var updateCallback;
+
+      updateCallback = function(elem) {
+        return function(data, z) {
+          var legendData;
+          legendData = data.map(function(d) {
+            var latestBuild;
+            latestBuild = _.last(d);
+            return {
+              testCaseId: latestBuild.testCaseId,
+              build: latestBuild.build,
+              throughput: latestBuild.throughput.toFixed(1),
+              errorCount: latestBuild.errorCount
+            };
+          });
+          return elem.render(legendData, {
+            stroke: {
+              style: function() {
+                return "background-color: " + (z(this.testCaseId));
+              }
+            }
+          });
+        };
+      };
 
       function DashboardController(elem) {
-        var eraajoTroughput, responseTimeLatests, responseTimeTrends, t, testCases;
+        var eaTroughput, kpTroughput, responseTimeLatests, responseTimeTrends, t, testCases;
         this.elem = elem;
         this.update = __bind(this.update, this);
 
@@ -46,8 +70,9 @@
           }
           return _results;
         }).call(this);
-        eraajoTroughput = new EraajoTroughput(this.elem.find(".eraajo.throughput"), "/eraajo-throughput.json");
-        this.graphs = responseTimeTrends.concat(responseTimeLatests, [eraajoTroughput]);
+        eaTroughput = new TroughputLine(this.elem.find(".eraajo.throughput"), "/ea-throughput.json", updateCallback(this.elem.find(".eraajo.tietopalvelu.status .tbody")));
+        kpTroughput = new TroughputLine(this.elem.find(".kyselypalvelu.throughput"), "/kp-throughput.json", updateCallback(this.elem.find(".kyselypalvelu.tietopalvelu.status .tbody")));
+        this.graphs = responseTimeTrends.concat(responseTimeLatests, [eaTroughput, kpTroughput]);
         this.updateButton = $(".update");
         this.updateProgressIcon = $(".progress");
         this.updateButton.on("click", this.processBuilds);

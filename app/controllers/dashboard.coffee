@@ -6,9 +6,23 @@ define (require) ->
   ErrorGraph              = require "controllers/error-graph"
   ResponseTimeHeatMap     = require "controllers/response-time-heat-map"
   ResponseTimeScatterPlot = require "controllers/response-time-scatterplot"
-  EraajoTroughput         = require "controllers/eraajo-throughput"
+  TroughputLine           = require "controllers/throughput-line"
 
   class DashboardController
+
+    updateCallback = (elem) ->
+      (data, z) ->
+        legendData = data.map (d) ->
+          latestBuild = _.last(d)
+
+          testCaseId: latestBuild.testCaseId
+          build:      latestBuild.build
+          throughput: latestBuild.throughput.toFixed 1
+          errorCount:     latestBuild.errorCount
+
+        elem.render legendData,
+          stroke: style: -> "background-color: #{z(@testCaseId)}"
+
     constructor: (@elem) ->
       testCases   = ["lh", "rt", "vo", "lhro"]
 
@@ -21,8 +35,9 @@ define (require) ->
           g.elem.on("click", (d) -> page "/reports/#{t}/latest")
           g
 
-      eraajoTroughput = new EraajoTroughput @elem.find(".eraajo.throughput"), "/eraajo-throughput.json"
-      @graphs = responseTimeTrends.concat responseTimeLatests, [eraajoTroughput]
+      eaTroughput = new TroughputLine @elem.find(".eraajo.throughput"), "/ea-throughput.json", updateCallback @elem.find ".eraajo.tietopalvelu.status .tbody"
+      kpTroughput = new TroughputLine @elem.find(".kyselypalvelu.throughput"), "/kp-throughput.json", updateCallback @elem.find ".kyselypalvelu.tietopalvelu.status .tbody"
+      @graphs = responseTimeTrends.concat responseTimeLatests, [eaTroughput, kpTroughput]
 
       @updateButton = $(".update")
       @updateProgressIcon = $(".progress")

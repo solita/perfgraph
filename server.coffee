@@ -38,7 +38,12 @@ app.get "/error-trend/:testCase", ({params: {testCaseId}}, res) ->
     .then((trend) -> res.send trend)
     .done()
 
-app.get "/eraajo-throughput.json", (req, res) ->
+app.get "/ea-throughput.json", (req, res) ->
+  eraajot.throughput()
+    .then((trend) -> res.send trend)
+    .done()
+
+app.get "/kp-throughput.json", (req, res) ->
   eraajot.throughput()
     .then((trend) -> res.send trend)
     .done()

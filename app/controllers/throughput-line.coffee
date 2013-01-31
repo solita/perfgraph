@@ -1,7 +1,7 @@
 define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
 
-  class EraajoThroughput
-    constructor: (@elem, @url) ->
+  class ThroughputLine
+    constructor: (@elem, @url, @updateCallback) ->
       @width  = @elem.width()
       @height = @elem.height()
 
@@ -21,16 +21,7 @@ define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
         z = d3.scale.category10()
           .domain(_.flatten(data).map (d) -> d.testCaseId)
 
-        legendData = data.map (d) ->
-          latestBuild = _.last(d)
-
-          testCaseId: latestBuild.testCaseId
-          build:      latestBuild.build
-          throughput: latestBuild.throughput.toFixed 1
-          errorCount:     latestBuild.errorCount
-
-        $(".eraajo-status .body").render legendData,
-          stroke: style: -> "background-color: #{z(@testCaseId)}"
+        @updateCallback(data, z) if @updateCallback
 
         xAxis = d3.svg.axis()
           .scale(x)
