@@ -7,26 +7,28 @@ define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
 
     update: ->
       $.getJSON @url, (data) =>
+        flatData = _.flatten(data)
 
         x = d3.scale.linear()
-          .domain(d3.extent _.flatten(data), (d) -> d.build)
+          .domain(d3.extent flatData, (d) -> d.build)
           .range([0, @width])
           .nice()
 
         y = d3.scale.sqrt()
-          .domain([0, d3.max _.flatten(data), (d) -> d.throughput])
+          .domain([0, d3.max flatData, (d) -> d.throughput])
           .range([@height, 0])
           .nice()
 
         z = d3.scale.category10()
-          .domain(_.flatten(data).map (d) -> d.testCaseId)
+          .domain(flatData.map (d) -> d.testCaseId)
 
         @updateCallback(data, z) if @updateCallback
 
         xAxis = d3.svg.axis()
           .scale(x)
-          .ticks(0)
           .tickSize(0)
+          .tickValues(flatData.map (d) -> d.build)
+          .tickFormat(d3.format(",.0f"))
 
         yAxis = d3.svg.axis()
           .scale(y)

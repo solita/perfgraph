@@ -15,22 +15,25 @@
       ThroughputLine.prototype.update = function() {
         var _this = this;
         return $.getJSON(this.url, function(data) {
-          var graph, line, lines, x, xAxis, y, yAxis, z;
-          x = d3.scale.linear().domain(d3.extent(_.flatten(data), function(d) {
+          var flatData, graph, line, lines, x, xAxis, y, yAxis, z;
+          flatData = _.flatten(data);
+          x = d3.scale.linear().domain(d3.extent(flatData, function(d) {
             return d.build;
           })).range([0, _this.width]).nice();
           y = d3.scale.sqrt().domain([
-            0, d3.max(_.flatten(data), function(d) {
+            0, d3.max(flatData, function(d) {
               return d.throughput;
             })
           ]).range([_this.height, 0]).nice();
-          z = d3.scale.category10().domain(_.flatten(data).map(function(d) {
+          z = d3.scale.category10().domain(flatData.map(function(d) {
             return d.testCaseId;
           }));
           if (_this.updateCallback) {
             _this.updateCallback(data, z);
           }
-          xAxis = d3.svg.axis().scale(x).ticks(0).tickSize(0);
+          xAxis = d3.svg.axis().scale(x).tickSize(0).tickValues(flatData.map(function(d) {
+            return d.build;
+          })).tickFormat(d3.format(",.0f"));
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(5).tickSize(3);
           graph = d3.select(_this.elem[0]);
           line = d3.svg.line().x(function(d) {
