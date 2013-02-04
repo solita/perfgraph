@@ -48,11 +48,15 @@ app.get "/reports/:testCaseId/:build.json", ({params: {testCaseId, build}}, res)
     .then((report) -> res.send report)
     .done()
 
+processingBuilds = false
 app.get "/process-builds", (req, res) ->
-  res.send 200;
-  exec 'coffee ./server/pull.coffee', (err, stdout, stderr) ->
-    console.log stdout, stderr
-    io.sockets.emit "change"
+  res.send 200
+  unless processingBuilds
+    processingBuilds = true
+    exec 'coffee ./server/pull.coffee', (err, stdout, stderr) ->
+      processingBuilds = false
+      console.log stdout, stderr
+      io.sockets.emit "change"
 
 app.get "/force-reload", (req, res) ->
   res.send 200; io.sockets.emit "reload"
