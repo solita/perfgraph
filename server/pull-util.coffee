@@ -29,7 +29,7 @@ class PullUtil
           newBuilds = availableBuildNums.filter (b) -> savedBuilds.indexOf(b) == -1
           logger "newBuilds: #{newBuilds}"
           # Limit batch download size to avoid timeouts
-          newBuilds[..10]))
+          newBuilds[-10..]))
       .fail(logger)
 
   getTestFile: (d) ->
