@@ -16,8 +16,23 @@ testCases =
   '01-ealh-kunta-md.xml':
     id:  'ealh/kunta'
     api: 'eraajo'
+  '01-ealh-muutos-md.xml':
+    id:  'ealh/muutos'
+    api: 'eraajo'
+  '01-ealh-luov-md.xml':
+    id:  'ealh/luov'
+    api: 'eraajo'
   '02-kypt-kunta-md.xml':
     id:  'kypt/kunta'
+    api: 'kyselypalvelu'
+  '02-kypt-muutos-md.xml':
+    id:  'kypt/muutos'
+    api: 'kyselypalvelu'
+  '02-kypt-luov-md.xml':
+    id:  'kypt/luov'
+    api: 'kyselypalvelu'
+  '05-kyom-tunnus-md.xml':
+    id:  'kypt/tunnus'
     api: 'kyselypalvelu'
 
 testCaseIds = _.map testCases, (a) -> a.id
