@@ -64,6 +64,7 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
         .sort({build: 1, elapsedTime: 1})
       Q.all([Q.ninvoke(cursor, "toArray"), maxResponseTimeInBuilds(latestBuilds)]))
     .spread((results, maxResponseTime) ->
+      console.log maxResponseTime
       responseTimesByBuild = _.groupBy(results, "build")
 
       responseTimesByBuildInBuckets = _.map responseTimesByBuild, (tulosteet, build) ->
