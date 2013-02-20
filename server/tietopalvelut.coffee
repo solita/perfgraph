@@ -54,24 +54,33 @@ exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit
     .then((eraajot) -> Q.ninvoke eraajot, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
 
+exports.latestBuildsForApi = latestBuildsForApi = (api, {limit} = {}) ->
+  eraajot
+    .then((eraajot) -> Q.ninvoke eraajot, "distinct", "build", api: api)
+    .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
+
 exports.saveResults = (results) ->
   eraajot
     .then((eraajot) -> Q.ninvoke eraajot, "insert", results)
     .fail(logger)
 
 exports.throughput = (api) ->
-  console.log api
-  eraajot.then( (eraajot) ->
-    cursor = eraajot.find( {api: api}, {testCaseId: 1, build: 1, itemCount: 1, elapsedTime: 1, errorCount: 1, _id: 0 } ).sort({build: 1})
-    Q.ninvoke(cursor, "toArray").then( (results) ->
-      results = _.map results, (d) ->
-        d.throughput = d.itemCount / d.elapsedTime
-        delete d.itemCount
-        delete d.elapsedTime
-        d
-      results = _.groupBy results, (d) -> d.testCaseId
-      _.values results
-      ))
+
+  Q.all([eraajot, latestBuildsForApi(api, limit:15)])
+    .spread((eraajot, latestBuildsForApi) ->
+      cursor = eraajot
+        .find(
+          {build: {"$in": latestBuildsForApi}, api: api},
+          {testCaseId: 1, build: 1, itemCount: 1, elapsedTime: 1, errorCount: 1, _id: 0 })
+        .sort({build: 1})
+      Q.ninvoke(cursor, "toArray").then( (results) ->
+        results = _.map results, (d) ->
+          d.throughput = d.itemCount / d.elapsedTime
+          delete d.itemCount
+          delete d.elapsedTime
+          d
+        results = _.groupBy results, (d) -> d.testCaseId
+        _.values results))
 
 exports.parseResults = (testData) ->
   tr = testData.d

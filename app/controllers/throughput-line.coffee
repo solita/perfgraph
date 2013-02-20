@@ -27,7 +27,7 @@ define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
         xAxis = d3.svg.axis()
           .scale(x)
           .tickSize(0)
-          .tickValues(flatData.map (d) -> d.build)
+          .tickValues(_.uniq flatData.map (d) -> d.build)
           .tickFormat(d3.format(",.0f"))
 
         yAxis = d3.svg.axis()

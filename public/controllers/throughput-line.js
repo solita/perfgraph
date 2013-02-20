@@ -31,9 +31,9 @@
           if (_this.updateCallback) {
             _this.updateCallback(data, z);
           }
-          xAxis = d3.svg.axis().scale(x).tickSize(0).tickValues(flatData.map(function(d) {
+          xAxis = d3.svg.axis().scale(x).tickSize(0).tickValues(_.uniq(flatData.map(function(d) {
             return d.build;
-          })).tickFormat(d3.format(",.0f"));
+          }))).tickFormat(d3.format(",.0f"));
           yAxis = d3.svg.axis().scale(y).orient("left").ticks(5).tickSize(3);
           graph = d3.select(_this.elem[0]);
           line = d3.svg.line().x(function(d) {
