@@ -26,7 +26,7 @@
             for (var _i = firstBuild; firstBuild <= lastBuild ? _i <= lastBuild : _i >= lastBuild; firstBuild <= lastBuild ? _i++ : _i--){ _results.push(_i); }
             return _results;
           }).apply(this)).rangeBands([0, _this.width], 0.1);
-          y = d3.scale.sqrt().domain([0, Math.max(data.maxResponseTimeBucket, 60)]).range([_this.height, 0]).nice();
+          y = d3.scale.linear().domain([0, Math.max(data.maxResponseTimeBucket, 60)]).range([_this.height, 0]).nice();
           z = d3.scale.sqrt().domain([
             0, d3.max(data.buckets, function(d) {
               return d.count;

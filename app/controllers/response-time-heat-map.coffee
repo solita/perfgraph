@@ -14,7 +14,7 @@ define ["jquery", "d3"], ($, d3) ->
           .domain([firstBuild..lastBuild])
           .rangeBands([0, @width], 0.1)
 
-        y = d3.scale.sqrt()
+        y = d3.scale.linear()
           .domain([0, Math.max(data.maxResponseTimeBucket, 60)])
           .range([@height, 0])
           .nice()

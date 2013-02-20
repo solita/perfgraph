@@ -17,7 +17,7 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
           .range([0, @width])
           .nice()
 
-        y = d3.scale.sqrt()
+        y = d3.scale.linear()
           .domain([0, Math.max(data.maxElapsedTimeInBuild)])
           .range([@height, 0])
           .nice()
