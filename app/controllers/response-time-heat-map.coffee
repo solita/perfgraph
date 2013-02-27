@@ -9,13 +9,14 @@ define ["jquery", "d3"], ($, d3) ->
       $.getJSON @url, (data) =>
         lastBuild  = d3.max(data.buckets, (d) -> d.build)
         firstBuild = d3.min(data.buckets, (d) -> d.build)
+        maxTime = d3.max(data.buckets, (d) -> d.bucket)
 
         x = d3.scale.ordinal()
           .domain([firstBuild..lastBuild])
           .rangeBands([0, @width], 0.1)
 
         y = d3.scale.linear()
-          .domain([0, Math.max(data.maxResponseTimeBucket, 10)])
+          .domain([0, Math.max(maxTime, 10)])
           .range([@height, 0])
           .nice()
 

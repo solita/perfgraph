@@ -24,7 +24,7 @@ define (require) ->
           stroke: style: -> "background-color: #{z(@testCaseId)}"
 
     constructor: (@elem) ->
-      testCases   = ["lh", "rt", "vo", "lhro"]
+      testCases   = ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"]
 
       responseTimeTrends = for t in testCases
         new ResponseTimeHeatMap @elem.find(".#{t}.response-time"), "/response-time-trend/#{t}"

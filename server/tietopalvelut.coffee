@@ -36,7 +36,6 @@ testCases =
     api: 'kyselypalvelu'
 
 testCaseIds = _.map testCases, (a) -> a.id
-console.log testCaseIds
 
 db            = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
 eraajot       = db.then (db) -> Q.ninvoke db, "collection", "eraajot"

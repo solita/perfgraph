@@ -9,6 +9,7 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
 
       $.getJSON url, (data) =>
         cb(data) if cb
+        maxElapsedTime = d3.max(data.samples, (d) -> d.elapsedTime)
 
         @elem.find(".testCaseId").text url
 
@@ -18,7 +19,7 @@ define ["jquery", "d3", "moment"], ($, d3, moment) ->
           .nice()
 
         y = d3.scale.linear()
-          .domain([0, Math.max(data.maxElapsedTimeInBuild)])
+          .domain([0, Math.max(maxElapsedTime, 1)])
           .range([@height, 0])
           .nice()
 

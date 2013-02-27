@@ -18,10 +18,13 @@
         this.height = this.elem.height();
         this.width = this.elem.width();
         return $.getJSON(url, function(data) {
-          var graph, marks, sample, showSample, x, xAxis, y, yAxis;
+          var graph, marks, maxElapsedTime, sample, showSample, x, xAxis, y, yAxis;
           if (cb) {
             cb(data);
           }
+          maxElapsedTime = d3.max(data.samples, function(d) {
+            return d.elapsedTime;
+          });
           _this.elem.find(".testCaseId").text(url);
           x = d3.scale.linear().domain([
             d3.min(data.samples, function(d) {
@@ -30,7 +33,7 @@
               return d.timeSinceStart;
             })
           ]).range([0, _this.width]).nice();
-          y = d3.scale.linear().domain([0, Math.max(data.maxElapsedTimeInBuild)]).range([_this.height, 0]).nice();
+          y = d3.scale.linear().domain([0, Math.max(maxElapsedTime, 1)]).range([_this.height, 0]).nice();
           sample = $('.report .sample');
           showSample = function(d) {
             var date;

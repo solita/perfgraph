@@ -14,19 +14,22 @@
       ResponseTimeHeatMap.prototype.update = function() {
         var _this = this;
         return $.getJSON(this.url, function(data) {
-          var firstBuild, graph, labels, lastBuild, showLabel, tiles, x, xAxis, y, yAxis, z, _i, _results;
+          var firstBuild, graph, labels, lastBuild, maxTime, showLabel, tiles, x, xAxis, y, yAxis, z, _i, _results;
           lastBuild = d3.max(data.buckets, function(d) {
             return d.build;
           });
           firstBuild = d3.min(data.buckets, function(d) {
             return d.build;
           });
+          maxTime = d3.max(data.buckets, function(d) {
+            return d.bucket;
+          });
           x = d3.scale.ordinal().domain((function() {
             _results = [];
             for (var _i = firstBuild; firstBuild <= lastBuild ? _i <= lastBuild : _i >= lastBuild; firstBuild <= lastBuild ? _i++ : _i--){ _results.push(_i); }
             return _results;
           }).apply(this)).rangeBands([0, _this.width], 0.1);
-          y = d3.scale.linear().domain([0, Math.max(data.maxResponseTimeBucket, 10)]).range([_this.height, 0]).nice();
+          y = d3.scale.linear().domain([0, Math.max(maxTime, 10)]).range([_this.height, 0]).nice();
           z = d3.scale.sqrt().domain([
             0, d3.max(data.buckets, function(d) {
               return d.count;

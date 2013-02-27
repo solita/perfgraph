@@ -14,10 +14,15 @@ projectName = "KIOS%20Perf%20Test%20TP%20tulosteet%20tomcat-kios%20at%20ceto"
 parser = new xml2js.Parser()
 
 testCases   =
+  'KIOS-TP_TP_Lainhuutotodistus_multiple_pdf.jtl': 'lhmu'
+  'KIOS-TP_TP_Lainhuutotodistus_oulu_pdf.jtl': 'lhoulu'
   'KIOS-TP_TP_Lainhuutotodistus_pdf.jtl': 'lh'
   'KIOS-TP_TP_Rasitustodistus_pdf.jtl': 'rt'
   'KIOS-TP_TP_Vuokraoikeustodistus_pdf.jtl': 'vo'
   'KIOS-UI_TP_Lainhuutorekisteriote_html.jtl': 'lhro'
+  'KIOS-UI_TP_Omistajien_yhteystiedot_pdf.jtl': 'omyt'
+  'KIOS-UI_TP_Vuokralaiste_yhteystiedot_pdf.jtl': 'vuyt'
+
 
 testCaseIds   = _.values testCases
 _db           = Q.ninvoke(mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf")
@@ -64,7 +69,6 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
         .sort({build: 1, elapsedTime: 1})
       Q.all([Q.ninvoke(cursor, "toArray"), maxResponseTimeInBuilds(latestBuilds)]))
     .spread((results, maxResponseTime) ->
-      console.log maxResponseTime
       responseTimesByBuild = _.groupBy(results, "build")
 
       responseTimesByBuildInBuckets = _.map responseTimesByBuild, (tulosteet, build) ->
