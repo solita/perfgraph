@@ -54,7 +54,7 @@ class PullUtil
     @urlId = @urlId + 1
     myUrlId = @urlId
     logger "Processing url: ##{@urlId} = #{url}"
-    req = request {url: url, timeout: 300000}, (err, res, body) =>
+    req = request {url: url, timeout: 600000}, (err, res, body) =>
       if err or res.statusCode != 200 or !body
         @urlDone = @urlDone + 1
         logger "Failed url ##{myUrlId}. #{@urlId-@urlDone} in queue"
