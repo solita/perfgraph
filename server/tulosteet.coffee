@@ -21,7 +21,7 @@ testCases   =
   'KIOS-TP_TP_Vuokraoikeustodistus_pdf.jtl': 'vo'
   'KIOS-UI_TP_Lainhuutorekisteriote_html.jtl': 'lhro'
   'KIOS-UI_TP_Omistajien_yhteystiedot_pdf.jtl': 'omyt'
-  'KIOS-UI_TP_Vuokralaiste_yhteystiedot_pdf.jtl': 'vuyt'
+  'KIOS-UI_TP_Vuokralaisten_yhteystiedot_pdf.jtl': 'vuyt'
 
 
 testCaseIds   = _.values testCases
