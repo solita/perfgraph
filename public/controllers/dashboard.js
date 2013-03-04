@@ -46,7 +46,7 @@
 
         testCases = {
           tulosteet: ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"],
-          services: ["otpeo"]
+          services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn"]
         };
         responseTimeTrends = (function() {
           var _i, _len, _ref, _results;

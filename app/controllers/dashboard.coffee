@@ -27,7 +27,7 @@ define (require) ->
     constructor: (@elem) ->
       testCases   =
         tulosteet: ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"]
-        services: ["otpeo"]
+        services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn"]
 
       responseTimeTrends =
         for p in _.keys testCases
