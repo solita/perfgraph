@@ -51,6 +51,7 @@ class PullUtil
 
   get: (url) ->
     deferred = Q.defer()
+
     @urlId = @urlId + 1
     myUrlId = @urlId
     logger "Processing url: ##{@urlId} = #{url}"

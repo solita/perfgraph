@@ -2,6 +2,7 @@ define (require) ->
   $      = require "jquery"
   io     = require "socket.io"
   moment = require "moment"
+  _      = require "lodash"
 
   ErrorGraph              = require "controllers/error-graph"
   ResponseTimeHeatMap     = require "controllers/response-time-heat-map"
@@ -24,20 +25,26 @@ define (require) ->
           stroke: style: -> "background-color: #{z(@testCaseId)}"
 
     constructor: (@elem) ->
-      testCases   = ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"]
+      testCases   =
+        tulosteet: ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"]
+        services: ["otpeo"]
 
-      responseTimeTrends = for t in testCases
-        new ResponseTimeHeatMap @elem.find(".#{t}.response-time"), "/response-time-trend/#{t}"
+      responseTimeTrends =
+        for p in _.keys testCases
+          for t in testCases[p]
+            new ResponseTimeHeatMap @elem.find(".#{p}.#{t}.response-time"), "/response-time-trend/#{p}/#{t}"
 
-      responseTimeLatests = for t in testCases
-        do (t) =>
-          g = new ResponseTimeScatterPlot @elem.find(".#{t}.response-time-scatter-plot"), "/reports/#{t}/latest.json", 0.5
-          g.elem.on("click", (d) -> page "/reports/#{t}/latest")
-          g
+      responseTimeLatests =
+        for p in _.keys testCases
+          for t in testCases[p]
+            do (t) =>
+              g = new ResponseTimeScatterPlot @elem.find(".#{p}.#{t}.response-time-scatter-plot"), "/reports/#{p}/#{t}/latest.json", 0.5
+              g.elem.on("click", (d) -> page "/reports/#{p}/#{t}/latest")
+              g
 
       eaTroughput = new TroughputLine @elem.find(".eraajo.throughput"), "/eraajo/throughput.json", updateCallback @elem.find ".eraajo.tietopalvelu.status .tbody"
       kpTroughput = new TroughputLine @elem.find(".kyselypalvelu.throughput"), "/kyselypalvelu/throughput.json", updateCallback @elem.find ".kyselypalvelu.tietopalvelu.status .tbody"
-      @graphs = responseTimeTrends.concat responseTimeLatests, [eaTroughput, kpTroughput]
+      @graphs = _.flatten(responseTimeTrends.concat responseTimeLatests, [eaTroughput, kpTroughput])
 
       @updateButton = $(".update")
       @updateProgressIcon = $(".progress")

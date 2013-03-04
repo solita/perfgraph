@@ -37,9 +37,11 @@
         dashboard.show();
         return report.hide();
       });
-      page("/reports/:testCase/:build", function(ctx) {
+      page("/reports/:project/:testCase/:build", function(_arg) {
+        var build, project, testCase, _ref;
+        _ref = _arg.params, project = _ref.project, testCase = _ref.testCase, build = _ref.build;
         dashboard.hide();
-        return report.show(ctx.params.testCase, ctx.params.build);
+        return report.show(project, testCase, build);
       });
       return page();
     });

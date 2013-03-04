@@ -2,10 +2,11 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   define(function(require) {
-    var $, DashboardController, ErrorGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot, TroughputLine, io, moment;
+    var $, DashboardController, ErrorGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot, TroughputLine, io, moment, _;
     $ = require("jquery");
     io = require("socket.io");
     moment = require("moment");
+    _ = require("lodash");
     ErrorGraph = require("controllers/error-graph");
     ResponseTimeHeatMap = require("controllers/response-time-heat-map");
     ResponseTimeScatterPlot = require("controllers/response-time-scatterplot");
@@ -37,42 +38,65 @@
       };
 
       function DashboardController(elem) {
-        var eaTroughput, kpTroughput, responseTimeLatests, responseTimeTrends, t, testCases;
+        var eaTroughput, kpTroughput, p, responseTimeLatests, responseTimeTrends, t, testCases;
         this.elem = elem;
         this.update = __bind(this.update, this);
 
         this.processBuilds = __bind(this.processBuilds, this);
 
-        testCases = ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"];
+        testCases = {
+          tulosteet: ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"],
+          services: ["otpeo"]
+        };
         responseTimeTrends = (function() {
-          var _i, _len, _results;
+          var _i, _len, _ref, _results;
+          _ref = _.keys(testCases);
           _results = [];
-          for (_i = 0, _len = testCases.length; _i < _len; _i++) {
-            t = testCases[_i];
-            _results.push(new ResponseTimeHeatMap(this.elem.find("." + t + ".response-time"), "/response-time-trend/" + t));
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            p = _ref[_i];
+            _results.push((function() {
+              var _j, _len1, _ref1, _results1;
+              _ref1 = testCases[p];
+              _results1 = [];
+              for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                t = _ref1[_j];
+                _results1.push(new ResponseTimeHeatMap(this.elem.find("." + p + "." + t + ".response-time"), "/response-time-trend/" + p + "/" + t));
+              }
+              return _results1;
+            }).call(this));
           }
           return _results;
         }).call(this);
         responseTimeLatests = (function() {
-          var _i, _len, _results,
-            _this = this;
+          var _i, _len, _ref, _results;
+          _ref = _.keys(testCases);
           _results = [];
-          for (_i = 0, _len = testCases.length; _i < _len; _i++) {
-            t = testCases[_i];
-            _results.push((function(t) {
-              var g;
-              g = new ResponseTimeScatterPlot(_this.elem.find("." + t + ".response-time-scatter-plot"), "/reports/" + t + "/latest.json", 0.5);
-              g.elem.on("click", function(d) {
-                return page("/reports/" + t + "/latest");
-              });
-              return g;
-            })(t));
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            p = _ref[_i];
+            _results.push((function() {
+              var _j, _len1, _ref1, _results1,
+                _this = this;
+              _ref1 = testCases[p];
+              _results1 = [];
+              for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                t = _ref1[_j];
+                _results1.push((function(t) {
+                  var g;
+                  g = new ResponseTimeScatterPlot(_this.elem.find("." + p + "." + t + ".response-time-scatter-plot"), "/reports/" + p + "/" + t + "/latest.json", 0.5);
+                  g.elem.on("click", function(d) {
+                    return page("/reports/" + p + "/" + t + "/latest");
+                  });
+                  return g;
+                })(t));
+              }
+              return _results1;
+            }).call(this));
           }
           return _results;
         }).call(this);
         eaTroughput = new TroughputLine(this.elem.find(".eraajo.throughput"), "/eraajo/throughput.json", updateCallback(this.elem.find(".eraajo.tietopalvelu.status .tbody")));
         kpTroughput = new TroughputLine(this.elem.find(".kyselypalvelu.throughput"), "/kyselypalvelu/throughput.json", updateCallback(this.elem.find(".kyselypalvelu.tietopalvelu.status .tbody")));
-        this.graphs = responseTimeTrends.concat(responseTimeLatests, [eaTroughput, kpTroughput]);
+        this.graphs = _.flatten(responseTimeTrends.concat(responseTimeLatests, [eaTroughput, kpTroughput]));
         this.updateButton = $(".update");
         this.updateProgressIcon = $(".progress");
         this.updateButton.on("click", this.processBuilds);

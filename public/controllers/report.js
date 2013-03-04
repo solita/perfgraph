@@ -29,11 +29,11 @@
         return this.elem.addClass("hidden");
       };
 
-      ReportController.prototype.show = function(testCase, build) {
+      ReportController.prototype.show = function(project, testCase, build) {
         this.elem.find(".testCaseId").text(testCase);
         this.elem.find(".build").text(build);
         this.elem.removeClass("hidden");
-        return this.scatterPlot.update("/reports/" + testCase + "/" + build + ".json", updateTopsList);
+        return this.scatterPlot.update("/reports/" + project + "/" + testCase + "/" + build + ".json", updateTopsList);
       };
 
       return ReportController;

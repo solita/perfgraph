@@ -29,8 +29,8 @@ require ['jquery',
     page "/", (ctx) ->
       dashboard.show()
       report.hide()
-    page "/reports/:testCase/:build", (ctx) ->
+    page "/reports/:project/:testCase/:build", ({params: {project, testCase, build}}) ->
       dashboard.hide()
-      report.show ctx.params.testCase, ctx.params.build
+      report.show project, testCase, build
 
     page()

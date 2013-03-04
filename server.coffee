@@ -3,6 +3,7 @@ http          = require "http"
 path          = require "path"
 io            = require "socket.io"
 tulosteet     = require "./server/tulosteet"
+services      = require "./server/services"
 tietopalvelut = require "./server/tietopalvelut"
 memwatch      = require "memwatch"
 exec          = require('child_process').exec
@@ -10,6 +11,11 @@ app           = express()
 
 memwatch.on('leak', (info) -> console.log info)
 memwatch.on('stats', (stats) -> console.log stats)
+
+projects =
+  tulosteet: tulosteet
+  services:  services
+
 
 app.configure ->
   app.set "port", process.env.PORT or 3000
@@ -28,13 +34,15 @@ app.configure ->
 app.configure "development", ->
   app.use express.errorHandler()
 
-app.get "/response-time-trend/:testCaseId", ({params: {testCaseId}}, res) ->
-  tulosteet.responseTimeTrendInBuckets(testCaseId)
+app.get "/response-time-trend/:project/:testCaseId", ({params: {project, testCaseId}}, res) ->
+  p = projects[project]
+  p.responseTimeTrendInBuckets(testCaseId)
     .then((trend) -> res.send trend)
     .done()
 
-app.get "/error-trend/:testCase", ({params: {testCaseId}}, res) ->
-  tulosteet.errorTrend(testCaseId)
+app.get "/error-trend/:project/:testCase", ({params: {project, testCaseId}}, res) ->
+  p = projects[project]
+  p.errorTrend(testCaseId)
     .then((trend) -> res.send trend)
     .done()
 
@@ -43,8 +51,9 @@ app.get "/:api/throughput.json", ({params: {api}}, res) ->
     .then((trend) -> res.send trend)
     .done()
 
-app.get "/reports/:testCaseId/:build.json", ({params: {testCaseId, build}}, res) ->
-  tulosteet.report(testCaseId, build)
+app.get "/reports/:project/:testCaseId/:build.json", ({params: {project, testCaseId, build}}, res) ->
+  p = projects[project]
+  p.report(testCaseId, build)
     .then((report) -> res.send report)
     .done()
 
