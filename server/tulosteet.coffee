@@ -79,6 +79,7 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
           build:  parseInt build
 
       data =
+        project: "tulosteet"
         testCase: testCaseId
         bucketSize: bucketSize
         maxResponseTimeBucket: buckle maxResponseTime
