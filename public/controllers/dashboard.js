@@ -80,14 +80,14 @@
               _results1 = [];
               for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
                 t = _ref1[_j];
-                _results1.push((function(t) {
+                _results1.push((function(p, t) {
                   var g;
                   g = new ResponseTimeScatterPlot(_this.elem.find("." + p + "." + t + ".response-time-scatter-plot"), "/reports/" + p + "/" + t + "/latest.json", 0.5);
                   g.elem.on("click", function(d) {
                     return page("/reports/" + p + "/" + t + "/latest");
                   });
                   return g;
-                })(t));
+                })(p, t));
               }
               return _results1;
             }).call(this));

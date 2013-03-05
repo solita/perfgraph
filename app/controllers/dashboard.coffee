@@ -37,7 +37,7 @@ define (require) ->
       responseTimeLatests =
         for p in _.keys testCases
           for t in testCases[p]
-            do (t) =>
+            do (p, t) =>
               g = new ResponseTimeScatterPlot @elem.find(".#{p}.#{t}.response-time-scatter-plot"), "/reports/#{p}/#{t}/latest.json", 0.5
               g.elem.on("click", (d) -> page "/reports/#{p}/#{t}/latest")
               g
