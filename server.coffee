@@ -54,7 +54,7 @@ app.get "/:api/throughput.json", ({params: {api}}, res) ->
 app.get "/reports/:project/:testCaseId/:build.json", ({params: {project, testCaseId, build}}, res) ->
   p = projects[project]
   p.report(testCaseId, build)
-    .then((report) -> console.log report; res.send report)
+    .then((report) -> res.send report)
     .done()
 
 processingBuilds = false
