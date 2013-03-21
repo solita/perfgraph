@@ -38,25 +38,26 @@
       };
 
       function DashboardController(elem) {
-        var eaTroughput, kpTroughput, p, responseTimeLatests, responseTimeTrends, t, testCases;
+        var p, responseTimeLatests, responseTimeTrends, t, throughputGraphs, tietopalveluTestCases, tulosteetTestCases;
         this.elem = elem;
         this.update = __bind(this.update, this);
 
         this.processBuilds = __bind(this.processBuilds, this);
 
-        testCases = {
+        tulosteetTestCases = {
           tulosteet: ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"],
           services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn"]
         };
+        tietopalveluTestCases = ["eraajo", "kyselypalvelu"];
         responseTimeTrends = (function() {
           var _i, _len, _ref, _results;
-          _ref = _.keys(testCases);
+          _ref = _.keys(tulosteetTestCases);
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             p = _ref[_i];
             _results.push((function() {
               var _j, _len1, _ref1, _results1;
-              _ref1 = testCases[p];
+              _ref1 = tulosteetTestCases[p];
               _results1 = [];
               for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
                 t = _ref1[_j];
@@ -69,14 +70,14 @@
         }).call(this);
         responseTimeLatests = (function() {
           var _i, _len, _ref, _results;
-          _ref = _.keys(testCases);
+          _ref = _.keys(tulosteetTestCases);
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             p = _ref[_i];
             _results.push((function() {
               var _j, _len1, _ref1, _results1,
                 _this = this;
-              _ref1 = testCases[p];
+              _ref1 = tulosteetTestCases[p];
               _results1 = [];
               for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
                 t = _ref1[_j];
@@ -94,9 +95,16 @@
           }
           return _results;
         }).call(this);
-        eaTroughput = new TroughputLine(this.elem.find(".eraajo.throughput"), "/eraajo/throughput.json", updateCallback(this.elem.find(".eraajo.tietopalvelu.status .tbody")));
-        kpTroughput = new TroughputLine(this.elem.find(".kyselypalvelu.throughput"), "/kyselypalvelu/throughput.json", updateCallback(this.elem.find(".kyselypalvelu.tietopalvelu.status .tbody")));
-        this.graphs = _.flatten(responseTimeTrends.concat(responseTimeLatests, [eaTroughput, kpTroughput]));
+        throughputGraphs = (function() {
+          var _i, _len, _results;
+          _results = [];
+          for (_i = 0, _len = tietopalveluTestCases.length; _i < _len; _i++) {
+            t = tietopalveluTestCases[_i];
+            _results.push(new TroughputLine(this.elem.find("." + t + ".throughput"), "/" + t + "/throughput.json", updateCallback(this.elem.find("." + t + ".tietopalvelu.status .tbody"))));
+          }
+          return _results;
+        }).call(this);
+        this.graphs = _.flatten(responseTimeTrends.concat(responseTimeLatests, throughputGraphs));
         this.updateButton = $(".update");
         this.updateProgressIcon = $(".progress");
         this.updateButton.on("click", this.processBuilds);

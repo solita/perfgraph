@@ -25,26 +25,31 @@ define (require) ->
           stroke: style: -> "background-color: #{z(@testCaseId)}"
 
     constructor: (@elem) ->
-      testCases   =
+      tulosteetTestCases   =
         tulosteet: ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"]
         services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn"]
 
+      tietopalveluTestCases =
+        ["eraajo", "kyselypalvelu"]
+
       responseTimeTrends =
-        for p in _.keys testCases
-          for t in testCases[p]
+        for p in _.keys tulosteetTestCases
+          for t in tulosteetTestCases[p]
             new ResponseTimeHeatMap @elem.find(".#{p}.#{t}.response-time"), "/response-time-trend/#{p}/#{t}"
 
       responseTimeLatests =
-        for p in _.keys testCases
-          for t in testCases[p]
+        for p in _.keys tulosteetTestCases
+          for t in tulosteetTestCases[p]
             do (p, t) =>
               g = new ResponseTimeScatterPlot @elem.find(".#{p}.#{t}.response-time-scatter-plot"), "/reports/#{p}/#{t}/latest.json", 0.5
               g.elem.on("click", (d) -> page "/reports/#{p}/#{t}/latest")
               g
 
-      eaTroughput = new TroughputLine @elem.find(".eraajo.throughput"), "/eraajo/throughput.json", updateCallback @elem.find ".eraajo.tietopalvelu.status .tbody"
-      kpTroughput = new TroughputLine @elem.find(".kyselypalvelu.throughput"), "/kyselypalvelu/throughput.json", updateCallback @elem.find ".kyselypalvelu.tietopalvelu.status .tbody"
-      @graphs = _.flatten(responseTimeTrends.concat responseTimeLatests, [eaTroughput, kpTroughput])
+      throughputGraphs =
+        for t in tietopalveluTestCases
+          new TroughputLine @elem.find(".#{t}.throughput"), "/#{t}/throughput.json", updateCallback @elem.find ".#{t}.tietopalvelu.status .tbody"
+
+      @graphs = _.flatten(responseTimeTrends.concat responseTimeLatests, throughputGraphs)
 
       @updateButton = $(".update")
       @updateProgressIcon = $(".progress")
