@@ -56,7 +56,7 @@ exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit
 exports.latestBuildsForApi = latestBuildsForApi = (api, {limit} = {}) ->
   eraajot
     .then((eraajot) -> Q.ninvoke eraajot, "distinct", "build", api: api)
-    .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
+    .then((builds)  -> builds = builds.sort((a,b) -> b-a); if limit then builds[0..limit - 1] else builds)
 
 exports.saveResults = (results) ->
   eraajot
