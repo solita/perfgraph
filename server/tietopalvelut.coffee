@@ -51,7 +51,7 @@ exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
   eraajot
     .then((eraajot) -> Q.ninvoke eraajot, "distinct", "build", testCaseId: testCaseId)
-    .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
+    .then((builds)  -> builds = builds.sort((a,b) -> b-a); if limit then builds[0..limit - 1] else builds)
 
 exports.latestBuildsForApi = latestBuildsForApi = (api, {limit} = {}) ->
   eraajot
