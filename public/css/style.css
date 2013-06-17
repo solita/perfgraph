@@ -11,7 +11,7 @@ th{font-weight:normal}
 .tietopalvelu.status span{display:inline-block;height:20;float:left;margin-right:5}
 .tietopalvelu.status .stroke{width:1em;height:1em;margin-top:3}
 .tietopalvelu.status .build{width:40;text-align:right}
-.tietopalvelu.status .testCaseId{width:60}
+.tietopalvelu.status .testCaseId{width:100}
 .tietopalvelu.status .throughput{width:50;text-align:right}
 .tietopalvelu.status .errorCount{width:50;text-align:right}
 .update-status{position:absolute;font-size:small;top:5;right:10;margin-top:0}
