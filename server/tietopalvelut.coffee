@@ -37,8 +37,8 @@ testCases =
 #  '02-kypt-muutos-208-md.xml': { id: 'kypt-muutos-208', api: 'kyselypalvelu' }
 #  '02-kypt-muutos-209-md.xml': { id: 'kypt-muutos-209', api: 'kyselypalvelu' }
 #  '02-kypt-muutos-210-md.xml': { id: 'kypt-muutos-210', api: 'kyselypalvelu' }
-#  '05-kyom-nimi-md.xml': { id: 'kyom-nimi', api: 'kyselypalvelu' }
-#  '05-kyom-tunnus-md.xml': { id: 'kyom-tunnus', api: 'kyselypalvelu' }
+  '05-kyom-nimi-md.xml': { id: 'kyom-nimi', api: 'kyselypalvelu' }
+  '05-kyom-tunnus-md.xml': { id: 'kyom-tunnus', api: 'kyselypalvelu' }
 
 testCaseIds = _.map testCases, (a) -> a.id
 
@@ -91,10 +91,25 @@ exports.parseResults = (testData) ->
   url = testData.url
   logger "Parsing test file: build ##{tr.build}, test case #{tr.testCase}"
 
+  # Some testreports are missing xmlns for the metatiedot element.
+  # We need it to be able to parse, so it is added here.
+  tr.samples = tr.samples.replace '<y:metatiedot>', '<y:metatiedot xmlns:y="http://xml.nls.fi/ktjkir/yhteinen/2013/03/01">'
+
   parser = new xml2js.Parser()
   Q.ninvoke(parser, "parseString", tr.samples).then (bodyJson) ->
     data = bodyJson["y:metatiedot"]
-    throw Error("No 'metatiedot' tag found") unless data
+    throw Error("No 'metatiedot' tag found in build ##{tr.build}, test case #{tr.testCase}") unless data
+
+    # Different reports have slightly different element names.
+    # For example "ealh-kunta" has: "kohteidenLukumaara" and
+    # "kyom-tunnus" has "omistustenLukumaara"
+    if data["y:kohteidenLukumaara"]
+      itemCountTemp = parseInt data["y:kohteidenLukumaara"][0]
+      errorCountTemp = parseInt data["y:virheellistenKohteidenLukumaara"]?[0] || 0
+    else
+      itemCountTemp = parseInt data["y:omistustenLukumaara"][0]
+      errorCountTemp = parseInt data["y:virheellistenOmistustenLukumaara"]?[0] || 0
+
     result =
       api:         testCases[tr.testCase]?.api
       testCaseId:  testCases[tr.testCase]?.id
@@ -102,7 +117,7 @@ exports.parseResults = (testData) ->
       build:       parseInt tr.build
       elapsedTime: parseInt(data["y:tiedostonLuonninKestoMillisekunteina"][0]) / 1000
       timeStamp:   moment(data["y:tiedostonLuontiaika"][0]).valueOf()
-      itemCount:   parseInt data["y:kohteidenLukumaara"][0]
-      errorCount:  parseInt data["y:virheellistenKohteidenLukumaara"]?[0] || 0
+      itemCount:   itemCountTemp
+      errorCount:  errorCountTemp
 
 pullUtil = new PullUtil(hostname, port, projectName, _.keys(testCases), exports)
