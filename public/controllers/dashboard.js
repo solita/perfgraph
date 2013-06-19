@@ -48,7 +48,7 @@
           tulosteet: ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"],
           services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn"]
         };
-        tietopalveluTestCases = ["eraajo", "kyselypalvelu"];
+        tietopalveluTestCases = ["eraajo", "kyselypalvelu", "eraajo-muutos", "kyselypalvelu-muutos"];
         responseTimeTrends = (function() {
           var _i, _len, _ref, _results;
           _ref = _.keys(tulosteetTestCases);

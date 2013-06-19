@@ -71,6 +71,42 @@ html(lang="en")
               span.errorCount
 
       .test-case-container
+        .title Eräajot, muutos
+        svg.graph.eraajo-muutos.tietopalvelu.throughput
+        .eraajo-muutos.tietopalvelu.status
+          .thead
+            span.title.stroke
+            span.title.testCaseId
+            span.build Build
+            span.title.throughput T [1/s]
+            span.title.errorCount Errors
+          .tbody
+            .row
+              span.stroke
+              span.testCaseId
+              span.build
+              span.throughput
+              span.errorCount
+
+      .test-case-container
+        .title Kyselypalvelu, muutos
+        svg.graph.kyselypalvelu-muutos.tietopalvelu.throughput
+        .kyselypalvelu-muutos.tietopalvelu.status
+          .thead
+            span.title.stroke
+            span.title.testCaseId
+            span.build Build
+            span.title.throughput T [1/s]
+            span.title.errorCount Errors
+          .tbody
+            .row
+              span.stroke
+              span.testCaseId
+              span.build
+              span.throughput
+              span.errorCount
+
+      .test-case-container
         .title Lainhuutotodistukset 50 kohdetta kerralla
         svg.graph.tulosteet.lhmu.response-time
         svg.graph.tulosteet.lhmu.response-time-scatter-plot

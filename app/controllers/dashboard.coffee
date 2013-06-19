@@ -30,7 +30,7 @@ define (require) ->
         services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn"]
 
       tietopalveluTestCases =
-        ["eraajo", "kyselypalvelu"]
+        ["eraajo", "kyselypalvelu", "eraajo-muutos", "kyselypalvelu-muutos"]
 
       responseTimeTrends =
         for p in _.keys tulosteetTestCases

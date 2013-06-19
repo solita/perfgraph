@@ -15,28 +15,28 @@ projectName = "KIOS%20Perf%20Test%20TP%20eraajo%20velocity"
 testCases =
   '01-ealh-kunta-md.xml': { id: 'ealh-kunta', api: 'eraajo' }
   '01-ealh-luov-md.xml': { id: 'ealh-luov', api: 'eraajo' }
-#  '01-ealh-muutos-101-md.xml': { id: 'ealh-muutos-101', api: 'eraajo' }
-#  '01-ealh-muutos-102-md.xml': { id: 'ealh-muutos-102', api: 'eraajo' }
-#  '01-ealh-muutos-103-md.xml': { id: 'ealh-muutos-103', api: 'eraajo' }
-#  '01-ealh-muutos-104-md.xml': { id: 'ealh-muutos-104', api: 'eraajo' }
-#  '01-ealh-muutos-105-md.xml': { id: 'ealh-muutos-105', api: 'eraajo' }
-#  '01-eavo-muutos-112-md.xml': { id: 'eavo-muutos-112', api: 'eraajo' }
-#  '01-eavo-muutos-113-md.xml': { id: 'eavo-muutos-113', api: 'eraajo' }
+  '01-ealh-muutos-101-md.xml': { id: 'ealh-muutos-101', api: 'eraajo-muutos' }
+  '01-ealh-muutos-102-md.xml': { id: 'ealh-muutos-102', api: 'eraajo-muutos' }
+  '01-ealh-muutos-103-md.xml': { id: 'ealh-muutos-103', api: 'eraajo-muutos' }
+  '01-ealh-muutos-104-md.xml': { id: 'ealh-muutos-104', api: 'eraajo-muutos' }
+  '01-ealh-muutos-105-md.xml': { id: 'ealh-muutos-105', api: 'eraajo-muutos' }
+  '01-eavo-muutos-112-md.xml': { id: 'eavo-muutos-112', api: 'eraajo-muutos' }
+  '01-eavo-muutos-113-md.xml': { id: 'eavo-muutos-113', api: 'eraajo-muutos' }
   '02-kypt-kunta-ki-md.xml': { id: 'kypt-kunta-ki', api: 'kyselypalvelu' }
   '02-kypt-kunta-ma-md.xml': { id: 'kypt-kunta-ma', api: 'kyselypalvelu' }
   '02-kypt-kunta-vo-md.xml': { id: 'kypt-kunta-vo', api: 'kyselypalvelu' }
   '02-kypt-luov-ki-md.xml': { id: 'kypt-luov-ki', api: 'kyselypalvelu' }
   '02-kypt-luov-ma-md.xml': { id: 'kypt-luov-ma', api: 'kyselypalvelu' }
-#  '02-kypt-muutos-201-md.xml': { id: 'kypt-muutos-201', api: 'kyselypalvelu' }
-#  '02-kypt-muutos-202-md.xml': { id: 'kypt-muutos-202', api: 'kyselypalvelu' }
-#  '02-kypt-muutos-203-md.xml': { id: 'kypt-muutos-203', api: 'kyselypalvelu' }
-#  '02-kypt-muutos-204-md.xml': { id: 'kypt-muutos-204', api: 'kyselypalvelu' }
-#  '02-kypt-muutos-205-md.xml': { id: 'kypt-muutos-205', api: 'kyselypalvelu' }
-#  '02-kypt-muutos-206-md.xml': { id: 'kypt-muutos-206', api: 'kyselypalvelu' }
-#  '02-kypt-muutos-207-md.xml': { id: 'kypt-muutos-207', api: 'kyselypalvelu' }
-#  '02-kypt-muutos-208-md.xml': { id: 'kypt-muutos-208', api: 'kyselypalvelu' }
-#  '02-kypt-muutos-209-md.xml': { id: 'kypt-muutos-209', api: 'kyselypalvelu' }
-#  '02-kypt-muutos-210-md.xml': { id: 'kypt-muutos-210', api: 'kyselypalvelu' }
+  '02-kypt-muutos-201-md.xml': { id: 'kypt-muutos-201', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-202-md.xml': { id: 'kypt-muutos-202', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-203-md.xml': { id: 'kypt-muutos-203', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-204-md.xml': { id: 'kypt-muutos-204', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-205-md.xml': { id: 'kypt-muutos-205', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-206-md.xml': { id: 'kypt-muutos-206', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-207-md.xml': { id: 'kypt-muutos-207', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-208-md.xml': { id: 'kypt-muutos-208', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-209-md.xml': { id: 'kypt-muutos-209', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-210-md.xml': { id: 'kypt-muutos-210', api: 'kyselypalvelu-muutos' }
   '05-kyom-nimi-md.xml': { id: 'kyom-nimi', api: 'kyselypalvelu' }
   '05-kyom-tunnus-md.xml': { id: 'kyom-tunnus', api: 'kyselypalvelu' }
 
