@@ -15,6 +15,8 @@ projectName = "KIOS%20Perf%20Test%20TP%20eraajo%20velocity"
 testCases =
   '01-ealh-kunta-md.xml': { id: 'ealh-kunta', api: 'eraajo' }
   '01-ealh-luov-md.xml': { id: 'ealh-luov', api: 'eraajo' }
+  '01-eara-kunta-md.xml': { id: 'eara-kunta', api: 'eraajo' }
+  '01-eavo-kunta-md.xml': { id: 'eavo-kunta', api: 'eraajo' }
   '01-ealh-muutos-101-md.xml': { id: 'ealh-muutos-101', api: 'eraajo-muutos' }
   '01-ealh-muutos-102-md.xml': { id: 'ealh-muutos-102', api: 'eraajo-muutos' }
   '01-ealh-muutos-103-md.xml': { id: 'ealh-muutos-103', api: 'eraajo-muutos' }
