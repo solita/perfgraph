@@ -24,6 +24,7 @@
               testCaseId: latestBuild.testCaseId,
               build: latestBuild.build,
               throughput: latestBuild.throughput.toFixed(1),
+              count: latestBuild.itemCount,
               errorCount: latestBuild.errorCount
             };
           });

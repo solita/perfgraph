@@ -19,7 +19,8 @@ define (require) ->
           testCaseId: latestBuild.testCaseId
           build:      latestBuild.build
           throughput: latestBuild.throughput.toFixed 1
-          errorCount:     latestBuild.errorCount
+          count:      latestBuild.itemCount
+          errorCount: latestBuild.errorCount
 
         elem.render legendData,
           stroke: style: -> "background-color: #{z(@testCaseId)}"

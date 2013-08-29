@@ -82,7 +82,6 @@ exports.throughput = (api) ->
       Q.ninvoke(cursor, "toArray").then( (results) ->
         results = _.map results, (d) ->
           d.throughput = d.itemCount / d.elapsedTime
-          delete d.itemCount
           delete d.elapsedTime
           d
         results = _.groupBy results, (d) -> d.testCaseId
