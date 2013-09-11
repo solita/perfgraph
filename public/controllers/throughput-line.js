@@ -20,7 +20,7 @@
           x = d3.scale.linear().domain(d3.extent(flatData, function(d) {
             return d.build;
           })).range([0, _this.width]).nice();
-          y = d3.scale.sqrt().domain([
+          y = d3.scale.linear().domain([
             0, d3.max(flatData, function(d) {
               return d.throughput;
             })
