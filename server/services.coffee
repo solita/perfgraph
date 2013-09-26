@@ -20,6 +20,8 @@ testCases   =
   'KIOS-SRV_Liittymat_kirre_omistustietopalvelu_kohdetunnuksella_vakio_jokeri.jtl': 'otpktvakjok'
   'KIOS-SRV_Liittymat_kirre_omistustietopalvelu_laitostunnuksella.jtl': 'otplt'
   'KIOS-SRV_Liittymat_kirre_omistustietopalvelu_tunnuksella.jtl': 'otptunn'
+  'KIOS-SRV_Liittymat_kirre_omistustietopalvelu_ytunnuksella_suuromistajat.jtl': 'otpytunnso'
+  'KIOS-SRV_Liittymat_kirre_omistustietopalvelu_ytunnuksella_suuromistajat_lkm.jtl': 'otpytunnsolkm'
 
 testCaseIds   = _.values testCases
 _db           = Q.ninvoke(mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf")

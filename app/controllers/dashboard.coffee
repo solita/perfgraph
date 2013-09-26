@@ -28,7 +28,7 @@ define (require) ->
     constructor: (@elem) ->
       tulosteetTestCases   =
         tulosteet: ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"]
-        services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn"]
+        services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn", "otpytunnso", "otpytunnsolkm"]
 
       tietopalveluTestCases =
         ["eraajo", "kyselypalvelu", "eraajo-muutos", "kyselypalvelu-muutos"]
