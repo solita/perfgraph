@@ -72,7 +72,7 @@ exports.saveResults = (results) ->
 
 exports.throughput = (api) ->
 
-  Q.all([eraajot, latestBuildsForApi(api, limit:15)])
+  Q.all([eraajot, latestBuildsForApi(api, limit:30)])
     .spread((eraajot, latestBuildsForApi) ->
       cursor = eraajot
         .find(

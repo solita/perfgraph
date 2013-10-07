@@ -62,7 +62,7 @@ exports.responseTimeTrendInBuckets = (testCaseId) ->
   bucketSize = 1
   buckle = (elapsedTime) -> Math.max(bucketSize, bucketSize * Math.ceil elapsedTime / bucketSize)
 
-  Q.all([tulosteet, latestBuilds(testCaseId, limit: 15)])
+  Q.all([tulosteet, latestBuilds(testCaseId, limit: 30)])
     .spread((tulosteet, latestBuilds) ->
       cursor = tulosteet
         .find({testCaseId: testCaseId, build: {$in: latestBuilds}}, {elapsedTime: 1, build: 1, _id: 0})
