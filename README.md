@@ -20,7 +20,7 @@ aggregation done yet.
 
 2. 
 ```
-git pull https://github.com/solita/perfgraph.git
+git clone https://github.com/solita/perfgraph.git
 cd perfgraf
 sudo npm install -g grunt-cli grunt-init bower coffee-script
 npm install
