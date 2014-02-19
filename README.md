@@ -18,7 +18,7 @@ aggregation done yet.
 ## Setting up the development environment
 
 ```
-npm install -g grunt bower coffee-script
+sudo npm install -g grunt bower coffee-script
 npm install
 grunt --config grunt.coffee
 open http://localhost:3000
