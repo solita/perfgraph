@@ -18,9 +18,12 @@ aggregation done yet.
 ## Setting up the development environment
 
 ```
-sudo npm install -g grunt bower coffee-script
+git pull https://github.com/solita/perfgraph.git
+cd perfgraf
+sudo npm install -g grunt-cli grunt-init bower coffee-script
 npm install
-grunt --config grunt.coffee
+grunt &
+supervisor -w server,server.coffee server.coffee &
 open http://localhost:3000
 ```
 
