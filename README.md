@@ -16,7 +16,9 @@ Early development, uses random data in visualization. No database access and dat
 aggregation done yet.
 
 ## Setting up the development environment
+1. Install and start mongod
 
+2. 
 ```
 git pull https://github.com/solita/perfgraph.git
 cd perfgraf
