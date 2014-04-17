@@ -43,5 +43,5 @@ under server/*.coffee
 
 sirkkalap - Petri Sirkkala, KIOS, Solita
 
-![Screenshot of the radiator](public/img/readme-preview-image.png)
+![Screenshot of the radiator](readme-preview-image.png)
 
