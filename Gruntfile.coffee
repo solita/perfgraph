@@ -2,12 +2,17 @@ module.exports = (grunt) ->
   grunt.initConfig
     coffee:
       compile:
-        files:
-          "public/*.js": "app/**/*.coffee"
+        files: [
+          expand: true
+          cwd: "app/"
+          src: ["**/*.coffee"]
+          dest: "public/"
+          ext: ".js"
+        ]
 
-        options:
-          flatten: false
-          bare: false
+      options:
+        flatten: false
+        bare: false
 
     jade:
       compile:
@@ -16,24 +21,29 @@ module.exports = (grunt) ->
 
     stylus:
       compile:
-        files:
-          "public/css/*.css": "app/**/*.styl"
-
+        files: [
+          expand: true
+          cwd: "app/"
+          src: ["**/*.styl"]
+          dest: "public/css/"
+          ext: ".css"
+          flatten: true
+        ]
         options:
           compress: true
 
     watch:
       coffee:
         files: ["app/**/*.coffee"]
-        tasks: "coffee reload"
+        tasks: ["coffee", "reload"]
 
       stylus:
         files: ["app/**/*.styl"]
-        tasks: "stylus reload"
+        tasks: ["stylus", "reload"]
 
       jade:
         files: ["app/**/*.jade"]
-        tasks: "jade reload"
+        tasks: ["jade", "reload"]
 
     reload:
       port: 6001
