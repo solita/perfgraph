@@ -1,9 +1,7 @@
 (function() {
-
   define(["jquery", "d3", "q"], function($, d3, q) {
     var ResponseTimeGraph;
     return ResponseTimeGraph = (function() {
-
       function ResponseTimeGraph(canvas, url, currentBuild) {
         var data, height, width;
         currentBuild || (currentBuild = []);

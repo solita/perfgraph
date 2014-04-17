@@ -1,5 +1,4 @@
 (function() {
-
   define(["jquery", "d3", "controllers/response-time-scatterplot"], function($, d3, ResponseTimeScatterPlot) {
     var ReportController;
     return ReportController = (function() {

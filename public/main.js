@@ -1,5 +1,4 @@
 (function() {
-
   require.config({
     paths: {
       "jquery": "components/jquery/jquery",

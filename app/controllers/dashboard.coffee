@@ -4,7 +4,6 @@ define (require) ->
   moment = require "moment"
   _      = require "lodash"
 
-  ErrorGraph              = require "controllers/error-graph"
   ResponseTimeHeatMap     = require "controllers/response-time-heat-map"
   ResponseTimeScatterPlot = require "controllers/response-time-scatterplot"
   TroughputLine           = require "controllers/throughput-line"
@@ -31,7 +30,7 @@ define (require) ->
         services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn", "otpytunnso", "otpytunnsolkm"]
 
       tietopalveluTestCases =
-        ["eraajo", "kyselypalvelu", "eraajo-muutos", "kyselypalvelu-muutos"]
+        ["eraajo", "kyselypalvelu", "kyselypalvelu-krkohde", "eraajo-muutos", "kyselypalvelu-muutos"]
 
       responseTimeTrends =
         for p in _.keys tulosteetTestCases

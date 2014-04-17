@@ -24,8 +24,8 @@ testCases =
   '01-ealh-muutos-105-md.xml': { id: 'ealh-muutos-105', api: 'eraajo-muutos' }
   '01-eavo-muutos-112-md.xml': { id: 'eavo-muutos-112', api: 'eraajo-muutos' }
   '01-eavo-muutos-113-md.xml': { id: 'eavo-muutos-113', api: 'eraajo-muutos' }
-  '02-kypt-kunta-ki-md.xml': { id: 'kypt-kunta-ki', api: 'kyselypalvelu' }
-  '02-kypt-kunta-ma-md.xml': { id: 'kypt-kunta-ma', api: 'kyselypalvelu' }
+  '02-kypt-kunta-ki-md.xml': { id: 'kypt-kunta-ki', api: 'kyselypalvelu-krkohde' }
+  '02-kypt-kunta-ma-md.xml': { id: 'kypt-kunta-ma', api: 'kyselypalvelu-krkohde' }
   '02-kypt-kunta-vo-md.xml': { id: 'kypt-kunta-vo', api: 'kyselypalvelu' }
   '02-kypt-luov-ki-md.xml': { id: 'kypt-luov-ki', api: 'kyselypalvelu' }
   '02-kypt-luov-ma-md.xml': { id: 'kypt-luov-ma', api: 'kyselypalvelu' }

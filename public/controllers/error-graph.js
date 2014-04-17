@@ -1,9 +1,7 @@
 (function() {
-
   define(["jquery", "d3"], function($, d3) {
     var ErrorGraph;
     return ErrorGraph = (function() {
-
       function ErrorGraph(canvas, currentBuild) {
         var data, graph, height, line, n, width, x, xAxis, y, yAxis;
         height = canvas.height();
