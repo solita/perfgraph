@@ -12,8 +12,8 @@ parameters in it.
 
 ## Status
 
-Early development, uses random data in visualization. No database access and data 
-aggregation done yet.
+In production, heavily tailored data retrieval. Production special parsing of troughput data.
+Classes under server package have to be tailored to specific data sources and format.
 
 ## Setting up the development environment
 1. Install and start mongod
@@ -33,15 +33,15 @@ open http://localhost:3000
 
 Uses localhost as mongodb host. Uses database "kios-perf".
 
-## Installing components
-(OUTDATED SECTION)
-```
-cd public
-bower install jquery
-bower ls --map
-```
-Use the output to update `require.config` in `main.coffee` accordingly.
+## Other requirements
+
+For meaningful data some performance measurements builds are needed. The code is tailored to get JMeter
+logs from Jenkins server. Example implementation is used internally, so the default urls must be edited
+under server/*.coffee
 
 ## Who
 
 sirkkalap - Petri Sirkkala, KIOS, Solita
+
+![Screenshot of the radiator](public/img/readme-preview-image.png)
+
