@@ -4,6 +4,7 @@ define (require) ->
   moment = require "moment"
   _      = require "lodash"
 
+  ErrorGraph              = require "controllers/error-graph"
   ResponseTimeHeatMap     = require "controllers/response-time-heat-map"
   ResponseTimeScatterPlot = require "controllers/response-time-scatterplot"
   TroughputLine           = require "controllers/throughput-line"

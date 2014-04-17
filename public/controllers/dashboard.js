@@ -2,11 +2,12 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   define(function(require) {
-    var $, DashboardController, ResponseTimeHeatMap, ResponseTimeScatterPlot, TroughputLine, io, moment, _;
+    var $, DashboardController, ErrorGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot, TroughputLine, io, moment, _;
     $ = require("jquery");
     io = require("socket.io");
     moment = require("moment");
     _ = require("lodash");
+    ErrorGraph = require("controllers/error-graph");
     ResponseTimeHeatMap = require("controllers/response-time-heat-map");
     ResponseTimeScatterPlot = require("controllers/response-time-scatterplot");
     TroughputLine = require("controllers/throughput-line");
