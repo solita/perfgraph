@@ -39,10 +39,11 @@
       };
 
       function DashboardController(elem) {
-        var p, responseTimeLatests, responseTimeTrends, t, throughputGraphs, tietopalveluTestCases, tulosteetTestCases;
+        var historyLength, p, responseTimeLatests, responseTimeTrends, t, throughputGraphs, tietopalveluTestCases, tulosteetTestCases;
         this.elem = elem;
         this.update = __bind(this.update, this);
         this.processBuilds = __bind(this.processBuilds, this);
+        historyLength = parseInt(this.elem.find(".history-length input").val());
         tulosteetTestCases = {
           tulosteet: ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"],
           services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn", "otpytunnso", "otpytunnsolkm"]
@@ -60,7 +61,7 @@
               _results1 = [];
               for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
                 t = _ref1[_j];
-                _results1.push(new ResponseTimeHeatMap(this.elem.find("." + p + "." + t + ".response-time"), "/response-time-trend/" + p + "/" + t));
+                _results1.push(new ResponseTimeHeatMap(this.elem.find("." + p + "." + t + ".response-time"), "/response-time-trend/" + p + "/" + t, historyLength));
               }
               return _results1;
             }).call(this));
@@ -100,14 +101,17 @@
           _results = [];
           for (_i = 0, _len = tietopalveluTestCases.length; _i < _len; _i++) {
             t = tietopalveluTestCases[_i];
-            _results.push(new TroughputLine(this.elem.find("." + t + ".throughput"), "/" + t + "/throughput.json", updateCallback(this.elem.find("." + t + ".tietopalvelu.status .tbody"))));
+            _results.push(new TroughputLine(this.elem.find("." + t + ".throughput"), t, updateCallback(this.elem.find("." + t + ".tietopalvelu.status .tbody", historyLength))));
           }
           return _results;
         }).call(this);
-        this.graphs = _.flatten(responseTimeTrends.concat(responseTimeLatests, throughputGraphs));
+        this.buildHistoryGraphs = _.flatten(responseTimeTrends.concat(throughputGraphs));
+        this.otherGraphs = _.flatten(responseTimeLatests);
         this.updateButton = $(".update");
         this.updateProgressIcon = $(".progress");
         this.updateButton.on("click", this.processBuilds);
+        this.historyRefreshButton = $("button[name='history-refresh-button']");
+        this.historyRefreshButton.on("click", this.update);
         this.socket = io.connect();
         this.socket.on("change", this.update);
         this.socket.on("reload", function() {
@@ -123,11 +127,18 @@
       };
 
       DashboardController.prototype.update = function() {
-        var g, _i, _len, _ref;
-        _ref = this.graphs;
+        var hg, historyLength, og, _i, _j, _len, _len1, _ref, _ref1;
+        historyLength = parseInt(this.elem.find(".history-length input").val());
+        _ref = this.buildHistoryGraphs;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          g = _ref[_i];
-          g.update();
+          hg = _ref[_i];
+          hg.setHistoryLength(historyLength);
+          hg.update();
+        }
+        _ref1 = this.otherGraphs;
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          og = _ref1[_j];
+          og.update();
         }
         this.updateButton.prop("disabled", false);
         return this.updateProgressIcon.addClass("hidden");

@@ -60,7 +60,7 @@ exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit
     .then((eraajot) -> Q.ninvoke eraajot, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort((a,b) -> b-a); if limit then builds[0..limit - 1] else builds)
 
-exports.latestBuildsForApi = latestBuildsForApi = (api, {limit} = {}) ->
+exports.latestBuildsForApi = latestBuildsForApi = (api, limit) ->
   eraajot
     .then((eraajot) -> Q.ninvoke eraajot, "distinct", "build", api: api)
     .then((builds)  -> builds = builds.sort((a,b) -> b-a); if limit then builds[0..limit - 1] else builds)
@@ -70,9 +70,8 @@ exports.saveResults = (results) ->
     .then((eraajot) -> Q.ninvoke eraajot, "insert", results)
     .fail(logger)
 
-exports.throughput = (api) ->
-
-  Q.all([eraajot, latestBuildsForApi(api, limit:30)])
+exports.throughput = (api, limit) ->
+  Q.all([eraajot, latestBuildsForApi(api, limit)])
     .spread((eraajot, latestBuildsForApi) ->
       cursor = eraajot
         .find(

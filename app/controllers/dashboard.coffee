@@ -26,6 +26,8 @@ define (require) ->
           stroke: style: -> "background-color: #{z(@testCaseId)}"
 
     constructor: (@elem) ->
+      historyLength = parseInt @elem.find(".history-length input").val()
+
       tulosteetTestCases   =
         tulosteet: ["lhmu", "lhoulu", "lh", "rt", "vo", "lhro", "omyt", "vuyt"]
         services: ["otpeo", "otpkt", "otpktheijok", "otpktvakjok", "otplt", "otptunn", "otpytunnso", "otpytunnsolkm"]
@@ -36,7 +38,7 @@ define (require) ->
       responseTimeTrends =
         for p in _.keys tulosteetTestCases
           for t in tulosteetTestCases[p]
-            new ResponseTimeHeatMap @elem.find(".#{p}.#{t}.response-time"), "/response-time-trend/#{p}/#{t}"
+            new ResponseTimeHeatMap @elem.find(".#{p}.#{t}.response-time"), "/response-time-trend/#{p}/#{t}", historyLength
 
       responseTimeLatests =
         for p in _.keys tulosteetTestCases
@@ -48,13 +50,17 @@ define (require) ->
 
       throughputGraphs =
         for t in tietopalveluTestCases
-          new TroughputLine @elem.find(".#{t}.throughput"), "/#{t}/throughput.json", updateCallback @elem.find ".#{t}.tietopalvelu.status .tbody"
+          new TroughputLine @elem.find(".#{t}.throughput"), t, updateCallback @elem.find ".#{t}.tietopalvelu.status .tbody", historyLength
 
-      @graphs = _.flatten(responseTimeTrends.concat responseTimeLatests, throughputGraphs)
+      @buildHistoryGraphs = _.flatten(responseTimeTrends.concat throughputGraphs)
+      @otherGraphs = _.flatten(responseTimeLatests)
 
       @updateButton = $(".update")
       @updateProgressIcon = $(".progress")
       @updateButton.on "click", @processBuilds
+
+      @historyRefreshButton = $("button[name='history-refresh-button']")
+      @historyRefreshButton.on "click", @update
 
       @socket = io.connect()
       @socket.on "change", @update
@@ -67,7 +73,13 @@ define (require) ->
       $.get "/process-builds"
 
     update: =>
-      g.update() for g in @graphs
+      historyLength = parseInt @elem.find(".history-length input").val()
+
+      for hg in @buildHistoryGraphs
+        hg.setHistoryLength historyLength
+        hg.update()
+      for og in @otherGraphs
+        og.update()
       @updateButton.prop "disabled", false
       @updateProgressIcon.addClass "hidden"
 

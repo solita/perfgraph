@@ -2,15 +2,20 @@
   define(["jquery", "d3"], function($, d3) {
     var ResponseTimeHeatMap;
     return ResponseTimeHeatMap = (function() {
-      function ResponseTimeHeatMap(elem, url) {
+      function ResponseTimeHeatMap(elem, url, historyLength) {
         this.elem = elem;
         this.url = url;
+        this.historyLength = historyLength;
         this.height = this.elem.height();
         this.width = this.elem.width();
       }
 
+      ResponseTimeHeatMap.prototype.setHistoryLength = function(historyLength) {
+        return this.historyLength = historyLength;
+      };
+
       ResponseTimeHeatMap.prototype.update = function() {
-        return $.getJSON(this.url, (function(_this) {
+        return $.getJSON("" + this.url + "/" + this.historyLength, (function(_this) {
           return function(data) {
             var firstBuild, graph, labels, lastBuild, maxTime, showLabel, tiles, x, xAxis, y, yAxis, z, _i, _results;
             lastBuild = d3.max(data.buckets, function(d) {

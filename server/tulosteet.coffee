@@ -58,11 +58,10 @@ exports.saveResults = (results) ->
     .then((tulosteet) -> Q.ninvoke tulosteet, "insert", results)
     .fail(logger)
 
-exports.responseTimeTrendInBuckets = (testCaseId) ->
+exports.responseTimeTrendInBuckets = (testCaseId, limit) ->
   bucketSize = 1
   buckle = (elapsedTime) -> Math.max(bucketSize, bucketSize * Math.ceil elapsedTime / bucketSize)
-
-  Q.all([tulosteet, latestBuilds(testCaseId, limit: 30)])
+  Q.all([tulosteet, latestBuilds(testCaseId, limit: limit)])
     .spread((tulosteet, latestBuilds) ->
       cursor = tulosteet
         .find({testCaseId: testCaseId, build: {$in: latestBuilds}}, {elapsedTime: 1, build: 1, _id: 0})

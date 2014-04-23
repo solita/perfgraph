@@ -5,12 +5,12 @@ io            = require "socket.io"
 tulosteet     = require "./server/tulosteet"
 services      = require "./server/services"
 tietopalvelut = require "./server/tietopalvelut"
-memwatch      = require "memwatch"
+#memwatch      = require "memwatch"
 exec          = require('child_process').exec
 app           = express()
 
-memwatch.on('leak', (info) -> console.log info)
-memwatch.on('stats', (stats) -> console.log stats)
+#memwatch.on('leak', (info) -> console.log info)
+#memwatch.on('stats', (stats) -> console.log stats)
 
 projects =
   tulosteet: tulosteet
@@ -34,9 +34,9 @@ app.configure ->
 app.configure "development", ->
   app.use express.errorHandler()
 
-app.get "/response-time-trend/:project/:testCaseId", ({params: {project, testCaseId}}, res) ->
+app.get "/response-time-trend/:project/:testCaseId/:limit", ({params: {project, testCaseId, limit}}, res) ->
   p = projects[project]
-  p.responseTimeTrendInBuckets(testCaseId)
+  p.responseTimeTrendInBuckets(testCaseId, parseInt limit )
     .then((trend) -> res.send trend)
     .done()
 
@@ -46,8 +46,8 @@ app.get "/error-trend/:project/:testCase", ({params: {project, testCaseId}}, res
     .then((trend) -> res.send trend)
     .done()
 
-app.get "/:api/throughput.json", ({params: {api}}, res) ->
-  tietopalvelut.throughput(api)
+app.get "/throughput/:api/:limit", ({params: {api, limit}}, res) ->
+  tietopalvelut.throughput(api, parseInt limit)
     .then((trend) -> res.send trend)
     .done()
 

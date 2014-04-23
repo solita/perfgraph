@@ -9,6 +9,10 @@ html(lang="en")
   body
 
     .dashboard
+      .history-length
+        .title Number of builds:
+        input(value=30)
+        button(name="history-refresh-button") Go
       .update-status
         .progress.hidden
           img(src="/images/ajax-loader.gif")

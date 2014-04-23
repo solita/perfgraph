@@ -1,12 +1,15 @@
 define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
 
   class ThroughputLine
-    constructor: (@elem, @url, @updateCallback) ->
+    constructor: (@elem, @api, @updateCallback, @historyLength) ->
       @width  = @elem.width()
       @height = @elem.height()
 
+    setHistoryLength: (historyLength) ->
+      @historyLength = historyLength
+
     update: ->
-      $.getJSON @url, (data) =>
+      $.getJSON "/throughput/#{@api}/#{@historyLength}", (data) =>
         flatData = _.flatten(data)
 
         x = d3.scale.linear()

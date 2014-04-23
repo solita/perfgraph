@@ -1,12 +1,15 @@
 define ["jquery", "d3"], ($, d3) ->
 
   class ResponseTimeHeatMap
-    constructor: (@elem, @url) ->
+    constructor: (@elem, @url, @historyLength) ->
       @height = @elem.height()
       @width  = @elem.width()
 
+    setHistoryLength: (historyLength) ->
+      @historyLength = historyLength
+
     update: () ->
-      $.getJSON @url, (data) =>
+      $.getJSON "#{@url}/#{@historyLength}", (data) =>
         lastBuild  = d3.max(data.buckets, (d) -> d.build)
         firstBuild = d3.min(data.buckets, (d) -> d.build)
         maxTime = d3.max(data.buckets, (d) -> d.bucket)

@@ -2,16 +2,21 @@
   define(["jquery", "d3", "lodash", "transparency"], function($, d3, _) {
     var ThroughputLine;
     return ThroughputLine = (function() {
-      function ThroughputLine(elem, url, updateCallback) {
+      function ThroughputLine(elem, api, updateCallback, historyLength) {
         this.elem = elem;
-        this.url = url;
+        this.api = api;
         this.updateCallback = updateCallback;
+        this.historyLength = historyLength;
         this.width = this.elem.width();
         this.height = this.elem.height();
       }
 
+      ThroughputLine.prototype.setHistoryLength = function(historyLength) {
+        return this.historyLength = historyLength;
+      };
+
       ThroughputLine.prototype.update = function() {
-        return $.getJSON(this.url, (function(_this) {
+        return $.getJSON("/throughput/" + this.api + "/" + this.historyLength, (function(_this) {
           return function(data) {
             var flatData, graph, line, lines, x, xAxis, y, yAxis, z;
             flatData = _.flatten(data);

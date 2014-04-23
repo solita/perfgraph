@@ -36,7 +36,7 @@ exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 exports.processTestResults = ->
   pullUtil.newTestFiles().fail(logger).allResolved().then(-> db).then((db) -> db.close()).done()
 
-exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
+exports.latestBuilds = latestBuilds = (testCaseId, limit) ->
   services
     .then((services) -> Q.ninvoke services, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
@@ -57,11 +57,11 @@ exports.saveResults = (results) ->
     .then((services) -> Q.ninvoke services, "insert", results)
     .fail(logger)
 
-exports.responseTimeTrendInBuckets = (testCaseId) ->
+exports.responseTimeTrendInBuckets = (testCaseId, limit) ->
   bucketSize = 1
   buckle = (elapsedTime) -> Math.max(bucketSize, bucketSize * Math.ceil elapsedTime / bucketSize)
 
-  Q.all([services, latestBuilds(testCaseId, limit: 30)])
+  Q.all([services, latestBuilds(testCaseId, limit)])
     .spread((services, latestBuilds) ->
       cursor = services
         .find({testCaseId: testCaseId, build: {$in: latestBuilds}}, {elapsedTime: 1, build: 1, _id: 0})
