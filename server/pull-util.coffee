@@ -54,13 +54,14 @@ class PullUtil
 
     @urlId = @urlId + 1
     myUrlId = @urlId
-    if @urlId-@urlDone > 100
+    queueSize = @urlId-@urlDone
+    if queueSize > 100
       @urlDone = @urlDone + 1
       deferred.reject new Error "Skipping url: #{@urlId} = #{url} - too many urls (>100) at same time"
       deferred.promise
     else
       logger "Get url: #{@urlId} = #{url}"
-      request {url: url, timeout: 600000}, (err, res, body) =>
+      request {url: url, timeout: 60000 + 1000 * queueSize }, (err, res, body) =>
         @urlDone = @urlDone + 1
         if err or res.statusCode != 200 or !body
           logger "Failed url #{myUrlId}. #{@urlId-@urlDone} in queue"
