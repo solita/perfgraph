@@ -54,16 +54,20 @@ class PullUtil
 
     @urlId = @urlId + 1
     myUrlId = @urlId
-    logger "Processing url: ##{@urlId} = #{url}"
-    req = request {url: url, timeout: 600000}, (err, res, body) =>
-      if err or res.statusCode != 200 or !body
+    if @urlId-@urlDone > 100
+      @urlDone = @urlDone + 1
+      deferred.reject new Error "Skipping url: #{@urlId} = #{url} - too many urls (>100) at same time"
+      deferred.promise
+    else
+      logger "Get url: #{@urlId} = #{url}"
+      request {url: url, timeout: 600000}, (err, res, body) =>
         @urlDone = @urlDone + 1
-        logger "Failed url ##{myUrlId}. #{@urlId-@urlDone} in queue"
-        deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode} url: ##{myUrlId}"
-      else
-        @urlDone = @urlDone + 1
-        logger "Got url ##{myUrlId}. #{@urlId-@urlDone} in queue"
-        deferred.resolve body
-    deferred.promise
+        if err or res.statusCode != 200 or !body
+          logger "Failed url #{myUrlId}. #{@urlId-@urlDone} in queue"
+          deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode} url: #{myUrlId}"
+        else
+          logger "Got url #{myUrlId}. #{@urlId-@urlDone} in queue"
+          deferred.resolve body
+      deferred.promise
 
 exports.PullUtil = PullUtil
