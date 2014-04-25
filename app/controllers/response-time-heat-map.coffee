@@ -76,6 +76,7 @@ define ["jquery", "d3"], ($, d3) ->
 
         tiles = graph.selectAll(".tile")
           .data(data.buckets)
+          .on("mouseover", showLabel)
           .attr("x",      (d) -> x(d.build))
           .attr("y",      (d) -> y(d.bucket))
           .attr("width",  (d) -> x.rangeBand())

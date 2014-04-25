@@ -54,7 +54,7 @@
                 return build !== firstBuild && build !== lastBuild && build !== d.build;
               });
             };
-            tiles = graph.selectAll(".tile").data(data.buckets).attr("x", function(d) {
+            tiles = graph.selectAll(".tile").data(data.buckets).on("mouseover", showLabel).attr("x", function(d) {
               return x(d.build);
             }).attr("y", function(d) {
               return y(d.bucket);
