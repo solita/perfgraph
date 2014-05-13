@@ -24,7 +24,6 @@
     "grunt-contrib-jade": "~0.10.0",
     "grunt-contrib-stylus": "~0.12.0",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-reload": "~0.2.0",
     "nodemon": "~1.0.17"
   },
   "scripts": {

@@ -35,26 +35,20 @@ module.exports = (grunt) ->
     watch:
       coffee:
         files: ["app/**/*.coffee"]
-        tasks: ["coffee", "reload"]
+        tasks: ["coffee"]
 
       stylus:
         files: ["app/**/*.styl"]
-        tasks: ["stylus", "reload"]
+        tasks: ["stylus"]
 
       jade:
         files: ["app/**/*.jade"]
-        tasks: ["jade", "reload"]
+        tasks: ["jade"]
 
-    reload:
-      port: 6001
-      proxy:
-        host: 'localhost'
-        port: 8000
-
-  grunt.loadNpmTasks "grunt-reload"
   grunt.loadNpmTasks "grunt-contrib-coffee"
   grunt.loadNpmTasks "grunt-contrib-jade"
   grunt.loadNpmTasks "grunt-contrib-stylus"
   grunt.loadNpmTasks "grunt-contrib-watch"
 
-  grunt.registerTask "default", ["coffee", "jade", "stylus", "reload", "watch"]
+  grunt.registerTask "default", ["coffee", "jade", "stylus", "watch"]
+
