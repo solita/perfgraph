@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "perfgraph",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
