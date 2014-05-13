@@ -27,7 +27,8 @@
     "nodemon": "~1.0.17"
   },
   "scripts": {
-    "grunt": "grunt",
+    "build-client": "grunt coffee jade stylus",
+    "grunt-start": "grunt coffee jade stylus",
     "dev-start": "nodemon -w server,server.coffee server.coffee"
   }
 }
