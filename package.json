@@ -28,7 +28,7 @@
   },
   "scripts": {
     "build-client": "grunt coffee jade stylus",
-    "grunt": "grunt coffee jade stylus",
+    "grunt": "grunt",
     "dev-start": "nodemon -w server,server.coffee server.coffee"
   }
 }
