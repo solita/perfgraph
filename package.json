@@ -14,6 +14,9 @@
     "socket.io": "~0.9.16",
     "xml2js": "~0.4.1"
   },
+  "engines": {
+    "node": "~0.8.x"
+  },
   "devDependencies": {
     "grunt": "~0.4.4",
     "grunt-cli": "~0.1.13",
