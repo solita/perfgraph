@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   define(function(require) {
-    var $, DashboardController, ErrorGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot, TroughputLine, io, moment, _;
+    var $, DashboardController, ErrorGraph, ResponseTimeHeatMap, ResponseTimeScatterPlot, StaticImage, TroughputLine, io, moment, _;
     $ = require("jquery");
     io = require("socket.io");
     moment = require("moment");
@@ -11,6 +11,7 @@
     ResponseTimeHeatMap = require("controllers/response-time-heat-map");
     ResponseTimeScatterPlot = require("controllers/response-time-scatterplot");
     TroughputLine = require("controllers/throughput-line");
+    StaticImage = require("controllers/static-image");
     return DashboardController = (function() {
       var updateCallback;
 
@@ -107,6 +108,7 @@
         }).call(this);
         this.buildHistoryGraphs = _.flatten(responseTimeTrends.concat(throughputGraphs));
         this.otherGraphs = _.flatten(responseTimeLatests);
+        this.biGraph = new StaticImage(this.elem.find("img.graph.bi-raportit"), 'http://murky.solita.fi:8080/job/KIRRE%20BI%20Nightly/buildTimeGraph/png');
         this.updateButton = $(".update");
         this.updateProgressIcon = $(".progress");
         this.updateButton.on("click", this.processBuilds);
@@ -141,7 +143,8 @@
           og.update();
         }
         this.updateButton.prop("disabled", false);
-        return this.updateProgressIcon.addClass("hidden");
+        this.updateProgressIcon.addClass("hidden");
+        return this.biGraph.update();
       };
 
       DashboardController.prototype.hide = function() {

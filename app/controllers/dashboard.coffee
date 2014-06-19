@@ -8,6 +8,7 @@ define (require) ->
   ResponseTimeHeatMap     = require "controllers/response-time-heat-map"
   ResponseTimeScatterPlot = require "controllers/response-time-scatterplot"
   TroughputLine           = require "controllers/throughput-line"
+  StaticImage             = require "controllers/static-image"
 
   class DashboardController
 
@@ -55,6 +56,8 @@ define (require) ->
       @buildHistoryGraphs = _.flatten(responseTimeTrends.concat throughputGraphs)
       @otherGraphs = _.flatten(responseTimeLatests)
 
+      @biGraph = new StaticImage @elem.find("img.graph.bi-raportit"), 'http://murky.solita.fi:8080/job/KIRRE%20BI%20Nightly/buildTimeGraph/png'
+
       @updateButton = $(".update")
       @updateProgressIcon = $(".progress")
       @updateButton.on "click", @processBuilds
@@ -82,6 +85,8 @@ define (require) ->
         og.update()
       @updateButton.prop "disabled", false
       @updateProgressIcon.addClass "hidden"
+
+      @biGraph.update()
 
     hide: () -> $('.dashboard').addClass "hidden"
     show: () -> $('.dashboard').removeClass "hidden"
