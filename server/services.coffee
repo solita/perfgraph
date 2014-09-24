@@ -25,7 +25,7 @@ testCases   =
 
 testCaseIds   = _.values testCases
 _db           = Q.ninvoke(mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf")
-db            = _db.then((db) -> Q.ninvoke(db, 'ensureIndex', 'services', {build: 1, elapsedTime: 1}).then(-> db))
+exports.db    = db = _db.then((db) -> Q.ninvoke(db, 'ensureIndex', 'services', {build: 1, elapsedTime: 1, timeStamp: 1}).then(-> db))
 services      = db.then (db) -> Q.ninvoke db, "collection", "services"
 
 exports.testCaseUrl = (build, testCase) ->
@@ -33,8 +33,19 @@ exports.testCaseUrl = (build, testCase) ->
 
 exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 
+exports.processTestResultsOfBuilds = (buildNumbers) ->
+  pullUtil.getBuilds(buildNumbers).fail(logger).allResolved().then(-> db).then((db) -> db.close()).done()
+
 exports.processTestResults = ->
   pullUtil.newTestFiles().fail(logger).allResolved().then(-> db).then((db) -> db.close()).done()
+
+exports.removeBuilds = (buildNumbers) ->
+  services
+    .then((services) -> Q.ninvoke(services, "remove", build:$in:buildNumbers) )
+    .then((response) ->
+      console.log response
+      buildNumbers)
+    .fail(logger)
 
 exports.latestBuilds = latestBuilds = (testCaseId, limit) ->
   services

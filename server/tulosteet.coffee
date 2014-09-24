@@ -26,7 +26,7 @@ testCases   =
 
 testCaseIds   = _.values testCases
 _db           = Q.ninvoke(mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf")
-db            = _db.then((db) -> Q.ninvoke(db, 'ensureIndex', 'tulosteet', {build: 1, elapsedTime: 1}).then(-> db))
+exports.db = db = _db.then((db) -> Q.ninvoke(db, 'ensureIndex', 'tulosteet', {build: 1, elapsedTime: 1, timeStamp: 1}).then(-> db))
 tulosteet     = db.then (db) -> Q.ninvoke db, "collection", "tulosteet"
 
 exports.testCaseUrl = (build, testCase) ->
@@ -34,10 +34,21 @@ exports.testCaseUrl = (build, testCase) ->
 
 exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
 
-exports.processTestResults = ->
+exports.processTestResultsOfBuilds = (buildNumbers) ->
+  pullUtil.getBuilds(buildNumbers).fail(logger).allResolved().then(-> db).then((db) -> db.close()).done()
+
+exports.processTestResults = () ->
   pullUtil.newTestFiles().fail(logger).allResolved().then(-> db).then((db) -> db.close()).done()
 
-exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
+exports.removeBuilds = (buildNumbers) ->
+  tulosteet
+    .then((tulosteet) -> Q.ninvoke(tulosteet, "remove", build:$in:buildNumbers) )
+    .then((response) ->
+      console.log response
+      buildNumbers)
+    .fail(logger)
+
+exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, limit = {}) ->
   tulosteet
     .then((tulosteet) -> Q.ninvoke tulosteet, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)

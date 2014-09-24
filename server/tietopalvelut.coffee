@@ -44,8 +44,11 @@ testCases =
 
 testCaseIds = _.map testCases, (a) -> a.id
 
-db            = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
-eraajot       = db.then (db) -> Q.ninvoke db, "collection", "eraajot"
+exports.db  = db = Q.ninvoke mongodb.MongoClient, "connect", "mongodb://localhost/kios-perf"
+eraajot     = db.then (db) -> Q.ninvoke db, "collection", "eraajot"
+
+exports.processTestResultsOfBuilds = (buildNumbers) ->
+  pullUtil.getBuilds(buildNumbers).fail(logger).allResolved().then(-> db).then((db) -> db.close()).done()
 
 exports.processTestResults = () ->
   pullUtil.newTestFiles().fail(logger).allResolved().then(-> db).then((db)-> db.close()).done()
@@ -54,6 +57,14 @@ exports.testCaseUrl = (build, testCase) ->
   "http://#{hostname}:#{port}/job/#{projectName}/#{build}/artifact/kios-tp-eraajo-velocity-performance/target/#{testCase}"
 
 exports.buildListUrl = "http://#{hostname}:#{port}/job/#{projectName}/api/json"
+
+exports.removeBuilds = (buildNumbers) ->
+  eraajot
+    .then((eraajot) -> Q.ninvoke(eraajot, "remove", build:$in:buildNumbers) )
+    .then((response) ->
+      console.log response
+      buildNumbers)
+    .fail(logger)
 
 exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
   eraajot

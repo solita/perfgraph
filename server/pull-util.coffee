@@ -9,16 +9,22 @@ class PullUtil
     @urlId = 0
     @urlDone = 0
 
-  newTestFiles: () ->
-    @newBuildNums().then((buildNumbers) =>
+  getBuilds: (buildNumbers) ->
+    Q.fcall( ->
+        buildNumbers.map (b) -> parseInt b
+      ).then(@entity.removeBuilds).then(@pullBuilds)
 
+  newTestFiles: () ->
+    @newBuildNums().then(@pullBuilds)
+
+  pullBuilds: (buildNumbers) =>
       reducer = (res, build) => res.concat(for tc in @testCaseFiles
         @getTestFile({build: build, testCase: tc})
           .then(@entity.parseResults)
           .then(@entity.saveResults)
           .fail(logger))
 
-      buildNumbers.reduce reducer, [])
+      buildNumbers.reduce reducer, []
 
   newBuildNums: () ->
     Q.all([@availableBuildNums(), @entity.latestBuilds()])
