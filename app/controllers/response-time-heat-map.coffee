@@ -1,4 +1,4 @@
-define ["jquery", "d3"], ($, d3) ->
+define ["jquery", "d3", "lodash"], ($, d3, _) ->
 
   class ResponseTimeHeatMap
     constructor: (@elem, @url, @historyLength) ->
@@ -14,9 +14,17 @@ define ["jquery", "d3"], ($, d3) ->
         firstBuild = d3.min(data.buckets, (d) -> d.build)
         maxTime = d3.max(data.buckets, (d) -> d.bucket)
 
+        buildNumbers = Object.keys _.groupBy(data.buckets, 'build')
+        buildNumbers = _.sortBy buildNumbers, 'build'
+        buildNumbers = _.map buildNumbers, (s) -> parseInt(s)
+
+        isBuildNumVisible = (build, numUnderMouse) ->
+          buildNumbers.length < 10 ||
+          build in [firstBuild, lastBuild, numUnderMouse]
+
         x = d3.scale.ordinal()
-          .domain([firstBuild..lastBuild])
-          .rangeBands([0, @width], 0.1)
+          .domain([0..buildNumbers.length-1])
+          .rangeBands([0, @width], 0.1, 0.05)
 
         y = d3.scale.linear()
           .domain([0, Math.max(maxTime, 10)])
@@ -29,6 +37,7 @@ define ["jquery", "d3"], ($, d3) ->
 
         xAxis = d3.svg.axis()
           .scale(x)
+          .tickValues(buildNumbers)
           .tickSize(0)
 
         yAxis = d3.svg.axis()
@@ -54,30 +63,33 @@ define ["jquery", "d3"], ($, d3) ->
           .attr("transform", "rotate(-90)")
           .text("response time [s]")
 
+        # x axis + tick labels
         graph.append("g")
           .attr("class", "x axis")
           .attr("transform", "translate(0, #{@height})")
           .call(xAxis)
           .selectAll("text")
           .attr("class", "build")
-          .classed("hidden", (build) -> build not in [firstBuild, lastBuild])
+          .classed("hidden", (build) -> !isBuildNumVisible(build,0))
 
+        # x axis label
         graph.select(".x.axis")
           .append("text")
           .attr("class", "x label")
           .attr("text-anchor", "end")
-          .attr("x", @width + 7)
+          .attr("x", @width)
           .attr("y", 20)
           .text("build #")
 
         labels    = graph.selectAll(".x.axis .build")
         showLabel = (d) ->
-          labels.classed("hidden", (build) -> build not in [firstBuild, lastBuild, d.build])
+          console.log d.build
+          labels.classed("hidden", (build) -> !isBuildNumVisible(build, d.build))
 
         tiles = graph.selectAll(".tile")
           .data(data.buckets)
           .on("mouseover", showLabel)
-          .attr("x",      (d) -> x(d.build))
+          .attr("x",      (d) -> x(_.indexOf(buildNumbers, d.build)))
           .attr("y",      (d) -> y(d.bucket))
           .attr("width",  (d) -> x.rangeBand())
           .attr("height", (d) -> y(d.bucket) - y(d.bucket + data.bucketSize))
@@ -88,7 +100,7 @@ define ["jquery", "d3"], ($, d3) ->
           .append("rect")
           .attr("class", "tile")
           .on("mouseover", showLabel)
-          .attr("x",      (d) -> x(d.build))
+          .attr("x",      (d) -> x(_.indexOf(buildNumbers, d.build)))
           .attr("y",      (d) -> y(d.bucket))
           .attr("width",  (d) -> x.rangeBand())
           .attr("height", (d) -> y(d.bucket) - y(d.bucket + data.bucketSize))
