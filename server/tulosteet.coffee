@@ -48,7 +48,7 @@ exports.removeBuilds = (buildNumbers) ->
       buildNumbers)
     .fail(logger)
 
-exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, limit = {}) ->
+exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
   tulosteet
     .then((tulosteet) -> Q.ninvoke tulosteet, "distinct", "build", testCaseId: testCaseId)
     .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
