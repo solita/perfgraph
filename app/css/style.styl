@@ -2,6 +2,7 @@ body
   padding 0
   margin  0
   font-family arial
+  min-width 1000px
 
 th
   font-weight normal
@@ -17,10 +18,11 @@ th
 
 .dashboard .test-case-container
   float left
-  margin 10 0 60 0
+  margin 10 0 110 0
   padding 0
   height 25%
   width  50%
+  min-width 543px
 
 .dashboard .test-case-container .title
   text-align center
@@ -35,8 +37,10 @@ th
 .tietopalvelu.graph .line
   stroke-width 2
 
+.status
+  min-width 260
+
 .tietopalvelu.status
-  padding 5 15 30 40
   margin 10 0 0 10
   font-size small
   float left
@@ -56,11 +60,12 @@ th
   margin-top 3
 
 .tietopalvelu.status .build
-  width 40
+  display none
+  width 10
   text-align right
 
-.tietopalvelu.status .testCaseId
-  width 100
+.status .testCaseId
+  width 110
 
 .tietopalvelu.status .throughput
   width 50

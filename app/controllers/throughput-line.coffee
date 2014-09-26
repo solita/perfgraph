@@ -11,9 +11,10 @@ define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
     update: ->
       $.getJSON "/throughput/#{@api}/#{@historyLength}", (data) =>
         flatData = _.flatten(data)
+        buildNumbers = _.uniq flatData.map (d) -> d.build
 
         x = d3.scale.linear()
-          .domain(d3.extent flatData, (d) -> d.build)
+          .domain([0, buildNumbers.length-1])
           .range([0, @width])
           .nice()
 
@@ -30,8 +31,8 @@ define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
         xAxis = d3.svg.axis()
           .scale(x)
           .tickSize(0)
-          .tickValues(_.uniq flatData.map (d) -> d.build)
-          .tickFormat(d3.format(",.0f"))
+          .tickValues([0 .. buildNumbers.length-1])
+          .tickFormat((x) -> buildNumbers[x])
 
         yAxis = d3.svg.axis()
           .scale(y)
@@ -42,7 +43,7 @@ define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
         graph = d3.select(@elem[0])
 
         line = d3.svg.line()
-          .x((d) -> x(d.build))
+          .x((d) -> x(_.indexOf(buildNumbers, d.build)))
           .y((d) -> y(d.throughput))
 
         lines = graph.selectAll(".line").data(data)

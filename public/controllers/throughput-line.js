@@ -18,11 +18,12 @@
       ThroughputLine.prototype.update = function() {
         return $.getJSON("/throughput/" + this.api + "/" + this.historyLength, (function(_this) {
           return function(data) {
-            var flatData, graph, line, lines, x, xAxis, y, yAxis, z;
+            var buildNumbers, flatData, graph, line, lines, x, xAxis, y, yAxis, z, _i, _ref, _results;
             flatData = _.flatten(data);
-            x = d3.scale.linear().domain(d3.extent(flatData, function(d) {
+            buildNumbers = _.uniq(flatData.map(function(d) {
               return d.build;
-            })).range([0, _this.width]).nice();
+            }));
+            x = d3.scale.linear().domain([0, buildNumbers.length - 1]).range([0, _this.width]).nice();
             y = d3.scale.linear().domain([
               0, d3.max(flatData, function(d) {
                 return d.throughput;
@@ -34,13 +35,17 @@
             if (_this.updateCallback) {
               _this.updateCallback(data, z);
             }
-            xAxis = d3.svg.axis().scale(x).tickSize(0).tickValues(_.uniq(flatData.map(function(d) {
-              return d.build;
-            }))).tickFormat(d3.format(",.0f"));
+            xAxis = d3.svg.axis().scale(x).tickSize(0).tickValues((function() {
+              _results = [];
+              for (var _i = 0, _ref = buildNumbers.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
+              return _results;
+            }).apply(this)).tickFormat(function(x) {
+              return buildNumbers[x];
+            });
             yAxis = d3.svg.axis().scale(y).orient("left").ticks(5).tickSize(3);
             graph = d3.select(_this.elem[0]);
             line = d3.svg.line().x(function(d) {
-              return x(d.build);
+              return x(_.indexOf(buildNumbers, d.build));
             }).y(function(d) {
               return y(d.throughput);
             });
