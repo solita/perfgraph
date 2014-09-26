@@ -58,7 +58,6 @@
             graph.select(".x.axis").append("text").attr("class", "x label").attr("text-anchor", "end").attr("x", _this.width).attr("y", 20).text("build #");
             labels = graph.selectAll(".x.axis .build");
             showLabel = function(d) {
-              console.log(d.build);
               return labels.classed("hidden", function(build) {
                 return !isBuildNumVisible(build, d.build);
               });

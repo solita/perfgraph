@@ -14,6 +14,7 @@ define ["jquery", "d3", "lodash"], ($, d3, _) ->
         firstBuild = d3.min(data.buckets, (d) -> d.build)
         maxTime = d3.max(data.buckets, (d) -> d.bucket)
 
+        # _.uniq _.flatten data.buckets, 'build' would do the same?
         buildNumbers = Object.keys _.groupBy(data.buckets, 'build')
         buildNumbers = _.sortBy buildNumbers, 'build'
         buildNumbers = _.map buildNumbers, (s) -> parseInt(s)
@@ -83,7 +84,6 @@ define ["jquery", "d3", "lodash"], ($, d3, _) ->
 
         labels    = graph.selectAll(".x.axis .build")
         showLabel = (d) ->
-          console.log d.build
           labels.classed("hidden", (build) -> !isBuildNumVisible(build, d.build))
 
         tiles = graph.selectAll(".tile")
