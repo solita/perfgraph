@@ -7,6 +7,7 @@ services      = require "./server/services"
 tietopalvelut = require "./server/tietopalvelut"
 #memwatch      = require "memwatch"
 exec          = require('child_process').exec
+livereload    = require('express-livereload')
 app           = express()
 
 #memwatch.on('leak', (info) -> console.log info)
@@ -75,3 +76,5 @@ io     = io.listen(server)
 
 server.listen app.get("port"), app.get("host"), ->
   console.log "Express server listening on port #{app.get("port")}"
+
+livereload(app, config={})
