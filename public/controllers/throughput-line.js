@@ -18,11 +18,11 @@
       ThroughputLine.prototype.update = function() {
         return $.getJSON("/throughput/" + this.api + "/" + this.historyLength, (function(_this) {
           return function(data) {
-            var buildNumbers, flatData, graph, line, lines, x, xAxis, y, yAxis, z, _i, _ref, _results;
+            var allBuildNumbers, buildNumbers, flatData, graph, line, lines, x, xAxis, y, yAxis, z, _i, _ref, _results;
             flatData = _.flatten(data);
-            buildNumbers = _.uniq(flatData.map(function(d) {
-              return d.build;
-            }));
+            allBuildNumbers = _.pluck(flatData, "build");
+            buildNumbers = _.uniq(allBuildNumbers);
+            buildNumbers = buildNumbers.sort();
             x = d3.scale.linear().domain([0, buildNumbers.length - 1]).range([0, _this.width]).nice();
             y = d3.scale.linear().domain([
               0, d3.max(flatData, function(d) {

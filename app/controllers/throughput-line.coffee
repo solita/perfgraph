@@ -11,7 +11,10 @@ define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
     update: ->
       $.getJSON "/throughput/#{@api}/#{@historyLength}", (data) =>
         flatData = _.flatten(data)
-        buildNumbers = _.uniq flatData.map (d) -> d.build
+        allBuildNumbers = _.pluck flatData, "build"
+        buildNumbers = _.uniq allBuildNumbers
+        buildNumbers = buildNumbers.sort() # We must sort here, since the flatData is groupped and not all
+                                           # builds are present in every group.
 
         x = d3.scale.linear()
           .domain([0, buildNumbers.length-1])
