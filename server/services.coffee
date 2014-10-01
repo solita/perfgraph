@@ -49,8 +49,17 @@ exports.removeBuilds = (buildNumbers) ->
 
 exports.latestBuilds = latestBuilds = (testCaseId, limit) ->
   services
-    .then((services) -> Q.ninvoke services, "distinct", "build", testCaseId: testCaseId)
-    .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
+    .then((services) ->
+      if testCaseId
+        return Q.ninvoke services, "distinct", "build", testCaseId: testCaseId
+      else
+        return Q.ninvoke services, "distinct", "build")
+    .then((builds)  ->
+      builds = builds.sort().reverse();
+      if limit
+        builds[0..limit - 1]
+      else
+        builds)
 
 maxResponseTimeInBuilds = (builds) ->
   services.then((services) ->
