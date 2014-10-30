@@ -1,6 +1,7 @@
 Q           = require "q"
 request     = require "request"
 logger      = require("./logger").logger
+_           = require "lodash"
 
 class PullUtil
   # Entity is the one who knows how to get
@@ -10,8 +11,10 @@ class PullUtil
     @urlDone = 0
 
   getBuilds: (buildNumbers) ->
-    Q.fcall( ->
-        buildNumbers.map (b) -> parseInt b
+    Q.fcall( =>
+        saneBuildNumbers = _.filter( buildNumbers, (n) -> parseInt(n) > 0 )
+        console.log "Getting #{@entity.name} buildNumbers: [#{saneBuildNumbers}]"
+        saneBuildNumbers.map( (b) -> parseInt(b) )
       ).then(@entity.removeBuilds).then(@pullBuilds)
 
   newTestFiles: () ->
@@ -29,19 +32,19 @@ class PullUtil
   newBuildNums: () ->
     Q.all([@availableBuildNums(), @entity.latestBuilds()])
       .spread(
-        ((availableBuildNums, savedBuilds) ->
-          logger "availableBuildNums: #{availableBuildNums}"
-          logger "savedBuilds: #{savedBuilds}"
+        ((availableBuildNums, savedBuilds) =>
+          logger "#{@entity.name}: builds available for download: [#{availableBuildNums}]"
+          logger "#{@entity.name}: builds already downloaded: [#{savedBuilds}]"
           newBuilds = availableBuildNums.filter (b) -> savedBuilds.indexOf(b) == -1
-          logger "newBuilds: #{newBuilds}"
+          logger "#{@entity.name}: builds to download now: [#{newBuilds}]"
           newBuilds))
       .fail(logger)
 
   getTestFile: (d) ->
-    logger "Processing build ##{d.build}, test case #{d.testCase}"
+    logger "Starting download of build #{@entity.name}:##{d.build}, test case #{d.testCase}"
     url = @entity.testCaseUrl d.build, d.testCase
-    @get(url).then (body) ->
-      logger "build ##{d.build}, test case #{d.testCase} downloaded. File size: #{body.length}"
+    @get(url).then (body) =>
+      logger "build #{@entity.name}:##{d.build}, test case #{d.testCase} downloaded. File size: #{body.length}"
       d.samples = body
       testData =
         d: d
@@ -63,18 +66,17 @@ class PullUtil
     queueSize = @urlId-@urlDone
     if queueSize > 100
       @urlDone = @urlDone + 1
-      deferred.reject new Error "Skipping url: #{@urlId} = #{url} - too many urls (>100) at same time"
-      deferred.promise
+      deferred.reject new Error "Skipping url: #{@entity.name}:#{@urlId} = #{url} - too many urls (>100) at same time"
     else
-      logger "Get url: #{@urlId} = #{url}"
+      logger "Get url: #{@entity.name}:#{@urlId} = #{url}"
       request {url: url, timeout: 60000 + 1000 * queueSize }, (err, res, body) =>
         @urlDone = @urlDone + 1
         if err or res.statusCode != 200 or !body
-          logger "Failed url #{myUrlId}. #{@urlId-@urlDone} in queue"
-          deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode} url: #{myUrlId}"
+          logger "Failed url #{@entity.name}:#{myUrlId}. #{@urlId-@urlDone} in queue"
+          deferred.reject new Error "err: #{err} res.statusCode: #{res?.statusCode} url: #{@entity.name}:#{myUrlId}"
         else
-          logger "Got url #{myUrlId}. #{@urlId-@urlDone} in queue"
+          logger "Got url #{@entity.name}:#{myUrlId}. #{@urlId-@urlDone} in queue"
           deferred.resolve body
-      deferred.promise
+    deferred.promise
 
 exports.PullUtil = PullUtil

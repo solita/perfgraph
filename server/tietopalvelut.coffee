@@ -12,6 +12,8 @@ hostname    = "ceto.solita.fi"
 port        = 9080
 projectName = "KIOS%20Perf%20Test%20TP%20eraajo%20velocity"
 
+exports.name = name = "tietopalvelut"
+
 testCases =
   '01-ealh-kunta-md.xml': { id: 'ealh-kunta', api: 'eraajo' }
   '01-ealh-luov-md.xml': { id: 'ealh-luov', api: 'eraajo' }
@@ -62,6 +64,7 @@ exports.removeBuilds = (buildNumbers) ->
   eraajot
     .then((eraajot) -> Q.ninvoke(eraajot, "remove", build:$in:buildNumbers) )
     .then((response) ->
+      console.log "#{name}: Got mongo remove response: "
       console.log response
       buildNumbers)
     .fail(logger)

@@ -11,6 +11,8 @@ hostname    = "ceto.solita.fi"
 port        = 9080
 projectName = "KIOS%20Perf%20Test%20SRV%20tomcat-kios%20at%20ceto"
 
+exports.name = name = "services"
+
 parser = new xml2js.Parser()
 
 testCases   =
@@ -43,6 +45,7 @@ exports.removeBuilds = (buildNumbers) ->
   services
     .then((services) -> Q.ninvoke(services, "remove", build:$in:buildNumbers) )
     .then((response) ->
+      console.log "#{name} Got mongo remove response: "
       console.log response
       buildNumbers)
     .fail(logger)
