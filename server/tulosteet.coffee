@@ -54,7 +54,12 @@ exports.removeBuilds = (buildNumbers) ->
 exports.latestBuilds = latestBuilds = (testCaseId = {"$in": testCaseIds}, {limit} = {}) ->
   tulosteet
     .then((tulosteet) -> Q.ninvoke tulosteet, "distinct", "build", testCaseId: testCaseId)
-    .then((builds)  -> builds = builds.sort().reverse(); if limit then builds[0..limit - 1] else builds)
+    .then((builds)  ->
+      # Note that subtract operation below has two contracts.
+      # 1. It reverses the sort order
+      # 2. It forces sort to use numeric sort order instead of alphanumeric.
+      builds = builds.sort((a,b) -> b-a)
+      if limit then builds[0..limit - 1] else builds)
 
 maxResponseTimeInBuilds = (builds) ->
   tulosteet.then((tulosteet) ->

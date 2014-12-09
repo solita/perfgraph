@@ -58,11 +58,11 @@ exports.latestBuilds = latestBuilds = (testCaseId, limit) ->
       else
         return Q.ninvoke services, "distinct", "build")
     .then((builds)  ->
-      builds = builds.sort().reverse();
-      if limit
-        builds[0..limit - 1]
-      else
-        builds)
+      # Note that subtract operation below has two contracts.
+      # 1. It reverses the sort order
+      # 2. It forces sort to use numeric sort order instead of alphanumeric.
+      builds = builds.sort((a,b) -> b-a)
+      if limit then builds[0..limit - 1] else builds)
 
 maxResponseTimeInBuilds = (builds) ->
   services.then((services) ->
