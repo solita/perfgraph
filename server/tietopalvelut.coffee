@@ -24,13 +24,15 @@ testCases =
   '01-ealh-muutos-103-md.xml': { id: 'ealh-muutos-103', api: 'eraajo-muutos' }
   '01-ealh-muutos-104-md.xml': { id: 'ealh-muutos-104', api: 'eraajo-muutos' }
   '01-ealh-muutos-105-md.xml': { id: 'ealh-muutos-105', api: 'eraajo-muutos' }
+  '01-eara-muutos-301-md.xml': { id: 'eara-muutos-301', api: 'eraajo-muutos' }
+  '01-eara-muutos-302-md.xml': { id: 'eara-muutos-302', api: 'eraajo-muutos' }
   '01-eavo-muutos-112-md.xml': { id: 'eavo-muutos-112', api: 'eraajo-muutos' }
   '01-eavo-muutos-113-md.xml': { id: 'eavo-muutos-113', api: 'eraajo-muutos' }
   '02-kypt-kunta-ki-md.xml': { id: 'kypt-kunta-ki', api: 'kyselypalvelu-krkohde' }
   '02-kypt-kunta-ma-md.xml': { id: 'kypt-kunta-ma', api: 'kyselypalvelu-krkohde' }
   '02-kypt-kunta-vo-md.xml': { id: 'kypt-kunta-vo', api: 'kyselypalvelu' }
-  '02-kypt-luov-ki-md.xml': { id: 'kypt-luov-ki', api: 'kyselypalvelu' }
-  '02-kypt-luov-ma-md.xml': { id: 'kypt-luov-ma', api: 'kyselypalvelu' }
+  '02-kypt-luov-ki-md.xml': { id: 'kypt-luov-ki', api: 'kyselypalvelu-krkohde' }
+  '02-kypt-luov-ma-md.xml': { id: 'kypt-luov-ma', api: 'kyselypalvelu-krkohde' }
   '02-kypt-muutos-201-md.xml': { id: 'kypt-muutos-201', api: 'kyselypalvelu-muutos' }
   '02-kypt-muutos-202-md.xml': { id: 'kypt-muutos-202', api: 'kyselypalvelu-muutos' }
   '02-kypt-muutos-203-md.xml': { id: 'kypt-muutos-203', api: 'kyselypalvelu-muutos' }
@@ -41,6 +43,8 @@ testCases =
   '02-kypt-muutos-208-md.xml': { id: 'kypt-muutos-208', api: 'kyselypalvelu-muutos' }
   '02-kypt-muutos-209-md.xml': { id: 'kypt-muutos-209', api: 'kyselypalvelu-muutos' }
   '02-kypt-muutos-210-md.xml': { id: 'kypt-muutos-210', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-301-md.xml': { id: 'kypt-muutos-301', api: 'kyselypalvelu-muutos' }
+  '02-kypt-muutos-302-md.xml': { id: 'kypt-muutos-302', api: 'kyselypalvelu-muutos' }
   '05-kyom-nimi-md.xml': { id: 'kyom-nimi', api: 'kyselypalvelu' }
   '05-kyom-tunnus-md.xml': { id: 'kyom-tunnus', api: 'kyselypalvelu' }
 
