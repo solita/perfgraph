@@ -13,8 +13,9 @@ define ["jquery", "d3", "lodash", "transparency"], ($, d3, _) ->
         flatData = _.flatten(data)
         allBuildNumbers = _.pluck flatData, "build"
         buildNumbers = _.uniq allBuildNumbers
-        buildNumbers = buildNumbers.sort() # We must sort here, since the flatData is groupped and not all
-                                           # builds are present in every group.
+        # We must sort here, since the flatData is groupped and not all
+        # builds are present in every group.
+        buildNumbers = _.sortBy buildNumbers, (a) -> parseInt a  
 
         x = d3.scale.linear()
           .domain([0, buildNumbers.length-1])
